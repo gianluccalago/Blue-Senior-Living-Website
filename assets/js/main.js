@@ -94,22 +94,46 @@ const CONFIG = {
     });
   }
 
-  /* ---------- 4. Hero video + reduced motion ---------- */
+  /* ---------- 4. Hero video — robust mobile autoplay + reduced motion ---------- */
   function heroVideo() {
     const video = $("[data-hero-video]");
     if (!video) return;
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const apply = () => {
-      if (reduce.matches) {
-        video.removeAttribute("autoplay");
-        video.pause();
-      } else {
-        const p = video.play();
-        if (p && typeof p.catch === "function") p.catch(() => {/* autoplay blocked: poster stays */});
-      }
+
+    // Mobile autoplay policies (iOS Safari, in-app browsers) require muted/inline
+    // to be set as PROPERTIES, not just attributes.
+    video.muted = true;
+    video.defaultMuted = true;
+    video.playsInline = true;
+    video.setAttribute("muted", "");
+    video.setAttribute("playsinline", "");
+    video.setAttribute("webkit-playsinline", "");
+
+    const play = () => {
+      if (reduce.matches) return;
+      const p = video.play();
+      if (p && typeof p.catch === "function") p.catch(() => {/* will retry on gesture */});
     };
-    apply();
-    if (reduce.addEventListener) reduce.addEventListener("change", apply);
+    const stop = () => video.pause();
+
+    if (reduce.matches) {
+      video.removeAttribute("autoplay");
+      stop();
+    } else {
+      play();
+      // Retry as the media becomes ready / the tab returns to view.
+      ["loadeddata", "canplay", "canplaythrough"].forEach((ev) => video.addEventListener(ev, play));
+      document.addEventListener("visibilitychange", () => { if (!document.hidden) play(); });
+      // Last resort: the first user interaction unlocks muted playback.
+      const onGesture = () => play();
+      ["touchstart", "pointerdown", "click", "scroll"].forEach((ev) =>
+        window.addEventListener(ev, onGesture, { once: true, passive: true })
+      );
+    }
+
+    if (reduce.addEventListener) {
+      reduce.addEventListener("change", () => { reduce.matches ? stop() : play(); });
+    }
   }
 
   /* ---------- 5. Visit form ---------- */

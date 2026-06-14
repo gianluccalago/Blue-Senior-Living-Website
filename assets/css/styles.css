@@ -253,7 +253,14 @@ ul, ol { list-style: none; padding: 0; }
   color: #fff;
 }
 .hero__media { position: absolute; inset: 0; z-index: 0; background: var(--navy-900); }
-.hero__video { width: 100%; height: 100%; object-fit: cover; object-position: center; }
+.hero__video { width: 100%; height: 100%; object-fit: cover; object-position: center; pointer-events: none; }
+/* Suppress the iOS Safari central "play" overlay so the muted background video stays clean */
+.hero__video::-webkit-media-controls,
+.hero__video::-webkit-media-controls-enclosure,
+.hero__video::-webkit-media-controls-panel,
+.hero__video::-webkit-media-controls-start-playback-button {
+  display: none !important; -webkit-appearance: none; opacity: 0;
+}
 .hero__overlay {
   position: absolute; inset: 0;
   background:
