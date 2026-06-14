@@ -383,6 +383,35 @@ ul, ol { list-style: none; padding: 0; }
   background: var(--cloud); border: 1px solid var(--line); border-radius: var(--r-card); padding: 24px 28px;
 }
 .rooms__cta p { font-size: 17px; color: var(--ink); max-width: 56ch; }
+.rooms__cta-text { min-width: 0; }
+.rooms__scarcity { margin-top: 10px; display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 600; color: var(--navy-600); }
+.rooms__scarcity svg { width: 18px; height: 18px; flex: none; color: var(--celeste-600); }
+
+/* Trust seals (objection-breaker section) */
+.seals { display: flex; flex-wrap: wrap; gap: 16px; margin-top: clamp(28px, 4vw, 44px); }
+.seal {
+  flex: 1 1 240px; min-width: 0; display: flex; align-items: center; gap: 14px;
+  background: var(--haze); border: 1px solid var(--line-soft); border-radius: var(--r-card);
+  padding: 18px 20px; font-weight: 600; font-size: 16px; color: var(--ink);
+}
+.seal__icon {
+  display: inline-flex; align-items: center; justify-content: center; flex: none;
+  width: 42px; height: 42px; border-radius: 12px;
+  background: linear-gradient(160deg, rgba(92, 191, 229, .18), rgba(28, 74, 110, .12)); color: var(--navy-600);
+}
+.seal__icon svg { width: 22px; height: 22px; }
+.fineprint { margin-top: var(--s-24); font-size: 13px; line-height: 1.6; color: var(--ink-soft); max-width: 80ch; }
+
+/* Family guilt-break highlight */
+.family__highlight {
+  margin-top: var(--s-20) !important; padding-left: 18px;
+  border-left: 3px solid var(--celeste);
+  font-size: clamp(16px, 1.6vw, 18px); color: #fff;
+}
+.family__highlight strong { color: var(--celeste-300); }
+
+/* Form reassurance intro */
+.form__intro { font-size: 15px; line-height: 1.55; color: var(--ink-soft); margin-bottom: var(--s-16); }
 
 /* ---- Family ---- */
 .section--family {
@@ -544,7 +573,11 @@ ul, ol { list-style: none; padding: 0; }
   .rooms { grid-template-columns: 1fr; }
   .footer__inner { grid-template-columns: 1fr; }
   .hero { padding-top: 96px; }
-  .hero__cta .btn { flex: 1 1 auto; }
+  /* Long CTAs: allow wrapping and go full-width so they never overflow narrow phones */
+  .btn--lg { white-space: normal; }
+  .hero__cta { flex-direction: column; align-items: stretch; }
+  .hero__cta .btn { width: 100%; }
+  .family__text > .btn { width: 100%; }
   .rooms__cta { flex-direction: column; align-items: flex-start; }
   .fab__label { display: none; }
   .fab { padding: 15px; }

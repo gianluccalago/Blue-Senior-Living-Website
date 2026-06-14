@@ -9,7 +9,7 @@ const CONFIG = {
 
   // WhatsApp em formato internacional, só dígitos (DDI 55 + DDD + número).
   WHATSAPP: "5541999999999",                               // <-- PLACEHOLDER (editar)
-  WHATSAPP_MSG: "Olá! Gostaria de agendar uma visita ao Blue Senior Living.",
+  WHATSAPP_MSG: "Olá! Gostaria de conhecer o Blue Senior Living e agendar uma visita.",
 
   // Telefone para ligação.
   PHONE_DISPLAY: "(41) 0000-0000",                         // <-- PLACEHOLDER (editar)
@@ -134,7 +134,7 @@ const CONFIG = {
         const msg = form.mensagem.value.trim();
         let text = CONFIG.WHATSAPP_MSG;
         if (nome || tel || msg) {
-          text = `Olá! Gostaria de agendar uma visita ao Blue Senior Living.`
+          text = `Olá! Gostaria de conhecer o Blue Senior Living e agendar uma visita.`
                + (nome ? `\nNome: ${nome}` : "")
                + (tel ? `\nTelefone: ${tel}` : "")
                + (msg ? `\nMensagem: ${msg}` : "");
