@@ -5,7 +5,7 @@
    ===================================================================== */
 const CONFIG = {
   // Link do aplicativo / área do cliente (abre em nova aba).
-  APP_URL: "https://app.blueseniorliving.com.br",          // <-- PLACEHOLDER (editar)
+  APP_URL: "https://blue-senior-living-app.onrender.com",
 
   // WhatsApp em formato internacional, só dígitos (DDI 55 + DDD + número).
   WHATSAPP: "5541999999999",                               // <-- PLACEHOLDER (editar)

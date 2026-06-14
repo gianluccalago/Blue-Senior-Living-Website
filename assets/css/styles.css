@@ -162,7 +162,7 @@ ul, ol { list-style: none; padding: 0; }
 
 /* ===================== Brand lockup ===================== */
 .brand { display: inline-flex; align-items: center; gap: 12px; color: inherit; }
-.brand__emblem { width: 30px; height: 46px; color: currentColor; flex: none; }
+.brand__emblem { width: 36px; height: 47px; color: currentColor; flex: none; }
 .brand__text { display: flex; flex-direction: column; line-height: 1; }
 .brand__name {
   font-family: var(--font-brand); font-weight: 600; font-size: 21px;
@@ -475,6 +475,8 @@ ul, ol { list-style: none; padding: 0; }
 .footer__inner { display: grid; grid-template-columns: 1.6fr 1fr 1fr 1fr; gap: clamp(28px, 4vw, 56px); padding-bottom: var(--s-48); }
 .brand--footer { color: #fff; }
 .brand--drawer { color: var(--navy-600); }
+.footer__logo { display: inline-block; color: #fff; line-height: 0; }
+.footer__logo svg { width: 176px; height: auto; }
 .footer__tagline { margin-top: var(--s-16); font-size: 15px; line-height: 1.6; color: rgba(231, 241, 249, .68); max-width: 36ch; }
 .footer__col h4 { font-size: 13px; letter-spacing: .12em; text-transform: uppercase; color: var(--celeste-300); margin-bottom: var(--s-16); font-weight: 600; }
 .footer__col a { display: inline-flex; align-items: center; gap: 8px; color: rgba(231, 241, 249, .8); font-size: 15px; padding: 5px 0; transition: color .2s; }
@@ -547,7 +549,7 @@ ul, ol { list-style: none; padding: 0; }
 /* Larger touch targets / readable type already; nudge brand on tiny screens */
 @media (max-width: 380px) {
   .brand__name { font-size: 19px; }
-  .brand__emblem { width: 26px; height: 40px; }
+  .brand__emblem { width: 31px; height: 40px; }
 }
 
 /* ===================== Reduced motion ===================== */
