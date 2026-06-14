@@ -188,6 +188,14 @@ l-90 0 0 50 0 50 80 0 c73 0 80 2 80 20 0 18 -7 20 -81 20 l-80 0 3 48 3 47
       <symbol id="i-spark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
         <path d="M12 3v4M12 17v4M3 12h4M17 12h4M6 6l2.5 2.5M15.5 15.5 18 18M18 6l-2.5 2.5M8.5 15.5 6 18"/>
       </symbol>
+      <symbol id="i-compass" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="9"/>
+        <path d="M15.6 8.4 13.4 13.4 8.4 15.6 10.6 10.6Z"/>
+      </symbol>
+      <symbol id="i-wave" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M2 9 q3 -4 6 0 t6 0 t6 0"/>
+        <path d="M2 15 q3 -4 6 0 t6 0 t6 0"/>
+      </symbol>
       <symbol id="i-phone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
         <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.8 19.8 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.9.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92Z"/>
       </symbol>
@@ -325,44 +333,48 @@ l-90 0 0 50 0 50 80 0 c73 0 80 2 80 20 0 18 -7 20 -81 20 l-80 0 3 48 3 47
     </section>
 
     <!-- ===================== 1. CONCEITO BLUE ZONES ===================== -->
-    <section class="section section--light" id="conceito">
+    <section class="section section--concept" id="conceito">
       <div class="wrap">
-        <header class="section__head">
-          <p class="eyebrow">Nossa inspiração</p>
+        <header class="section__head concept__head">
+          <p class="eyebrow eyebrow--light">Nossa inspiração</p>
           <h2 class="section__title">Viver mais, vivendo bem</h2>
-          <p class="section__lead">
+          <p class="section__lead section__lead--light">
             As <em>Blue Zones</em> são as regiões do mundo onde se vive mais — e melhor.
-            O segredo não é sorte: é um jeito de viver, com propósito, comida de verdade,
-            movimento e bons vínculos. É daí que tiramos a nossa inspiração.
+            Não por sorte: por um jeito de viver. É daí que vem a nossa inspiração.
           </p>
         </header>
 
-        <div class="concept">
-          <div class="concept__text">
-            <p>
-              No Blue, essa inspiração vira rotina: dias com sentido e companhia, um corpo
-              ativo no seu ritmo, refeições preparadas com carinho e a chance de seguir
-              fazendo parte de uma comunidade — porque ninguém floresce sozinho.
-            </p>
-            <p>
-              Tudo isso dentro de um cuidado sério e responsável, pensado para que a sua
-              família tenha tranquilidade e a pessoa cuidada se sinta, antes de tudo, em casa.
-            </p>
-            <p class="concept__note">
-              <svg aria-hidden="true"><use href="#i-spark"/></svg>
-              Inspiração de estilo de vida — não promessa de resultado médico. O que
-              garantimos é o cuidado de uma ILPI séria: presença, método e afeto, todos os dias.
-            </p>
-          </div>
+        <p class="concept__bridge">No Blue, isso vira rotina:</p>
 
-          <ul class="pillars-mini" aria-label="Pilares da longevidade">
-            <li><span class="pillars-mini__k">Propósito</span><span class="pillars-mini__v">um motivo para cada dia</span></li>
-            <li><span class="pillars-mini__k">Alimentação</span><span class="pillars-mini__v">comida de verdade, no tempo certo</span></li>
-            <li><span class="pillars-mini__k">Movimento</span><span class="pillars-mini__v">o corpo ativo, no seu ritmo</span></li>
-            <li><span class="pillars-mini__k">Vínculos</span><span class="pillars-mini__v">companhia que faz bem</span></li>
-            <li><span class="pillars-mini__k">Pertencimento</span><span class="pillars-mini__v">fazer parte de uma comunidade</span></li>
-          </ul>
-        </div>
+        <ul class="pillars" aria-label="Os cinco princípios da longevidade">
+          <li class="pillar">
+            <span class="pillar__icon"><svg aria-hidden="true"><use href="#i-compass"/></svg></span>
+            <h3 class="pillar__k">Propósito</h3>
+            <p class="pillar__v">um motivo para cada dia</p>
+          </li>
+          <li class="pillar">
+            <span class="pillar__icon"><svg aria-hidden="true"><use href="#i-leaf"/></svg></span>
+            <h3 class="pillar__k">Alimentação</h3>
+            <p class="pillar__v">comida de verdade, no tempo certo</p>
+          </li>
+          <li class="pillar">
+            <span class="pillar__icon"><svg aria-hidden="true"><use href="#i-wave"/></svg></span>
+            <h3 class="pillar__k">Movimento</h3>
+            <p class="pillar__v">o corpo ativo, no seu ritmo</p>
+          </li>
+          <li class="pillar">
+            <span class="pillar__icon"><svg aria-hidden="true"><use href="#i-heart"/></svg></span>
+            <h3 class="pillar__k">Vínculos</h3>
+            <p class="pillar__v">companhia que faz bem</p>
+          </li>
+          <li class="pillar">
+            <span class="pillar__icon"><svg aria-hidden="true"><use href="#i-users"/></svg></span>
+            <h3 class="pillar__k">Pertencimento</h3>
+            <p class="pillar__v">fazer parte de uma comunidade</p>
+          </li>
+        </ul>
+
+        <p class="concept__disclaimer">Blue Zones são inspiração de estilo de vida — não promessa de resultado médico.</p>
       </div>
     </section>
 

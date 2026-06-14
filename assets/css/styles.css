@@ -305,26 +305,45 @@ ul, ol { list-style: none; padding: 0; }
   color: #fff;
 }
 
-/* ---- Concept ---- */
-.concept { display: grid; grid-template-columns: 1.25fr .9fr; gap: clamp(32px, 5vw, 72px); align-items: start; }
-.concept__text p + p { margin-top: var(--s-20); }
-.concept__text strong { color: var(--navy-600); font-weight: 700; }
-.concept__note {
-  display: flex; gap: 12px; margin-top: var(--s-24) !important;
-  background: var(--cloud); border: 1px solid var(--line); border-left: 3px solid var(--celeste);
-  border-radius: var(--r-card); padding: 18px 20px; color: var(--ink-soft); font-size: 15.5px;
+/* ---- Concept (Blue Zones) — navy feature section ---- */
+.section--concept {
+  background:
+    radial-gradient(120% 120% at 82% -12%, rgba(92, 191, 229, .18), rgba(92, 191, 229, 0) 52%),
+    linear-gradient(158deg, var(--navy-600) 0%, var(--navy-700) 46%, var(--navy-900) 100%);
+  color: #fff;
 }
-.concept__note svg { width: 22px; height: 22px; flex: none; color: var(--celeste-600); margin-top: 2px; }
-
-.pillars-mini { display: grid; gap: 10px; }
-.pillars-mini li {
-  background: var(--cloud); border: 1px solid var(--line); border-radius: var(--r-card);
-  padding: 16px 18px; display: flex; flex-direction: column; gap: 2px;
-  transition: transform .2s var(--ease), border-color .2s;
+.concept__head { max-width: 720px; margin-inline: auto; text-align: center; }
+.concept__head .section__lead { margin-inline: auto; }
+.section--concept .section__lead em { color: var(--celeste-300); font-style: italic; }
+.concept__bridge {
+  text-align: center; margin-top: clamp(28px, 4vw, 44px);
+  font-family: var(--font-display); font-style: italic; font-size: clamp(18px, 2vw, 22px);
+  color: var(--celeste-300);
 }
-.pillars-mini li:hover { transform: translateX(4px); border-color: var(--celeste); }
-.pillars-mini__k { font-family: var(--font-display); font-size: 22px; font-weight: 600; color: var(--navy-600); }
-.pillars-mini__v { font-size: 14.5px; color: var(--ink-soft); }
+.pillars {
+  margin: clamp(20px, 3vw, 32px) auto 0; padding: 0;
+  display: flex; flex-wrap: wrap; justify-content: center; gap: clamp(22px, 3.5vw, 44px);
+}
+.pillar { flex: 1 1 150px; max-width: 220px; min-width: 0; text-align: center; }
+.pillar__icon {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 68px; height: 68px; border-radius: 50%; margin-bottom: 16px;
+  border: 1px solid rgba(255, 255, 255, .22); background: rgba(255, 255, 255, .05); color: var(--celeste-300);
+  transition: border-color .25s var(--ease), background .25s var(--ease), transform .25s var(--ease);
+}
+.pillar__icon svg { width: 30px; height: 30px; }
+.pillar:hover .pillar__icon { border-color: var(--celeste); background: rgba(92, 191, 229, .14); transform: translateY(-3px); }
+.pillar__k { font-family: var(--font-display); font-weight: 600; font-size: clamp(21px, 2.2vw, 25px); color: #fff; margin-bottom: 4px; line-height: 1.1; }
+.pillar__v { font-size: 14.5px; line-height: 1.45; color: rgba(231, 241, 249, .8); }
+.concept__disclaimer {
+  margin: clamp(36px, 5vw, 56px) auto 0; text-align: center;
+  font-size: 13px; color: rgba(231, 241, 249, .6); max-width: 62ch;
+}
+@media (max-width: 560px) {
+  .pillar { flex-basis: 130px; }
+  .pillar__icon { width: 60px; height: 60px; }
+  .pillar__icon svg { width: 27px; height: 27px; }
+}
 
 /* ---- Feature cards grid ---- */
 .cards-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(16px, 2vw, 24px); }
