@@ -1,0 +1,17 @@
+# OS / editor
+.DS_Store
+Thumbs.db
+*.swp
+.idea/
+.vscode/
+
+# Node (not used by the site itself — only for local tooling)
+node_modules/
+npm-debug.log*
+
+# Build / temp
+*.log
+.cache/
+
+# Claude Code local settings (personal/local only)
+.claude/settings.local.json

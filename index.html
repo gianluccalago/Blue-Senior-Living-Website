@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Blue Senior Living — Residencial sênior de alto padrão em Curitiba</title>
+
+  <meta name="description" content="Residencial sênior de alto padrão em Curitiba, inspirado nas Blue Zones. Cuidado assistencial 24h, nutrição com propósito, vida social e transparência com a família. Agende uma visita." />
+  <meta name="theme-color" content="#0E2233" />
+  <meta name="author" content="Blue Senior Living" />
+
+  <!-- Open Graph / social -->
+  <meta property="og:type" content="website" />
+  <meta property="og:locale" content="pt_BR" />
+  <meta property="og:title" content="Blue Senior Living — Viver bem é viver com propósito" />
+  <meta property="og:description" content="Residencial sênior de alto padrão em Curitiba, inspirado nas Blue Zones. Agende uma visita." />
+  <meta property="og:image" content="assets/img/hero-poster.jpg" />
+  <meta name="twitter:card" content="summary_large_image" />
+
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="assets/img/favicon.svg" />
+
+  <!-- Fonts: Cinzel (wordmark), Cormorant Garamond (display), Inter (UI/body) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="assets/css/styles.css" />
+</head>
+<body id="inicio">
+  <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
+
+  <!-- ===================== SVG sprite (icons + emblem) ===================== -->
+  <svg width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute">
+    <defs>
+      <!-- Brand emblem -->
+      <symbol id="i-emblem" viewBox="0 0 280 372">
+        <g fill="none" stroke="currentColor" stroke-width="7" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M140,44 C 74,104 52,160 56,200 C 60,250 86,294 140,322"/>
+          <path d="M140,44 C 206,104 228,160 224,200 C 220,250 194,294 140,322"/>
+          <path d="M140,64 C190,80 190,134 140,150 C80,163 80,212 140,225 C188,238 188,288 140,302"/>
+          <path d="M140,64 C90,80 90,134 140,150 C200,163 200,212 140,225 C92,238 92,288 140,302"/>
+          <path d="M140,28 C150,42 150,52 140,64 C130,52 130,42 140,28"/>
+          <path d="M140,302 C149,314 149,326 140,338 C131,326 131,314 140,302"/>
+        </g>
+      </symbol>
+      <!-- outline icons (stroke currentColor) -->
+      <symbol id="i-heart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 1 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78Z"/>
+        <path d="M3.5 12.5h3l1.4-2.6 2.2 5 1.6-3.1h2.1" opacity=".9"/>
+      </symbol>
+      <symbol id="i-leaf" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M20 4C9 5 4 10 4 16a5 5 0 0 0 5 5c6 0 11-5 11-17Z"/>
+        <path d="M4 21C8 14 13 9 18 7"/>
+      </symbol>
+      <symbol id="i-activity" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M22 12h-4l-3 8-6-16-3 8H2"/>
+      </symbol>
+      <symbol id="i-users" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+        <circle cx="9" cy="7" r="4"/>
+        <path d="M22 21v-2a4 4 0 0 0-3-3.87"/>
+        <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+      </symbol>
+      <symbol id="i-home" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M3 9.5 12 2l9 7.5"/>
+        <path d="M5 9v11a1 1 0 0 0 1 1h4v-6h4v6h4a1 1 0 0 0 1-1V9"/>
+      </symbol>
+      <symbol id="i-shield" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/>
+        <path d="m9 11.5 2 2 4-4"/>
+      </symbol>
+      <symbol id="i-clipboard" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M9 3h6a1 1 0 0 1 1 1v1H8V4a1 1 0 0 1 1-1Z"/>
+        <path d="M16 5h2a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h2"/>
+        <path d="m9 13 2 2 4-4"/>
+      </symbol>
+      <symbol id="i-pill" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="2.5" y="9" width="19" height="6" rx="3" transform="rotate(45 12 12)"/>
+        <path d="M12 7.5 16.5 12"/>
+      </symbol>
+      <symbol id="i-stethoscope" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M5 3v5a4 4 0 0 0 8 0V3"/>
+        <path d="M5 3H3.5M13 3h1.5"/>
+        <path d="M9 12v3a5 5 0 0 0 5 5 4 4 0 0 0 4-4v-2"/>
+        <circle cx="18" cy="12" r="2"/>
+      </symbol>
+      <symbol id="i-spark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 3v4M12 17v4M3 12h4M17 12h4M6 6l2.5 2.5M15.5 15.5 18 18M18 6l-2.5 2.5M8.5 15.5 6 18"/>
+      </symbol>
+      <symbol id="i-phone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.8 19.8 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.9.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92Z"/>
+      </symbol>
+      <symbol id="i-mail" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="2.5" y="4.5" width="19" height="15" rx="2"/>
+        <path d="m3 6 9 7 9-7"/>
+      </symbol>
+      <symbol id="i-pin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/>
+        <circle cx="12" cy="10" r="2.6"/>
+      </symbol>
+      <symbol id="i-clock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/>
+      </symbol>
+      <symbol id="i-whatsapp" viewBox="0 0 24 24">
+        <path fill="currentColor" d="M19.05 4.91A9.82 9.82 0 0 0 12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.9 9.9 0 0 0 4.79 1.22h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.91-7.02ZM12.04 20.15h-.01a8.23 8.23 0 0 1-4.19-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.2 8.2 0 0 1-1.26-4.38c0-4.54 3.7-8.24 8.25-8.24a8.2 8.2 0 0 1 5.83 2.42 8.18 8.18 0 0 1 2.41 5.83c0 4.54-3.7 8.23-8.24 8.23Zm4.52-6.16c-.25-.12-1.47-.72-1.69-.81-.23-.08-.39-.12-.56.13-.17.25-.64.81-.79.97-.14.17-.29.19-.54.06-.25-.12-1.05-.39-1.99-1.23-.74-.66-1.23-1.47-1.38-1.72-.14-.25-.02-.38.11-.51.11-.11.25-.29.37-.43.13-.14.17-.25.25-.41.08-.17.04-.31-.02-.43-.06-.12-.56-1.34-.76-1.84-.2-.48-.4-.42-.56-.43-.14-.01-.31-.01-.48-.01-.17 0-.43.06-.66.31-.23.25-.86.85-.86 2.07 0 1.22.89 2.4 1.01 2.56.12.17 1.75 2.67 4.24 3.74.59.26 1.05.41 1.41.52.59.19 1.13.16 1.56.1.48-.07 1.47-.6 1.68-1.18.21-.58.21-1.07.14-1.18-.06-.1-.22-.16-.47-.28Z"/>
+      </symbol>
+      <symbol id="i-arrow-right" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M5 12h14M13 6l6 6-6 6"/>
+      </symbol>
+      <symbol id="i-arrow-down" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 5v14M19 12l-7 7-7-7"/>
+      </symbol>
+      <symbol id="i-external" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M14 4h6v6M20 4l-9 9"/>
+        <path d="M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/>
+      </symbol>
+      <symbol id="i-menu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M3 6h18M3 12h18M3 18h18"/>
+      </symbol>
+      <symbol id="i-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M6 6l12 12M18 6 6 18"/>
+      </symbol>
+      <symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M20 6 9 17l-5-5"/>
+      </symbol>
+    </defs>
+  </svg>
+
+  <!-- ===================== Header / Navbar ===================== -->
+  <header class="nav" id="nav" data-nav>
+    <div class="nav__inner">
+      <a class="brand" href="#inicio" aria-label="Blue Senior Living — página inicial">
+        <svg class="brand__emblem" aria-hidden="true"><use href="#i-emblem"/></svg>
+        <span class="brand__text">
+          <span class="brand__name">BLUE</span>
+          <span class="brand__sub">SENIOR LIVING</span>
+        </span>
+      </a>
+
+      <nav class="nav__links" aria-label="Navegação principal">
+        <a href="#conceito">O conceito</a>
+        <a href="#pilares">Cuidado</a>
+        <a href="#espacos">Espaços</a>
+        <a href="#familia">Para a família</a>
+        <a href="#localizacao">Localização</a>
+      </nav>
+
+      <div class="nav__actions">
+        <a class="link-app" data-app-link href="#" target="_blank" rel="noopener noreferrer">
+          <svg aria-hidden="true"><use href="#i-external"/></svg>
+          <span>Área do cliente</span>
+        </a>
+        <a class="btn btn--primary nav__cta" href="#agendar">
+          <span class="nav__cta--full">Agendar visita</span>
+          <span class="nav__cta--mini">Agendar</span>
+        </a>
+        <button class="nav__toggle" type="button" aria-label="Abrir menu" aria-expanded="false" aria-controls="mobile-menu" data-menu-toggle>
+          <svg aria-hidden="true"><use href="#i-menu"/></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Mobile drawer -->
+  <div class="drawer" id="mobile-menu" data-drawer hidden>
+    <div class="drawer__backdrop" data-drawer-close></div>
+    <nav class="drawer__panel" aria-label="Menu">
+      <div class="drawer__head">
+        <span class="brand brand--drawer">
+          <svg class="brand__emblem" aria-hidden="true"><use href="#i-emblem"/></svg>
+          <span class="brand__text"><span class="brand__name">BLUE</span><span class="brand__sub">SENIOR LIVING</span></span>
+        </span>
+        <button class="drawer__close" type="button" aria-label="Fechar menu" data-drawer-close>
+          <svg aria-hidden="true"><use href="#i-close"/></svg>
+        </button>
+      </div>
+      <a href="#conceito" data-drawer-link>O conceito</a>
+      <a href="#pilares" data-drawer-link>Pilares de cuidado</a>
+      <a href="#metodo" data-drawer-link>Como cuidamos</a>
+      <a href="#espacos" data-drawer-link>Os espaços</a>
+      <a href="#familia" data-drawer-link>Para a família</a>
+      <a href="#localizacao" data-drawer-link>Localização</a>
+      <div class="drawer__cta">
+        <a class="btn btn--primary btn--block" href="#agendar" data-drawer-link>Agendar visita</a>
+        <a class="btn btn--ghost-ink btn--block" data-app-link href="#" target="_blank" rel="noopener noreferrer">
+          <svg aria-hidden="true"><use href="#i-external"/></svg> Área do cliente
+        </a>
+      </div>
+    </nav>
+  </div>
+
+  <main id="conteudo">
+
+    <!-- ===================== HERO ===================== -->
+    <section class="hero" id="hero" aria-label="Apresentação">
+      <div class="hero__media">
+        <video class="hero__video" autoplay loop muted playsinline preload="auto"
+               poster="assets/img/hero-poster.jpg" aria-hidden="true" tabindex="-1" data-hero-video>
+          <source src="assets/video/hero.mp4" type="video/mp4" />
+        </video>
+        <div class="hero__overlay"></div>
+      </div>
+
+      <div class="hero__content">
+        <p class="hero__eyebrow">Residencial sênior · Curitiba · Inspirado nas Blue Zones</p>
+        <h1 class="hero__title">Viver bem é viver<br/>com propósito</h1>
+        <p class="hero__subtitle">
+          Nas Blue Zones — as regiões onde mais se vive com saúde e alegria — a longevidade
+          nasce de coisas simples: propósito, boa comida, movimento e vínculos verdadeiros.
+          No Blue, traduzimos essa sabedoria em cuidado diário, com afeto e método.
+        </p>
+        <div class="hero__cta">
+          <a class="btn btn--primary btn--lg" href="#agendar">
+            Agende uma visita <svg aria-hidden="true"><use href="#i-arrow-right"/></svg>
+          </a>
+          <a class="btn btn--ghost btn--lg" href="#conceito">Conheça o Blue</a>
+        </div>
+      </div>
+
+      <a class="hero__scroll" href="#conceito" aria-label="Rolar para o conteúdo">
+        <span>Role para conhecer</span>
+        <svg aria-hidden="true"><use href="#i-arrow-down"/></svg>
+      </a>
+    </section>
+
+    <!-- ===================== 1. CONCEITO BLUE ZONES ===================== -->
+    <section class="section section--light" id="conceito">
+      <div class="wrap">
+        <header class="section__head">
+          <p class="eyebrow">O conceito</p>
+          <h2 class="section__title">O que as regiões mais longevas do mundo nos ensinam</h2>
+          <p class="section__lead">
+            As <em>Blue Zones</em> são cinco regiões onde as pessoas vivem mais — e, sobretudo,
+            vivem melhor: Okinawa (Japão), Sardenha (Itália), Nicoya (Costa Rica), Ikaria (Grécia)
+            e Loma Linda (Estados Unidos). Não é sorte. É um jeito de viver.
+          </p>
+        </header>
+
+        <div class="concept">
+          <div class="concept__text">
+            <p>
+              Nessas comunidades, as pessoas comem comida de verdade, mantêm o corpo em movimento
+              ao longo do dia, cultivam amizades profundas, pertencem a algo maior do que elas
+              mesmas e acordam com um motivo para o dia — aquilo que em Okinawa chamam de
+              <strong>ikigai</strong>.
+            </p>
+            <p>
+              O Blue Senior Living nasceu para trazer essa filosofia para o cuidado sênior, aqui em
+              Curitiba. Não como uma fórmula, mas como uma forma de cuidar: presente, calorosa e
+              atenta ao que faz cada vida valer a pena.
+            </p>
+            <p class="concept__note">
+              <svg aria-hidden="true"><use href="#i-spark"/></svg>
+              As Blue Zones são nossa inspiração de estilo de vida — não uma promessa de resultado.
+              O que prometemos é cuidado sério, presença e afeto, todos os dias.
+            </p>
+          </div>
+
+          <ul class="pillars-mini" aria-label="Pilares da longevidade">
+            <li><span class="pillars-mini__k">Propósito</span><span class="pillars-mini__v">um motivo para cada dia</span></li>
+            <li><span class="pillars-mini__k">Alimentação</span><span class="pillars-mini__v">comida de verdade, no tempo certo</span></li>
+            <li><span class="pillars-mini__k">Movimento</span><span class="pillars-mini__v">o corpo ativo, no seu ritmo</span></li>
+            <li><span class="pillars-mini__k">Vínculos</span><span class="pillars-mini__v">companhia que faz bem</span></li>
+            <li><span class="pillars-mini__k">Pertencimento</span><span class="pillars-mini__v">fazer parte de uma comunidade</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== 2. PILARES DE CUIDADO ===================== -->
+    <section class="section section--surface" id="pilares">
+      <div class="wrap">
+        <header class="section__head">
+          <p class="eyebrow">Pilares de cuidado</p>
+          <h2 class="section__title">Cuidado inteiro, do corpo ao coração</h2>
+          <p class="section__lead">
+            Seis compromissos que sustentam o dia a dia no Blue — porque cuidar bem é cuidar de tudo.
+          </p>
+        </header>
+
+        <div class="cards-grid">
+          <article class="feature-card">
+            <span class="feature-card__icon"><svg aria-hidden="true"><use href="#i-heart"/></svg></span>
+            <h3>Cuidado assistencial 24h</h3>
+            <p>Equipe de saúde presente dia e noite, atenta a cada detalhe — do remédio na hora certa ao copo d'água antes de dormir.</p>
+          </article>
+          <article class="feature-card">
+            <span class="feature-card__icon"><svg aria-hidden="true"><use href="#i-leaf"/></svg></span>
+            <h3>Nutrição com propósito</h3>
+            <p>Cardápio equilibrado e saboroso, pensado pela nutrição, respeitando restrições, gostos e a alegria de comer bem.</p>
+          </article>
+          <article class="feature-card">
+            <span class="feature-card__icon"><svg aria-hidden="true"><use href="#i-activity"/></svg></span>
+            <h3>Movimento e vitalidade</h3>
+            <p>Atividade física adaptada, fisioterapia e caminhadas. O corpo em movimento, sempre no ritmo de cada um.</p>
+          </article>
+          <article class="feature-card">
+            <span class="feature-card__icon"><svg aria-hidden="true"><use href="#i-users"/></svg></span>
+            <h3>Vida social e propósito</h3>
+            <p>Música, jardinagem, oficinas e boa conversa. Dias com sentido e companhia — porque ninguém floresce sozinho.</p>
+          </article>
+          <article class="feature-card">
+            <span class="feature-card__icon"><svg aria-hidden="true"><use href="#i-home"/></svg></span>
+            <h3>Hospitalidade de alto padrão</h3>
+            <p>Ambientes luminosos, acolhedores e seguros, com o cuidado nos detalhes de quem sabe receber bem.</p>
+          </article>
+          <article class="feature-card">
+            <span class="feature-card__icon"><svg aria-hidden="true"><use href="#i-shield"/></svg></span>
+            <h3>Transparência com a família</h3>
+            <p>Você acompanha de perto a rotina, a saúde e o bem-estar de quem ama, com canais sempre abertos.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== 3. CUIDADO SÉRIO, SEM JARGÃO ===================== -->
+    <section class="section section--navy" id="metodo">
+      <div class="wrap">
+        <div class="method">
+          <div class="method__intro">
+            <p class="eyebrow eyebrow--light">Como cuidamos</p>
+            <h2 class="section__title">Cuidado sério, sem jargão</h2>
+            <p class="section__lead section__lead--light">
+              Acolhimento não dispensa método. Antes de tudo, entendemos a pessoa — sua saúde, sua
+              história e o que a faz feliz — e construímos um cuidado sob medida. Com rigor onde
+              precisa de rigor, e ternura o tempo todo.
+            </p>
+            <p class="method__tagline">Método e afeto não se opõem. Caminham juntos.</p>
+          </div>
+
+          <ol class="steps" aria-label="Nosso método de cuidado">
+            <li class="step">
+              <span class="step__icon"><svg aria-hidden="true"><use href="#i-clipboard"/></svg></span>
+              <div>
+                <h3>Avaliação do grau de dependência</h3>
+                <p>Entendemos as necessidades reais de cada residente, com olhar clínico e humano.</p>
+              </div>
+            </li>
+            <li class="step">
+              <span class="step__icon"><svg aria-hidden="true"><use href="#i-heart"/></svg></span>
+              <div>
+                <h3>Plano de cuidado individual</h3>
+                <p>Um plano único para cada pessoa, acompanhado de perto e ajustado quando a vida pede.</p>
+              </div>
+            </li>
+            <li class="step">
+              <span class="step__icon"><svg aria-hidden="true"><use href="#i-pill"/></svg></span>
+              <div>
+                <h3>Controle de medicação</h3>
+                <p>Medicamentos organizados, conferidos e administrados com rigor e registro.</p>
+              </div>
+            </li>
+            <li class="step">
+              <span class="step__icon"><svg aria-hidden="true"><use href="#i-stethoscope"/></svg></span>
+              <div>
+                <h3>Equipe multidisciplinar</h3>
+                <p>Enfermagem, cuidadores, nutrição, fisioterapia e mais, trabalhando lado a lado.</p>
+              </div>
+            </li>
+            <li class="step step--wide">
+              <span class="step__icon"><svg aria-hidden="true"><use href="#i-shield"/></svg></span>
+              <div>
+                <h3>Tecnologia própria de gestão</h3>
+                <p>Uma plataforma desenvolvida por nós organiza rotinas e informações — para que o cuidado seja preciso e a família, sempre bem informada.</p>
+              </div>
+            </li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== 4. OS ESPAÇOS ===================== -->
+    <section class="section section--light" id="espacos">
+      <div class="wrap">
+        <header class="section__head">
+          <p class="eyebrow">Os espaços</p>
+          <h2 class="section__title">Espaços para viver bem</h2>
+          <p class="section__lead">
+            Ambientes pensados como casa — luminosos, seguros e cheios de vida. Sem etiquetas de
+            hospital. Escolha o formato que faz sentido para a sua família.
+          </p>
+        </header>
+
+        <div class="rooms">
+          <article class="room-card">
+            <figure class="room-card__media">
+              <img src="assets/img/espaco-suite.svg" alt="Ilustração de uma suíte aconchegante e luminosa" loading="lazy" width="800" height="600" />
+            </figure>
+            <div class="room-card__body">
+              <h3>Suíte</h3>
+              <p>Conforto e privacidade em um quarto acolhedor, com banheiro adaptado e tudo ao alcance das mãos.</p>
+            </div>
+          </article>
+          <article class="room-card">
+            <figure class="room-card__media">
+              <img src="assets/img/espaco-suite-premium.svg" alt="Ilustração de uma suíte premium espaçosa e iluminada" loading="lazy" width="800" height="600" />
+            </figure>
+            <div class="room-card__body">
+              <h3>Suíte Premium</h3>
+              <p>Mais espaço, luz e detalhes de hospitalidade, para quem gosta de receber e relaxar com requinte.</p>
+            </div>
+          </article>
+          <article class="room-card">
+            <figure class="room-card__media">
+              <img src="assets/img/espaco-long-stay.svg" alt="Ilustração de um ambiente de long stay com sensação de lar" loading="lazy" width="800" height="600" />
+            </figure>
+            <div class="room-card__body">
+              <h3>Long Stay</h3>
+              <p>Para estadias mais longas, com a sensação de lar e a segurança de um cuidado contínuo e atento.</p>
+            </div>
+          </article>
+          <article class="room-card">
+            <figure class="room-card__media">
+              <img src="assets/img/espaco-apartamento.svg" alt="Ilustração de um apartamento com autonomia e suporte por perto" loading="lazy" width="800" height="600" />
+            </figure>
+            <div class="room-card__body">
+              <h3>Apartamento</h3>
+              <p>Autonomia com suporte por perto: a liberdade de uma casa e o conforto de não estar só.</p>
+            </div>
+          </article>
+        </div>
+
+        <div class="rooms__cta">
+          <p>Cada família é única — e os valores também. Conte para a gente o que você procura.</p>
+          <a class="btn btn--primary" href="#agendar">Fale conosco para valores</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== 5. PARA A FAMÍLIA ===================== -->
+    <section class="section section--family" id="familia">
+      <div class="wrap family">
+        <figure class="family__media">
+          <img src="assets/img/familia.svg" alt="Ilustração de momentos felizes em família" loading="lazy" width="800" height="600" />
+        </figure>
+        <div class="family__text">
+          <p class="eyebrow eyebrow--light">Para a família</p>
+          <h2 class="section__title">Para quem ama e quer o melhor</h2>
+          <p>
+            Você percebeu que cuidar sozinho ficou difícil — e sentiu aquele aperto no peito. Querer
+            o melhor para o seu pai, para a sua mãe, e não dar conta de tudo, não é uma falha sua.
+            É amor procurando ajuda.
+          </p>
+          <p>
+            Aqui, seu pai ou sua mãe é tratado como gente: com nome, história, manias e preferências
+            respeitadas. Cuidamos do dia a dia — da medicação ao banho de sol — para que vocês voltem
+            a ser, simplesmente, família. E você acompanha tudo de perto, com tranquilidade.
+          </p>
+          <a class="btn btn--primary btn--lg" href="#agendar">
+            Agende uma visita <svg aria-hidden="true"><use href="#i-arrow-right"/></svg>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== 6. LOCALIZAÇÃO ===================== -->
+    <section class="section section--light section--tint" id="localizacao">
+      <div class="wrap location">
+        <div class="location__text">
+          <p class="eyebrow">Localização</p>
+          <h2 class="section__title">Onde estamos</h2>
+          <p class="section__lead">
+            Em Curitiba, no bairro <strong>Campo Comprido</strong> — uma região tranquila e arborizada,
+            fácil de visitar e perto de quem importa.
+          </p>
+          <ul class="location__list">
+            <li><svg aria-hidden="true"><use href="#i-pin"/></svg><span>R. Eduardo Sprada — Campo Comprido<br/>Curitiba · Paraná</span></li>
+            <li><svg aria-hidden="true"><use href="#i-clock"/></svg><span>Visitas agendadas, todos os dias<br/>Receba a equipe e conheça os espaços</span></li>
+          </ul>
+          <p class="location__hint">O endereço completo é informado no agendamento da sua visita.</p>
+        </div>
+        <figure class="location__map" aria-label="Mapa ilustrativo de Campo Comprido, Curitiba">
+          <div class="map-placeholder">
+            <svg class="map-placeholder__lines" viewBox="0 0 400 300" aria-hidden="true" preserveAspectRatio="xMidYMid slice">
+              <rect width="400" height="300" fill="none"/>
+              <path d="M-20 90 H420 M-20 200 H420 M120 -20 V320 M270 -20 V320" stroke="#1C4A6E" stroke-opacity="0.16" stroke-width="10"/>
+              <path d="M-20 150 L200 60 L420 150" stroke="#1C4A6E" stroke-opacity="0.10" stroke-width="6" fill="none"/>
+            </svg>
+            <span class="map-placeholder__pin"><svg aria-hidden="true"><use href="#i-pin"/></svg></span>
+            <span class="map-placeholder__label">Campo Comprido · Curitiba</span>
+          </div>
+        </figure>
+      </div>
+    </section>
+
+    <!-- ===================== 7. AGENDAR VISITA ===================== -->
+    <section class="section section--navy section--cta" id="agendar">
+      <div class="wrap schedule">
+        <div class="schedule__intro">
+          <p class="eyebrow eyebrow--light">Agende uma visita</p>
+          <h2 class="section__title">Venha sentir o Blue de perto</h2>
+          <p class="section__lead section__lead--light">
+            A melhor forma de conhecer o Blue é estar aqui. Venha tomar um café com a gente, conhecer
+            os espaços e a equipe, e tirar todas as suas dúvidas — sem compromisso.
+          </p>
+          <div class="schedule__contacts">
+            <a class="contact-row" data-phone href="#">
+              <svg aria-hidden="true"><use href="#i-phone"/></svg>
+              <span><small>Telefone</small><strong data-phone-display>(41) 0000-0000</strong></span>
+            </a>
+            <a class="contact-row" data-whatsapp href="#" target="_blank" rel="noopener noreferrer">
+              <svg aria-hidden="true"><use href="#i-whatsapp"/></svg>
+              <span><small>WhatsApp</small><strong>Fale agora pelo WhatsApp</strong></span>
+            </a>
+            <a class="contact-row" data-email href="#">
+              <svg aria-hidden="true"><use href="#i-mail"/></svg>
+              <span><small>E-mail</small><strong data-email-display>contato@blueseniorliving.com.br</strong></span>
+            </a>
+          </div>
+        </div>
+
+        <div class="schedule__form-wrap">
+          <form class="form" data-form novalidate>
+            <p class="form__title">Solicite o seu horário</p>
+            <div class="field">
+              <label for="f-nome">Nome</label>
+              <input id="f-nome" name="nome" type="text" autocomplete="name" required placeholder="Seu nome" />
+            </div>
+            <div class="field">
+              <label for="f-tel">Telefone</label>
+              <input id="f-tel" name="telefone" type="tel" inputmode="tel" autocomplete="tel" required placeholder="(41) 90000-0000" />
+            </div>
+            <div class="field">
+              <label for="f-email">E-mail</label>
+              <input id="f-email" name="email" type="email" autocomplete="email" placeholder="voce@email.com" />
+            </div>
+            <div class="field">
+              <label for="f-msg">Mensagem <span class="field__opt">(opcional)</span></label>
+              <textarea id="f-msg" name="mensagem" rows="3" placeholder="Conte um pouco sobre quem vamos cuidar e o melhor horário para a visita."></textarea>
+            </div>
+            <button class="btn btn--primary btn--block btn--lg" type="submit">Quero agendar minha visita</button>
+            <a class="btn btn--whatsapp btn--block" data-whatsapp href="#" target="_blank" rel="noopener noreferrer">
+              <svg aria-hidden="true"><use href="#i-whatsapp"/></svg> Prefiro pelo WhatsApp
+            </a>
+            <p class="form__note" data-form-note hidden></p>
+            <p class="form__legal">Seus dados são usados apenas para retornar o contato sobre a visita.</p>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ===================== Footer ===================== -->
+  <footer class="footer">
+    <div class="wrap footer__inner">
+      <div class="footer__brand">
+        <span class="brand brand--footer">
+          <svg class="brand__emblem" aria-hidden="true"><use href="#i-emblem"/></svg>
+          <span class="brand__text"><span class="brand__name">BLUE</span><span class="brand__sub">SENIOR LIVING</span></span>
+        </span>
+        <p class="footer__tagline">Inspirado nas Blue Zones.<br/>Cuidado sênior com afeto e propósito, em Curitiba.</p>
+      </div>
+
+      <nav class="footer__col" aria-label="Seções">
+        <h4>Navegue</h4>
+        <a href="#conceito">O conceito</a>
+        <a href="#pilares">Pilares de cuidado</a>
+        <a href="#espacos">Os espaços</a>
+        <a href="#familia">Para a família</a>
+        <a href="#localizacao">Localização</a>
+      </nav>
+
+      <div class="footer__col">
+        <h4>Contato</h4>
+        <a data-phone href="#"><span data-phone-display>(41) 0000-0000</span></a>
+        <a data-whatsapp href="#" target="_blank" rel="noopener noreferrer">WhatsApp</a>
+        <a data-email href="#"><span data-email-display>contato@blueseniorliving.com.br</span></a>
+        <p class="footer__address">R. Eduardo Sprada — Campo Comprido<br/>Curitiba · PR</p>
+      </div>
+
+      <div class="footer__col">
+        <h4>Acesso</h4>
+        <a class="footer__app" data-app-link href="#" target="_blank" rel="noopener noreferrer">
+          <svg aria-hidden="true"><use href="#i-external"/></svg> Área do cliente
+        </a>
+        <a class="btn btn--primary footer__cta" href="#agendar">Agendar visita</a>
+      </div>
+    </div>
+
+    <div class="footer__bar">
+      <p>© <span data-year>2026</span> Blue Senior Living · Residencial para idosos · ILPI</p>
+      <p class="footer__disc">As Blue Zones são referência de estilo de vida e inspiração — não constituem promessa de resultado médico.</p>
+    </div>
+  </footer>
+
+  <!-- ===================== Floating action (WhatsApp / Agendar) ===================== -->
+  <a class="fab" data-whatsapp href="#" target="_blank" rel="noopener noreferrer" aria-label="Agendar visita pelo WhatsApp">
+    <svg aria-hidden="true"><use href="#i-whatsapp"/></svg>
+    <span class="fab__label">Agendar visita</span>
+  </a>
+
+  <script src="assets/js/main.js" defer></script>
+</body>
+</html>
