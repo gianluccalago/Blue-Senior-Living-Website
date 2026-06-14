@@ -4,21 +4,13 @@
       <stop offset="0" stop-color="#2A5E86"/>
       <stop offset="1" stop-color="#163A57"/>
     </linearGradient>
-    <radialGradient id="glow" cx="0.72" cy="0.28" r="0.9">
-      <stop offset="0" stop-color="#5CBFE5" stop-opacity="0.28"/>
-      <stop offset="0.5" stop-color="#5CBFE5" stop-opacity="0"/>
+    <radialGradient id="glow" cx="0.72" cy="0.26" r="0.9">
+      <stop offset="0" stop-color="#5CBFE5" stop-opacity="0.30"/>
+      <stop offset="0.55" stop-color="#5CBFE5" stop-opacity="0"/>
     </radialGradient>
   </defs>
   <rect width="800" height="600" fill="url(#g)"/>
   <rect width="800" height="600" fill="url(#glow)"/>
-  <g transform="translate(400 268) scale(0.78)" fill="none" stroke="#ffffff" stroke-opacity="0.16" stroke-width="7" stroke-linecap="round" stroke-linejoin="round">
-    <g transform="translate(-140 -186)">
-      <path d="M140,44 C 74,104 52,160 56,200 C 60,250 86,294 140,322"/>
-      <path d="M140,44 C 206,104 228,160 224,200 C 220,250 194,294 140,322"/>
-      <path d="M140,64 C190,80 190,134 140,150 C80,163 80,212 140,225 C188,238 188,288 140,302"/>
-      <path d="M140,64 C90,80 90,134 140,150 C200,163 200,212 140,225 C92,238 92,288 140,302"/>
-    </g>
-  </g>
-  <text x="400" y="470" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="40" letter-spacing="2" fill="#ffffff" fill-opacity="0.92">Suíte</text>
-  <text x="400" y="512" text-anchor="middle" font-family="Arial, sans-serif" font-size="17" letter-spacing="3" fill="#ffffff" fill-opacity="0.6">IMAGEM ILUSTRATIVA</text>
+  <text x="400" y="318" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="46" letter-spacing="2" fill="#ffffff" fill-opacity="0.94">Suíte</text>
+  <text x="400" y="360" text-anchor="middle" font-family="Arial, sans-serif" font-size="17" letter-spacing="3.5" fill="#ffffff" fill-opacity="0.6">IMAGEM ILUSTRATIVA</text>
 </svg>
