@@ -50,6 +50,29 @@ Esses valores são aplicados automaticamente a todos os links/botões da página
 - **Mapa:** a seção *Localização* usa um mapa ilustrativo. Pode ser trocado por um
   `<iframe>` do Google Maps quando o endereço completo estiver definido.
 
+## Blog / Conteúdos
+
+Blog **estático**, gerado por código (sem servidor). Os textos ficam num único
+arquivo de dados e as páginas HTML são geradas a partir dele.
+
+- **Fonte dos posts:** `blog/posts.js` — edite só esse arquivo para publicar. O
+  topo dele tem um passo a passo completo de **como adicionar um post** (sem
+  precisar ser programador).
+- **Gerar as páginas:** depois de editar, rode na pasta do projeto:
+
+  ```bash
+  node tools/build-blog.js
+  ```
+
+  Isso (re)cria `blog/index.html` (listagem) e uma página por post
+  (`blog/<slug>.html`), com SEO próprio (title, meta description, Open Graph,
+  JSON-LD e headings semânticos). Faça commit e push.
+- **SEO:** abra `tools/build-blog.js` e ajuste a constante **`SITE_URL`** para o
+  domínio final do site — ela é usada na URL canônica e no preview de
+  compartilhamento.
+- **Capas:** ficam em `assets/img/blog/` (placeholders por enquanto; troque pelos
+  arquivos reais e atualize o campo `cover` do post).
+
 ## Decisões de design
 
 Baseado no design system **"Air"** (sky canvas + frosted glass), com o tom adaptado para

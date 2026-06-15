@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675" role="img" aria-label="Como saber se é hora">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#244E6F"/><stop offset="1" stop-color="#0E2233"/></linearGradient>
+    <radialGradient id="glow" cx="0.78" cy="0.22" r="0.9"><stop offset="0" stop-color="#5CBFE5" stop-opacity="0.30"/><stop offset="0.55" stop-color="#5CBFE5" stop-opacity="0"/></radialGradient>
+  </defs>
+  <rect width="1200" height="675" fill="url(#g)"/>
+  <rect width="1200" height="675" fill="url(#glow)"/>
+  <g transform="translate(600 300) scale(0.42)" fill="none" stroke="#ffffff" stroke-opacity="0.12" stroke-width="7" stroke-linecap="round" stroke-linejoin="round">
+    <g transform="translate(-140 -186)">
+      <path d="M140,44 C 74,104 52,160 56,200 C 60,250 86,294 140,322"/>
+      <path d="M140,44 C 206,104 228,160 224,200 C 220,250 194,294 140,322"/>
+      <path d="M140,64 C190,80 190,134 140,150 C80,163 80,212 140,225 C188,238 188,288 140,302"/>
+      <path d="M140,64 C90,80 90,134 140,150 C200,163 200,212 140,225 C92,238 92,288 140,302"/>
+    </g>
+  </g>
+  <text x="80" y="120" font-family="Arial, sans-serif" font-size="26" letter-spacing="4" font-weight="700" fill="#5CBFE5">FAMíLIA</text>
+  <text x="80" y="560" font-family="Georgia,'Times New Roman',serif" font-size="56" fill="#ffffff" fill-opacity="0.96" style="font-style:italic">Blue Senior Living</text>
+</svg>
