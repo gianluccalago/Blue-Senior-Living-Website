@@ -35,7 +35,7 @@
   --blur: blur(14px);
 
   /* ---- Typography ---- */
-  --font-display: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+  --font-display: 'Fraunces', 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
   --font-brand:   'Cinzel', Georgia, 'Times New Roman', serif;
   --font-ui:      'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
 
@@ -253,7 +253,8 @@ ul, ol { list-style: none; padding: 0; }
   color: #fff;
 }
 .hero__media { position: absolute; inset: 0; z-index: 0; background: var(--navy-900); }
-.hero__video { width: 100%; height: 100%; object-fit: cover; object-position: center; pointer-events: none; }
+.hero__video { width: 100%; height: 100%; object-fit: cover; object-position: center; pointer-events: none; transform-origin: 50% 45%; animation: heroZoom 30s ease-in-out infinite alternate; }
+@keyframes heroZoom { from { transform: scale(1.04); } to { transform: scale(1.12); } }
 /* Suppress the iOS Safari central "play" overlay so the muted background video stays clean */
 .hero__video::-webkit-media-controls,
 .hero__video::-webkit-media-controls-enclosure,
@@ -288,6 +289,14 @@ ul, ol { list-style: none; padding: 0; }
   text-shadow: 0 1px 14px rgba(9, 26, 41, .4);
 }
 .hero__cta { display: flex; flex-wrap: wrap; gap: var(--s-16); }
+
+/* Premium entrance — staggered fade-up (disabled under reduced-motion) */
+@keyframes heroIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: none; } }
+.hero__eyebrow { animation: heroIn .8s var(--ease) both; }
+.hero__title { animation: heroIn .9s var(--ease) .08s both; }
+.hero__subtitle { animation: heroIn .9s var(--ease) .18s both; }
+.hero__cta { animation: heroIn .9s var(--ease) .28s both; }
+.hero__scroll { animation: heroIn 1s var(--ease) .5s both; }
 
 .hero__scroll {
   position: absolute; left: 50%; bottom: 26px; transform: translateX(-50%); z-index: 1;
