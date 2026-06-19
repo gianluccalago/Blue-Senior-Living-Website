@@ -102,17 +102,27 @@ contar agendamentos. Por isso, a regra "reservou → indisponibiliza para os dem
 pegar o mesmo horário).
 
 **Rode uma vez** o script [`supabase/agenda-overbooking.sql`](supabase/agenda-overbooking.sql)
-no **Supabase → SQL Editor**. Ele cria um gatilho que, a cada agendamento:
+no **Supabase do app → SQL Editor** (é o mesmo banco que o site usa — fonte
+única). Ele instala dois gatilhos:
 
+**Ao agendar** (`insert`):
 1. **trava** o horário (impede dois pedidos simultâneos no mesmo slot);
 2. **recusa** se o horário já atingiu a `capacidade` (sem overbooking) — o site
    mostra "esse horário acabou de ser reservado";
 3. **bloqueia** o slot (`bloqueada = true`) quando ele enche, então ele **some do
    site para todos na hora**.
 
-**Para reabrir um horário ("desmarcar pelo app"):** volte a disponibilidade com
-`UPDATE public.visita_disponibilidade SET bloqueada = false, motivo_bloqueio = NULL WHERE id = '<id>';`
-(ou pela tela da agenda do app).
+**Ao cancelar** (`update` para status cancelado, ou `delete`):
+4. **reabre** o horário automaticamente (volta a aparecer no site), mas só o que
+   foi fechado por agendamento — **não desfaz bloqueios manuais** da gestão
+   (feriado, manutenção etc.).
+
+> ⚠️ **Ajuste os status de cancelamento:** a função `visita_ocupacao` traz uma
+> lista de termos (`cancelada`, `cancelado`, `recusada`…). Se o seu app usar
+> outro nome para "cancelado", acrescente lá (é a única lista, num lugar só).
+
+**Reabertura manual** (se precisar forçar): `UPDATE public.visita_disponibilidade
+SET bloqueada = false, motivo_bloqueio = NULL WHERE id = '<id>';`
 
 > O site já funciona **sem** o gatilho, mas aí a indisponibilização é só por
 > sessão (no mesmo navegador). **Com** o gatilho, a garantia passa a valer para

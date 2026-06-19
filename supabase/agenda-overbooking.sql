@@ -1,40 +1,52 @@
 -- =============================================================================
---  BLUE SENIOR LIVING — Garantia contra overbooking (agenda de visitas)
+--  BLUE SENIOR LIVING — Agenda de visitas: garantia anti-overbooking + reabertura
 -- -----------------------------------------------------------------------------
---  POR QUE ISSO EXISTE
---  O site institucional usa a chave PÚBLICA (anon) do Supabase. Por segurança
---  (RLS), essa chave só pode: LER "visita_disponibilidade" e INSERIR em
---  "visita_agendamento". Ela NÃO pode escrever na disponibilidade nem ler os
---  agendamentos. Logo, o navegador, sozinho, não tem como esconder um horário
---  que outro cliente acabou de pegar — isso PRECISA ser garantido no banco.
+--  ONDE RODAR
+--  No Supabase do APP (projeto hqfrxdwumyyujewjgxgc) — é o MESMO banco que o site
+--  lê/grava (fonte única da agenda). Supabase → SQL Editor → cole TUDO → Run.
+--  É idempotente: pode rodar quantas vezes quiser, sem duplicar nada.
 --
---  O QUE ESTE SCRIPT FAZ (rode UMA vez no Supabase)
---  Cria um "guardião" que roda a cada novo agendamento e:
---    1. Serializa pedidos simultâneos no mesmo horário (trava a linha do slot),
---       impedindo que duas pessoas reservem o mesmo horário ao mesmo tempo.
---    2. Recusa o agendamento se o horário já atingiu a "capacidade" (sem
---       overbooking). O site mostra "esse horário acabou de ser reservado".
---    3. Quando o horário enche, marca "bloqueada = true" na disponibilidade,
---       então ele some do site para TODO mundo, na hora.
+--  POR QUE PRECISA SER NO BANCO
+--  O site usa a chave PÚBLICA (anon), que por segurança (RLS) só LÊ a
+--  disponibilidade e INSERE agendamentos. Ela NÃO pode marcar horário como
+--  ocupado nem contar agendamentos. Logo, a regra "reservou → some para os
+--  demais" precisa viver aqui — senão dois navegadores diferentes ainda
+--  conseguiriam pegar o mesmo horário.
 --
---  COMO REABRIR UM HORÁRIO ("desmarcar pelo app")
---  Basta o app voltar a disponibilidade para:
---      UPDATE public.visita_disponibilidade
---         SET bloqueada = false, motivo_bloqueio = NULL
---       WHERE id = '<id-do-slot>';
---  (ou cancelar o agendamento e reabrir o slot pela tela da agenda).
+--  O QUE ESTE SCRIPT INSTALA
+--   1) visita_ocupacao(data,hora)  -> conta agendamentos ATIVOS de um horário.
+--   2) Gatilho ao AGENDAR (insert) -> trava o slot, recusa se cheio (sem
+--      overbooking) e marca bloqueada=true quando enche (some do site na hora).
+--   3) Gatilho ao CANCELAR (update p/ cancelado, ou delete) -> reabre o slot
+--      automaticamente — MAS só o que foi fechado pelo próprio agendamento
+--      (não desfaz bloqueios manuais da gestão, ex.: feriado/manutenção).
 --
---  SEGURANÇA / IMPACTO NO APP
---  - Só mexe em "visita_disponibilidade" e "visita_agendamento".
---  - Inserções para um horário que NÃO existe na disponibilidade passam intactas
---    (não interfere em fluxos do próprio app que não usam a grade de horários).
---  - "SECURITY DEFINER" deixa o gatilho atualizar a disponibilidade mesmo a
---    inserção vindo do papel anon (que não tem UPDATE) — sem afrouxar a RLS.
---
---  COMO RODAR
---  Supabase → SQL Editor → cole tudo → Run. (Idempotente: pode rodar de novo.)
+--  >> AJUSTE IMPORTANTE: status de cancelamento <<
+--  Não tenho como ler os valores reais de "status" (a RLS bloqueia leitura).
+--  A lista abaixo cobre os nomes mais comuns (PT e EN, sem diferenciar
+--  maiúsculas). Se o seu app usar outro termo para "cancelado/recusado",
+--  acrescente na função visita_ocupacao (única lista, num lugar só).
 -- =============================================================================
 
+-- 1) Ocupação ATIVA de um horário (ignora cancelados/recusados) -----------------
+create or replace function public.visita_ocupacao(p_data date, p_hora time)
+returns integer
+language sql
+security definer
+set search_path = public, pg_temp
+stable
+as $$
+  select count(*)::int
+    from public.visita_agendamento
+   where data = p_data
+     and hora = p_hora
+     and lower(coalesce(status::text, 'pendente')) not in (
+       'cancelada', 'cancelado', 'recusada', 'recusado',
+       'desmarcada', 'desmarcado', 'cancelled', 'canceled'
+     );
+$$;
+
+-- 2) Ao AGENDAR: serializa, impede overbooking e bloqueia o slot cheio ----------
 create or replace function public.visita_agendamento_guard()
 returns trigger
 language plpgsql
@@ -42,16 +54,15 @@ security definer
 set search_path = public, pg_temp
 as $$
 declare
-  v_id    uuid;
-  v_cap   integer;
-  v_used  integer;
+  v_id   uuid;
+  v_cap  integer;
+  v_used integer;
 begin
-  -- 1) Encontra e TRAVA o slot correspondente (serializa concorrência).
+  -- Encontra e TRAVA o slot correspondente (serializa pedidos simultâneos).
   select id, coalesce(capacidade, 1)
     into v_id, v_cap
     from public.visita_disponibilidade
-   where data = NEW.data
-     and hora = NEW.hora
+   where data = NEW.data and hora = NEW.hora
    for update;
 
   -- Sem slot gerenciado para este horário: não interfere (fluxos próprios do app).
@@ -59,20 +70,15 @@ begin
     return NEW;
   end if;
 
-  -- 2) Conta quantos agendamentos já existem para este horário.
-  select count(*)
-    into v_used
-    from public.visita_agendamento
-   where data = NEW.data
-     and hora = NEW.hora;
+  v_used := public.visita_ocupacao(NEW.data, NEW.hora);
 
-  -- Já cheio: recusa (impede overbooking).
+  -- Já cheio: recusa (impede overbooking). O site mostra "horário já reservado".
   if v_used >= v_cap then
     raise exception 'Horário % %h já está reservado.', NEW.data, NEW.hora
       using errcode = 'check_violation';
   end if;
 
-  -- 3) Este agendamento enche o slot? Então some do site até o app reabrir.
+  -- Este agendamento enche o slot? Some do site até o app reabrir.
   if v_used + 1 >= v_cap then
     update public.visita_disponibilidade
        set bloqueada = true,
@@ -90,8 +96,77 @@ create trigger trg_visita_agendamento_guard
   for each row
   execute function public.visita_agendamento_guard();
 
--- (Opcional, defesa extra para capacidade = 1) Impede duas linhas idênticas
--- de agendamento no mesmo dia/horário no nível do banco. Descomente se quiser:
--- create unique index if not exists ux_visita_agendamento_slot
---   on public.visita_agendamento (data, hora)
---   where coalesce(capacidade_excecao, false) is not true;  -- ajuste conforme seu schema
+-- 3) Reabre um slot se ele tiver vaga de novo (só o que o agendamento fechou) ----
+create or replace function public.visita_reabrir_slot(p_data date, p_hora time)
+returns void
+language plpgsql
+security definer
+set search_path = public, pg_temp
+as $$
+declare
+  v_id   uuid;
+  v_cap  integer;
+  v_used integer;
+begin
+  select id, coalesce(capacidade, 1)
+    into v_id, v_cap
+    from public.visita_disponibilidade
+   where data = p_data and hora = p_hora
+   for update;
+  if v_id is null then
+    return;
+  end if;
+
+  v_used := public.visita_ocupacao(p_data, p_hora);
+
+  if v_used < v_cap then
+    update public.visita_disponibilidade
+       set bloqueada = false,
+           motivo_bloqueio = null
+     where id = v_id
+       and bloqueada = true
+       and motivo_bloqueio = 'Reservado por agendamento (site)'; -- não toca bloqueio manual
+  end if;
+end;
+$$;
+
+-- Ao CANCELAR (update p/ status cancelado) ou DELETAR um agendamento, reabre.
+create or replace function public.visita_agendamento_on_change()
+returns trigger
+language plpgsql
+security definer
+set search_path = public, pg_temp
+as $$
+begin
+  if (TG_OP = 'DELETE') then
+    perform public.visita_reabrir_slot(OLD.data, OLD.hora);
+    return OLD;
+  end if;
+
+  -- UPDATE: reabre o horário atual e, se a visita foi remarcada para outro
+  -- dia/hora, reabre também o horário antigo.
+  perform public.visita_reabrir_slot(NEW.data, NEW.hora);
+  if (OLD.data is distinct from NEW.data) or (OLD.hora is distinct from NEW.hora) then
+    perform public.visita_reabrir_slot(OLD.data, OLD.hora);
+  end if;
+  return NEW;
+end;
+$$;
+
+drop trigger if exists trg_visita_agendamento_reopen on public.visita_agendamento;
+create trigger trg_visita_agendamento_reopen
+  after update or delete on public.visita_agendamento
+  for each row
+  execute function public.visita_agendamento_on_change();
+
+-- =============================================================================
+--  PRONTO. A partir daqui:
+--   - Reservou um horário  -> ele some do site para todos (bloqueada = true).
+--   - Cancelou/apagou      -> o horário volta a aparecer sozinho (se tinha vaga).
+--   - Bloqueio manual      -> continua intocado (feriado, manutenção, etc.).
+--
+--  Reabertura manual (se precisar forçar):
+--    UPDATE public.visita_disponibilidade
+--       SET bloqueada = false, motivo_bloqueio = NULL
+--     WHERE data = '2026-06-26' AND hora = '10:00:00';
+-- =============================================================================
