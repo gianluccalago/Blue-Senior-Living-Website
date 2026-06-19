@@ -73,6 +73,32 @@ arquivo de dados e as páginas HTML são geradas a partir dele.
 - **Capas:** ficam em `assets/img/blog/` (placeholders por enquanto; troque pelos
   arquivos reais e atualize o campo `cover` do post).
 
+## Agenda de visitas (Supabase do app)
+
+O agendamento por **calendário** lê e grava direto no **Supabase do app** (fonte
+única da agenda). A opção **"Prefiro agendar pelo WhatsApp"** continua disponível.
+
+- **Credenciais:** ficam centralizadas em `assets/js/agenda-supabase-config.js`
+  (anon key — pública por natureza, protegida por RLS). Em um deploy com build,
+  injete via `VITE_AGENDA_SUPABASE_URL` / `VITE_AGENDA_SUPABASE_ANON_KEY`.
+- **Cliente:** um `supabase-js` dedicado só para a agenda (criado em `main.js`).
+- **Leitura:** `visita_disponibilidade` (`bloqueada = false`, datas futuras) — o que
+  a gestão bloqueia no app some do calendário em tempo real.
+- **Gravação:** insere em `visita_agendamento` (`nome_completo`, `whatsapp`,
+  `email?`, `data`, `hora`). `origem` (“site”) e `status` (“pendente”) são padrões
+  do banco. A visita fica **pendente** até a equipe confirmar.
+- **Estados tratados:** carregando, erro (com "tentar de novo") e vazio, sempre
+  com o WhatsApp como alternativa.
+
+> **Limitação importante (RLS):** o acesso anônimo **não pode ler**
+> `visita_agendamento`, então o site **não consegue contar agendamentos** para
+> esconder horários "cheios" — ele mostra os horários **não bloqueados**. Para
+> ocultar horários lotados automaticamente, o app precisa: (a) marcar
+> `bloqueada = true` quando o slot enche, **ou** (b) expor uma view/RPC de
+> disponibilidade já calculada ao papel `anon`. O tratamento de erro do site já é
+> compatível: se o banco passar a rejeitar overbooking, o usuário recebe "escolha
+> outro horário".
+
 ## Decisões de design
 
 Baseado no design system **"Air"** (sky canvas + frosted glass), com o tom adaptado para

@@ -665,32 +665,53 @@ l-90 0 0 50 0 50 80 0 c73 0 80 2 80 20 0 18 -7 20 -81 20 l-80 0 3 48 3 47
         </div>
 
         <div class="schedule__form-wrap">
-          <form class="form" data-form novalidate>
+          <div class="booker" data-booker>
             <p class="form__title">Agende sua visita</p>
-            <p class="form__intro">Conhecer leva 30 minutos. A tranquilidade de ter feito a escolha certa dura muito mais. Visitas todos os dias, sem compromisso.</p>
-            <div class="field">
-              <label for="f-nome">Nome</label>
-              <input id="f-nome" name="nome" type="text" autocomplete="name" required placeholder="Seu nome" />
+            <p class="form__intro">Escolha o melhor dia e horário — é rápido e sem compromisso.</p>
+
+            <div class="booker__status" data-booker-status hidden role="status" aria-live="polite"></div>
+
+            <div class="cal" data-cal hidden>
+              <div class="cal__head">
+                <button type="button" class="cal__nav" data-cal-prev aria-label="Mês anterior">‹</button>
+                <span class="cal__month" data-cal-month>—</span>
+                <button type="button" class="cal__nav" data-cal-next aria-label="Próximo mês">›</button>
+              </div>
+              <div class="cal__weekdays" aria-hidden="true">
+                <span>dom</span><span>seg</span><span>ter</span><span>qua</span><span>qui</span><span>sex</span><span>sáb</span>
+              </div>
+              <div class="cal__grid" data-cal-grid role="grid" aria-label="Datas disponíveis"></div>
             </div>
-            <div class="field">
-              <label for="f-tel">WhatsApp</label>
-              <input id="f-tel" name="telefone" type="tel" inputmode="tel" autocomplete="tel" required placeholder="(41) 90000-0000" />
+
+            <div class="slots" data-slots hidden>
+              <p class="slots__label" data-slots-label>Horários disponíveis</p>
+              <div class="slots__grid" data-slots-grid></div>
             </div>
-            <div class="field">
-              <label for="f-email">E-mail <span class="field__opt">(opcional)</span></label>
-              <input id="f-email" name="email" type="email" autocomplete="email" placeholder="voce@email.com" />
+
+            <div class="booker__form" data-booker-form hidden>
+              <div class="field">
+                <label for="b-nome">Nome completo</label>
+                <input id="b-nome" type="text" autocomplete="name" placeholder="Nome e sobrenome" data-b-name />
+              </div>
+              <div class="field">
+                <label for="b-wa">WhatsApp</label>
+                <input id="b-wa" type="tel" inputmode="tel" autocomplete="tel" placeholder="(41) 90000-0000" data-b-wa />
+              </div>
+              <div class="field">
+                <label for="b-email">E-mail <span class="field__opt">(opcional)</span></label>
+                <input id="b-email" type="email" autocomplete="email" placeholder="voce@email.com" data-b-email />
+              </div>
+              <button type="button" class="btn btn--primary btn--block btn--lg" data-b-confirm>Confirmar agendamento</button>
             </div>
-            <div class="field">
-              <label for="f-msg">Mensagem <span class="field__opt">(opcional)</span></label>
-              <textarea id="f-msg" name="mensagem" rows="3" placeholder="Conte um pouco sobre quem vamos cuidar e o melhor horário para a visita."></textarea>
-            </div>
-            <button class="btn btn--primary btn--block btn--lg" type="submit">Quero agendar minha visita</button>
+
+            <p class="booker__note" data-booker-note hidden></p>
+
+            <div class="booker__or"><span>ou</span></div>
             <a class="btn btn--whatsapp btn--block" data-whatsapp href="#" target="_blank" rel="noopener noreferrer">
-              <svg aria-hidden="true"><use href="#i-whatsapp"/></svg> Prefiro pelo WhatsApp
+              <svg aria-hidden="true"><use href="#i-whatsapp"/></svg> Prefiro agendar pelo WhatsApp
             </a>
-            <p class="form__note" data-form-note hidden></p>
             <p class="form__legal">Retornamos no mesmo dia. Seus dados ficam só conosco.</p>
-          </form>
+          </div>
         </div>
       </div>
     </section>
@@ -744,6 +765,9 @@ l-90 0 0 50 0 50 80 0 c73 0 80 2 80 20 0 18 -7 20 -81 20 l-80 0 3 48 3 47
     <span class="fab__label">Fale com a gente</span>
   </a>
 
+  <!-- Agenda: cliente supabase-js dedicado (lê disponibilidade / grava solicitações no banco do app) -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
+  <script src="assets/js/agenda-supabase-config.js" defer></script>
   <script src="assets/js/main.js" defer></script>
 </body>
 </html>

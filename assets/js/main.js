@@ -136,76 +136,208 @@ const CONFIG = {
     }
   }
 
-  /* ---------- 5. Visit form ---------- */
-  function visitForm() {
-    const form = $("[data-form]");
-    if (!form) return;
-    const note = $("[data-form-note]", form);
+  /* ---------- 5. Visit scheduler (calendar backed by the app's Supabase) ----------
+     Lê os horários disponíveis em "visita_disponibilidade" e grava solicitações
+     de visita (status pendente) em "visita_agendamento" — fonte única: o app. */
+  function scheduler() {
+    const root = $("[data-booker]");
+    if (!root) return;
 
-    const setNote = (msg, isError) => {
-      if (!note) return;
-      note.textContent = msg;
+    const calWrap = $("[data-cal]", root);
+    const grid = $("[data-cal-grid]", root);
+    const monthLabel = $("[data-cal-month]", root);
+    const prevBtn = $("[data-cal-prev]", root);
+    const nextBtn = $("[data-cal-next]", root);
+    const slotsWrap = $("[data-slots]", root);
+    const slotsGrid = $("[data-slots-grid]", root);
+    const slotsLabel = $("[data-slots-label]", root);
+    const bookForm = $("[data-booker-form]", root);
+    const nameInput = $("[data-b-name]", root);
+    const waInput = $("[data-b-wa]", root);
+    const emailInput = $("[data-b-email]", root);
+    const confirmBtn = $("[data-b-confirm]", root);
+    const note = $("[data-booker-note]", root);
+    const statusEl = $("[data-booker-status]", root);
+
+    // Dedicated supabase-js client for the agenda (separate from any other client).
+    const env = window.AGENDA_SUPABASE || {};
+    let db = null;
+    try {
+      if (window.supabase && env.url && env.anonKey) {
+        db = window.supabase.createClient(env.url, env.anonKey, { auth: { persistSession: false } });
+      }
+    } catch (e) { db = null; }
+
+    const MONTHS = ["janeiro","fevereiro","março","abril","maio","junho","julho","agosto","setembro","outubro","novembro","dezembro"];
+    const WEEK = ["domingo","segunda-feira","terça-feira","quarta-feira","quinta-feira","sexta-feira","sábado"];
+    const pad = (n) => String(n).padStart(2, "0");
+    const ymd = (d) => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+    const startOfDay = (d) => { const x = new Date(d); x.setHours(0, 0, 0, 0); return x; };
+    const today = startOfDay(new Date());
+    const todayStr = ymd(today);
+
+    const availByDate = new Map(); // "YYYY-MM-DD" -> ["09:00", ...]
+    let view = new Date(today.getFullYear(), today.getMonth(), 1);
+    let selDate = null, selTime = null;
+
+    const fmtLong = (s) => { const [y, m, dd] = s.split("-").map(Number); const d = new Date(y, m - 1, dd); return `${WEEK[d.getDay()]}, ${dd} de ${MONTHS[m - 1]}`; };
+    const monthKey = (d) => d.getFullYear() * 12 + d.getMonth();
+    function availMonthRange() {
+      const keys = [...availByDate.keys()].sort();
+      if (!keys.length) return null;
+      const f = keys[0].split("-").map(Number), l = keys[keys.length - 1].split("-").map(Number);
+      return { min: f[0] * 12 + (f[1] - 1), max: l[0] * 12 + (l[1] - 1) };
+    }
+    function setStatus(html, kind) {
+      if (!statusEl) return;
+      if (!html) { statusEl.hidden = true; statusEl.innerHTML = ""; return; }
+      statusEl.hidden = false;
+      statusEl.className = "booker__status" + (kind ? " booker__status--" + kind : "");
+      statusEl.innerHTML = html;
+      const r = $("[data-retry]", statusEl);
+      if (r) r.addEventListener("click", loadAvailability, { once: true });
+    }
+    function setNote(html, kind) {
+      note.innerHTML = html;
       note.hidden = false;
-      note.classList.toggle("is-error", !!isError);
-    };
-
-    // Compose WhatsApp message from filled fields (form's WhatsApp button)
-    const waBtn = $("[data-whatsapp]", form);
-    if (waBtn) {
-      waBtn.addEventListener("click", () => {
-        const nome = form.nome.value.trim();
-        const tel = form.telefone.value.trim();
-        const msg = form.mensagem.value.trim();
-        let text = CONFIG.WHATSAPP_MSG;
-        if (nome || tel || msg) {
-          text = `Olá! Gostaria de conhecer o Blue Senior Living e agendar uma visita.`
-               + (nome ? `\nNome: ${nome}` : "")
-               + (tel ? `\nTelefone: ${tel}` : "")
-               + (msg ? `\nMensagem: ${msg}` : "");
-        }
-        waBtn.href = waLink(text);
-      });
+      note.className = "booker__note" + (kind ? " booker__note--" + kind : "");
     }
 
-    form.addEventListener("submit", (e) => {
-      e.preventDefault();
-      const nome = form.nome;
-      const tel = form.telefone;
-      const email = form.email;
-      const msg = form.mensagem;
-      let ok = true;
+    function renderCal() {
+      monthLabel.textContent = `${MONTHS[view.getMonth()]} ${view.getFullYear()}`;
+      grid.innerHTML = "";
+      const startPad = new Date(view.getFullYear(), view.getMonth(), 1).getDay();
+      const daysInMonth = new Date(view.getFullYear(), view.getMonth() + 1, 0).getDate();
+      for (let i = 0; i < startPad; i++) {
+        const e = document.createElement("span"); e.className = "cal__cell cal__cell--empty"; grid.appendChild(e);
+      }
+      for (let day = 1; day <= daysInMonth; day++) {
+        const s = `${view.getFullYear()}-${pad(view.getMonth() + 1)}-${pad(day)}`;
+        const btn = document.createElement("button");
+        btn.type = "button"; btn.className = "cal__cell"; btn.textContent = String(day);
+        if (availByDate.has(s) && s >= todayStr) {
+          btn.classList.add("is-open");
+          if (s === selDate) btn.classList.add("is-selected");
+          btn.setAttribute("aria-label", fmtLong(s));
+          btn.addEventListener("click", () => { selDate = s; selTime = null; if (note) note.hidden = true; renderCal(); renderSlots(); });
+        } else {
+          btn.disabled = true; btn.classList.add("is-off");
+        }
+        grid.appendChild(btn);
+      }
+      const range = availMonthRange(), vk = monthKey(view);
+      prevBtn.disabled = !range || vk <= range.min;
+      nextBtn.disabled = !range || vk >= range.max;
+    }
 
-      [nome, tel].forEach((f) => {
-        const wrap = f.closest(".field");
-        const valid = f.value.trim().length > 1;
-        if (wrap) wrap.classList.toggle("field--invalid", !valid);
-        if (!valid) ok = false;
+    function renderSlots() {
+      const times = (availByDate.get(selDate) || []).slice().sort();
+      if (!selDate || !times.length) { slotsWrap.hidden = true; bookForm.hidden = true; return; }
+      slotsWrap.hidden = false;
+      slotsLabel.textContent = `Horários — ${fmtLong(selDate)}`;
+      slotsGrid.innerHTML = "";
+      times.forEach((t) => {
+        const b = document.createElement("button");
+        b.type = "button"; b.className = "slot"; b.textContent = t;
+        if (t === selTime) b.classList.add("is-selected");
+        b.addEventListener("click", () => {
+          selTime = t; renderSlots(); bookForm.hidden = false;
+          if (note) note.hidden = true;
+          if (nameInput) nameInput.focus({ preventScroll: true });
+        });
+        slotsGrid.appendChild(b);
       });
+      bookForm.hidden = !selTime;
+    }
 
-      if (!ok) {
-        setNote("Por favor, preencha pelo menos o nome e o telefone para retornarmos o contato.", true);
+    async function loadAvailability() {
+      calWrap.hidden = true; slotsWrap.hidden = true; bookForm.hidden = true;
+      availByDate.clear(); selDate = null; selTime = null;
+      if (!db) {
+        setStatus('Não foi possível carregar a agenda agora. Você pode agendar pelo WhatsApp aqui embaixo. 💬 <button type="button" class="booker__retry" data-retry>Tentar de novo</button>', "error");
         return;
       }
+      setStatus('<span class="booker__spin" aria-hidden="true"></span> Carregando horários disponíveis…', "loading");
+      try {
+        const { data, error } = await db
+          .from("visita_disponibilidade")
+          .select("data,hora,bloqueada")
+          .eq("bloqueada", false)
+          .gte("data", todayStr)
+          .order("data", { ascending: true })
+          .order("hora", { ascending: true });
+        if (error) throw error;
+        (data || []).forEach((r) => {
+          const t = (r.hora || "").slice(0, 5);
+          if (!t || !r.data) return;
+          if (!availByDate.has(r.data)) availByDate.set(r.data, []);
+          if (availByDate.get(r.data).indexOf(t) === -1) availByDate.get(r.data).push(t);
+        });
+        if (availByDate.size === 0) {
+          setStatus("No momento não há horários abertos para visita. Fale com a gente pelo WhatsApp que combinamos o melhor dia. 💬", "info");
+          return;
+        }
+        setStatus("", null);
+        calWrap.hidden = false;
+        const first = [...availByDate.keys()].sort()[0].split("-").map(Number);
+        view = new Date(first[0], first[1] - 1, 1);
+        renderCal();
+      } catch (e) {
+        setStatus('Não conseguimos carregar a agenda agora. Tente de novo em instantes ou agende pelo WhatsApp aqui embaixo. 💬 <button type="button" class="booker__retry" data-retry>Tentar de novo</button>', "error");
+      }
+    }
 
-      const subject = `Agendamento de visita — ${nome.value.trim()}`;
-      const body =
-        `Nome: ${nome.value.trim()}\n` +
-        `Telefone: ${tel.value.trim()}\n` +
-        `E-mail: ${email.value.trim() || "—"}\n\n` +
-        `Mensagem:\n${msg.value.trim() || "—"}\n`;
-      const mailto = `mailto:${CONFIG.EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    confirmBtn.addEventListener("click", async () => {
+      const name = (nameInput.value || "").trim();
+      const wa = (waInput.value || "").trim();
+      const email = ((emailInput && emailInput.value) || "").trim();
+      const digits = wa.replace(/\D/g, "");
+      let err = "";
+      if (!selDate || !selTime) err = "Escolha uma data e um horário.";
+      else if (name.split(/\s+/).filter(Boolean).length < 2) err = "Digite seu nome completo (nome e sobrenome).";
+      else if (digits.length < 10 || digits.length > 13) err = "Digite um WhatsApp válido, com DDD.";
+      else if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) err = "Confira o e-mail digitado.";
+      if (err) { setNote(err, "error"); return; }
+      if (!db) { setNote("Sistema de agenda indisponível agora. Por favor, agende pelo WhatsApp logo abaixo. 💬", "error"); return; }
 
-      setNote("Obrigado! Estamos abrindo seu aplicativo de e-mail para concluir o envio. Se preferir, fale com a gente pelo WhatsApp logo abaixo. 💙", false);
-      window.setTimeout(() => { window.location.href = mailto; }, 350);
+      const dateStr = selDate, timeStr = selTime;
+      confirmBtn.disabled = true;
+      const label = confirmBtn.textContent;
+      confirmBtn.textContent = "Enviando…";
+      try {
+        // origem ("site") e status ("pendente") são definidos por padrão no banco.
+        const payload = { nome_completo: name, whatsapp: wa, data: dateStr, hora: timeStr + ":00" };
+        if (email) payload.email = email;
+        const { error } = await db.from("visita_agendamento").insert(payload);
+        if (error) throw error;
+        setNote(
+          `<strong>Recebemos sua solicitação de visita!</strong><br>` +
+          `${fmtLong(dateStr)}, às ${timeStr}. Nossa equipe vai entrar em contato pelo WhatsApp para <strong>confirmar</strong> — sua visita fica <strong>pendente</strong> até a confirmação. Estamos ansiosos para receber você. 💙`,
+          "ok"
+        );
+        slotsWrap.hidden = true; bookForm.hidden = true;
+        if (nameInput) nameInput.value = ""; if (waInput) waInput.value = ""; if (emailInput) emailInput.value = "";
+        loadAvailability().catch(() => {});
+      } catch (e) {
+        setNote(
+          "Não foi possível concluir agora — esse horário pode ter acabado de ser preenchido. " +
+          "Escolha outro horário ou agende pelo WhatsApp logo abaixo. 💬",
+          "error"
+        );
+        loadAvailability();
+      } finally {
+        confirmBtn.disabled = false;
+        confirmBtn.textContent = label;
+      }
     });
 
-    // Clear invalid state as the user types
-    $$("input, textarea", form).forEach((f) => {
-      f.addEventListener("input", () => {
-        const wrap = f.closest(".field");
-        if (wrap) wrap.classList.remove("field--invalid");
-      });
-    });
+    [nameInput, waInput, emailInput].forEach((el) => el && el.addEventListener("input", () => {
+      if (note && note.classList.contains("booker__note--error")) note.hidden = true;
+    }));
+    prevBtn.addEventListener("click", () => { view = new Date(view.getFullYear(), view.getMonth() - 1, 1); renderCal(); });
+    nextBtn.addEventListener("click", () => { view = new Date(view.getFullYear(), view.getMonth() + 1, 1); renderCal(); });
+
+    loadAvailability();
   }
 
   /* ---------- init ---------- */
@@ -214,7 +346,7 @@ const CONFIG = {
     navOnScroll();
     drawer();
     heroVideo();
-    visitForm();
+    scheduler();
   }
 
   if (document.readyState === "loading") {
