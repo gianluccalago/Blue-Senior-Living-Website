@@ -177,6 +177,7 @@ const CONFIG = {
     const todayStr = ymd(today);
 
     const availByDate = new Map(); // "YYYY-MM-DD" -> ["09:00", ...]
+    const requested = new Set();   // "YYYY-MM-DD HH:MM" já solicitados nesta sessão
     let view = new Date(today.getFullYear(), today.getMonth(), 1);
     let selDate = null, selTime = null;
 
@@ -234,17 +235,22 @@ const CONFIG = {
       const times = (availByDate.get(selDate) || []).slice().sort();
       if (!selDate || !times.length) { slotsWrap.hidden = true; bookForm.hidden = true; return; }
       slotsWrap.hidden = false;
-      slotsLabel.textContent = `Horários — ${fmtLong(selDate)}`;
+      slotsLabel.textContent = `Horários disponíveis — ${fmtLong(selDate)}`;
       slotsGrid.innerHTML = "";
       times.forEach((t) => {
         const b = document.createElement("button");
         b.type = "button"; b.className = "slot"; b.textContent = t;
-        if (t === selTime) b.classList.add("is-selected");
-        b.addEventListener("click", () => {
-          selTime = t; renderSlots(); bookForm.hidden = false;
-          if (note) note.hidden = true;
-          if (nameInput) nameInput.focus({ preventScroll: true });
-        });
+        if (requested.has(`${selDate} ${t}`)) {
+          b.disabled = true; b.classList.add("is-requested");
+          b.setAttribute("aria-label", `${t} — você já solicitou este horário`);
+        } else {
+          if (t === selTime) b.classList.add("is-selected");
+          b.addEventListener("click", () => {
+            selTime = t; renderSlots(); bookForm.hidden = false;
+            if (note) note.hidden = true;
+            if (nameInput) nameInput.focus({ preventScroll: true });
+          });
+        }
         slotsGrid.appendChild(b);
       });
       bookForm.hidden = !selTime;
@@ -254,10 +260,10 @@ const CONFIG = {
       calWrap.hidden = true; slotsWrap.hidden = true; bookForm.hidden = true;
       availByDate.clear(); selDate = null; selTime = null;
       if (!db) {
-        setStatus('Não foi possível carregar a agenda agora. Você pode agendar pelo WhatsApp aqui embaixo. 💬 <button type="button" class="booker__retry" data-retry>Tentar de novo</button>', "error");
+        setStatus('A agenda online está indisponível neste instante — mas não se preocupe: agende em segundos pelo WhatsApp aqui embaixo. 💬 <button type="button" class="booker__retry" data-retry>Tentar de novo</button>', "error");
         return;
       }
-      setStatus('<span class="booker__spin" aria-hidden="true"></span> Carregando horários disponíveis…', "loading");
+      setStatus('<span class="booker__spin" aria-hidden="true"></span> Buscando os melhores horários para você…', "loading");
       try {
         const { data, error } = await db
           .from("visita_disponibilidade")
@@ -274,7 +280,7 @@ const CONFIG = {
           if (availByDate.get(r.data).indexOf(t) === -1) availByDate.get(r.data).push(t);
         });
         if (availByDate.size === 0) {
-          setStatus("No momento não há horários abertos para visita. Fale com a gente pelo WhatsApp que combinamos o melhor dia. 💬", "info");
+          setStatus("Os horários estão concorridos no momento! Fale com a gente pelo WhatsApp que encontramos o dia perfeito para a sua visita. 💬", "info");
           return;
         }
         setStatus("", null);
@@ -283,7 +289,7 @@ const CONFIG = {
         view = new Date(first[0], first[1] - 1, 1);
         renderCal();
       } catch (e) {
-        setStatus('Não conseguimos carregar a agenda agora. Tente de novo em instantes ou agende pelo WhatsApp aqui embaixo. 💬 <button type="button" class="booker__retry" data-retry>Tentar de novo</button>', "error");
+        setStatus('Tivemos um probleminha para abrir a agenda. Tente de novo ou fale com a gente no WhatsApp — respondemos rapidinho. 💬 <button type="button" class="booker__retry" data-retry>Tentar de novo</button>', "error");
       }
     }
 
@@ -310,18 +316,20 @@ const CONFIG = {
         if (email) payload.email = email;
         const { error } = await db.from("visita_agendamento").insert(payload);
         if (error) throw error;
+        const firstName = name.split(/\s+/)[0];
+        requested.add(`${dateStr} ${timeStr}`);
         setNote(
-          `<strong>Recebemos sua solicitação de visita!</strong><br>` +
-          `${fmtLong(dateStr)}, às ${timeStr}. Nossa equipe vai entrar em contato pelo WhatsApp para <strong>confirmar</strong> — sua visita fica <strong>pendente</strong> até a confirmação. Estamos ansiosos para receber você. 💙`,
+          `<strong>Pronto, ${firstName}! Recebemos o seu pedido de visita.</strong><br>` +
+          `📅 ${fmtLong(dateStr)}, às ${timeStr}. Em instantes, nossa equipe confirma com você pelo WhatsApp — vai ser um prazer receber a sua família no Blue. 💙` +
+          `<span class="booker__note-sub">Sua visita fica pendente até a nossa confirmação.</span>`,
           "ok"
         );
-        slotsWrap.hidden = true; bookForm.hidden = true;
+        selTime = null;
         if (nameInput) nameInput.value = ""; if (waInput) waInput.value = ""; if (emailInput) emailInput.value = "";
-        loadAvailability().catch(() => {});
+        renderSlots(); // o horário escolhido passa a aparecer como "Solicitado"
       } catch (e) {
         setNote(
-          "Não foi possível concluir agora — esse horário pode ter acabado de ser preenchido. " +
-          "Escolha outro horário ou agende pelo WhatsApp logo abaixo. 💬",
+          "Esse horário acabou de ser reservado! 😊 Escolha outro logo abaixo — ainda dá tempo. Se preferir, fale com a gente no WhatsApp. 💬",
           "error"
         );
         loadAvailability();

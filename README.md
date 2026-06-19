@@ -106,7 +106,7 @@ um residencial sênior: **sereno, sofisticado e acolhedor**, com a paleta puxada
 tons mais profundos de **navy** (`#1C4A6E`) combinados com o **celeste** da marca
 (`#5CBFE5`) e o vídeo de água do hero.
 
-- Tipografia: **Cinzel** (logotipo), **Cormorant Garamond** (títulos) e **Inter** (texto/UI).
+- Tipografia: **Cinzel** (logotipo), **Fraunces** (títulos) e **Inter** (texto/UI).
 - Tokens fiéis ao Design.md: base 4px, *section gap* generoso, cards 14px, botões 8px,
   inputs 4px; superfícies *Cloud White* / *Haze Grey* sobre o *sky canvas*; *frosted glass*
   via `backdrop-filter`.
@@ -133,8 +133,3 @@ python3 -m http.server 8000
 
 > As fontes vêm do Google Fonts; sem internet, o site usa fontes do sistema (serif/sans)
 > como *fallback*, mantendo o visual.
-
----
-
-*As Blue Zones são referência de estilo de vida e inspiração — não constituem promessa de
-resultado médico.*
