@@ -256,14 +256,17 @@ const CONFIG = {
       bookForm.hidden = !selTime;
     }
 
-    async function loadAvailability() {
-      calWrap.hidden = true; slotsWrap.hidden = true; bookForm.hidden = true;
-      availByDate.clear(); selDate = null; selTime = null;
+    async function loadAvailability(opts) {
+      const preserve = !!(opts && opts.preserve); // keep the visitor's selected date/month
+      const silent = !!(opts && opts.silent);     // background refresh: no loading/error flash
+      const keepDate = selDate, keepTime = selTime, keepView = view;
+
       if (!db) {
-        setStatus('A agenda online está indisponível neste instante — mas não se preocupe: agende em segundos pelo WhatsApp aqui embaixo. 💬 <button type="button" class="booker__retry" data-retry>Tentar de novo</button>', "error");
+        if (!silent) setStatus('A agenda online está indisponível neste instante — mas não se preocupe: agende em segundos pelo WhatsApp aqui embaixo. 💬 <button type="button" class="booker__retry" data-retry>Tentar de novo</button>', "error");
         return;
       }
-      setStatus('<span class="booker__spin" aria-hidden="true"></span> Buscando os melhores horários para você…', "loading");
+      if (!preserve) { calWrap.hidden = true; slotsWrap.hidden = true; bookForm.hidden = true; availByDate.clear(); selDate = null; selTime = null; }
+      if (!silent) setStatus('<span class="booker__spin" aria-hidden="true"></span> Buscando os melhores horários para você…', "loading");
       try {
         const { data, error } = await db
           .from("visita_disponibilidade")
@@ -273,23 +276,41 @@ const CONFIG = {
           .order("data", { ascending: true })
           .order("hora", { ascending: true });
         if (error) throw error;
+
+        // Rebuild availability from scratch so a slot booked elsewhere drops off here too.
+        const next = new Map();
         (data || []).forEach((r) => {
           const t = (r.hora || "").slice(0, 5);
           if (!t || !r.data) return;
-          if (!availByDate.has(r.data)) availByDate.set(r.data, []);
-          if (availByDate.get(r.data).indexOf(t) === -1) availByDate.get(r.data).push(t);
+          if (!next.has(r.data)) next.set(r.data, []);
+          if (next.get(r.data).indexOf(t) === -1) next.get(r.data).push(t);
         });
+        availByDate.clear();
+        next.forEach((v, k) => availByDate.set(k, v));
+
         if (availByDate.size === 0) {
+          calWrap.hidden = true; slotsWrap.hidden = true; bookForm.hidden = true;
+          selDate = null; selTime = null;
           setStatus("Os horários estão concorridos no momento! Fale com a gente pelo WhatsApp que encontramos o dia perfeito para a sua visita. 💬", "info");
           return;
         }
         setStatus("", null);
         calWrap.hidden = false;
-        const first = [...availByDate.keys()].sort()[0].split("-").map(Number);
-        view = new Date(first[0], first[1] - 1, 1);
+
+        // Keep the visitor where they were on a refresh; otherwise open the first available month.
+        if (preserve && keepDate && availByDate.has(keepDate)) {
+          selDate = keepDate;
+          selTime = (keepTime && availByDate.get(keepDate).indexOf(keepTime) !== -1) ? keepTime : null;
+          view = keepView;
+        } else {
+          if (preserve && keepDate && !availByDate.has(keepDate)) { selDate = null; selTime = null; }
+          const firstKey = [...availByDate.keys()].sort()[0].split("-").map(Number);
+          view = (preserve && keepView) ? keepView : new Date(firstKey[0], firstKey[1] - 1, 1);
+        }
         renderCal();
+        renderSlots();
       } catch (e) {
-        setStatus('Tivemos um probleminha para abrir a agenda. Tente de novo ou fale com a gente no WhatsApp — respondemos rapidinho. 💬 <button type="button" class="booker__retry" data-retry>Tentar de novo</button>', "error");
+        if (!silent) setStatus('Tivemos um probleminha para abrir a agenda. Tente de novo ou fale com a gente no WhatsApp — respondemos rapidinho. 💬 <button type="button" class="booker__retry" data-retry>Tentar de novo</button>', "error");
       }
     }
 
@@ -327,12 +348,14 @@ const CONFIG = {
         selTime = null;
         if (nameInput) nameInput.value = ""; if (waInput) waInput.value = ""; if (emailInput) emailInput.value = "";
         renderSlots(); // o horário escolhido passa a aparecer como "Solicitado"
+        // Re-sincroniza com o banco: quando o gatilho bloqueia o slot, ele some para todos.
+        setTimeout(() => loadAvailability({ preserve: true, silent: true }), 1200);
       } catch (e) {
         setNote(
           "Esse horário acabou de ser reservado! 😊 Escolha outro logo abaixo — ainda dá tempo. Se preferir, fale com a gente no WhatsApp. 💬",
           "error"
         );
-        loadAvailability();
+        loadAvailability({ preserve: true, silent: true });
       } finally {
         confirmBtn.disabled = false;
         confirmBtn.textContent = label;
@@ -344,6 +367,17 @@ const CONFIG = {
     }));
     prevBtn.addEventListener("click", () => { view = new Date(view.getFullYear(), view.getMonth() - 1, 1); renderCal(); });
     nextBtn.addEventListener("click", () => { view = new Date(view.getFullYear(), view.getMonth() + 1, 1); renderCal(); });
+
+    // Mantém a agenda fresca: um horário reservado por outra pessoa (bloqueado pelo
+    // gatilho do banco) some daqui também, sem o visitante precisar recarregar.
+    function refresh() {
+      if (!db || document.hidden) return;
+      if (selTime) return; // não atrapalha quem está finalizando um agendamento
+      loadAvailability({ preserve: true, silent: true });
+    }
+    document.addEventListener("visibilitychange", () => { if (!document.hidden) refresh(); });
+    window.addEventListener("focus", refresh);
+    setInterval(refresh, 60000);
 
     loadAvailability();
   }

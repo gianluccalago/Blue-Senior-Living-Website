@@ -89,15 +89,35 @@ O agendamento por **calendário** lê e grava direto no **Supabase do app** (fon
   do banco. A visita fica **pendente** até a equipe confirmar.
 - **Estados tratados:** carregando, erro (com "tentar de novo") e vazio, sempre
   com o WhatsApp como alternativa.
+- **Atualização automática:** o calendário se atualiza sozinho ao voltar o foco
+  para a aba e a cada ~60s (sem atrapalhar quem está finalizando um agendamento).
+  Assim, um horário reservado por outra pessoa **some daqui também**, sem recarregar.
 
-> **Limitação importante (RLS):** o acesso anônimo **não pode ler**
-> `visita_agendamento`, então o site **não consegue contar agendamentos** para
-> esconder horários "cheios" — ele mostra os horários **não bloqueados**. Para
-> ocultar horários lotados automaticamente, o app precisa: (a) marcar
-> `bloqueada = true` quando o slot enche, **ou** (b) expor uma view/RPC de
-> disponibilidade já calculada ao papel `anon`. O tratamento de erro do site já é
-> compatível: se o banco passar a rejeitar overbooking, o usuário recebe "escolha
-> outro horário".
+### Garantia contra overbooking (1 passo no banco — obrigatório)
+
+Por segurança (RLS), a **chave pública** do site só pode **ler** a disponibilidade
+e **inserir** agendamentos — ela **não pode** marcar um horário como ocupado nem
+contar agendamentos. Por isso, a regra "reservou → indisponibiliza para os demais"
+**precisa morar no banco** (senão dois navegadores diferentes ainda conseguiriam
+pegar o mesmo horário).
+
+**Rode uma vez** o script [`supabase/agenda-overbooking.sql`](supabase/agenda-overbooking.sql)
+no **Supabase → SQL Editor**. Ele cria um gatilho que, a cada agendamento:
+
+1. **trava** o horário (impede dois pedidos simultâneos no mesmo slot);
+2. **recusa** se o horário já atingiu a `capacidade` (sem overbooking) — o site
+   mostra "esse horário acabou de ser reservado";
+3. **bloqueia** o slot (`bloqueada = true`) quando ele enche, então ele **some do
+   site para todos na hora**.
+
+**Para reabrir um horário ("desmarcar pelo app"):** volte a disponibilidade com
+`UPDATE public.visita_disponibilidade SET bloqueada = false, motivo_bloqueio = NULL WHERE id = '<id>';`
+(ou pela tela da agenda do app).
+
+> O site já funciona **sem** o gatilho, mas aí a indisponibilização é só por
+> sessão (no mesmo navegador). **Com** o gatilho, a garantia passa a valer para
+> todos os clientes. Não foi possível aplicá-lo a partir do site: a chave anon
+> recebe `permission denied` ao escrever na agenda (comportamento correto da RLS).
 
 ## Decisões de design
 
