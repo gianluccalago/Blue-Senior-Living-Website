@@ -17,6 +17,14 @@ const CONFIG = {
 
   // E-mail de contato (recebe o formulário de visita).
   EMAIL: "contato@blueseniorliving.com.br",                // <-- PLACEHOLDER (editar)
+
+  /* ---- TRABALHE CONOSCO (RH) — canal separado do comercial ----
+     Troque pelos dados reais do RH quando existirem. */
+  VAGAS_EMAIL: "vagas@blueseniorliving.com.br",            // <-- PLACEHOLDER RH (editar)
+  // WhatsApp do RH, só dígitos com DDI (55 + DDD + número). DIFERENTE do comercial.
+  // Enquanto estiver vazio (""), o botão de WhatsApp do RH fica oculto (sem link torto).
+  VAGAS_WHATSAPP: "",                                      // <-- PLACEHOLDER RH (ainda não definido)
+  VAGAS_WHATSAPP_MSG: "Olá! Sou da área da saúde e gostaria de enviar meu currículo para o Blue Senior Living.",
 };
 
 (function () {
@@ -40,6 +48,20 @@ const CONFIG = {
     $$("[data-email]").forEach((a) => { a.href = `mailto:${CONFIG.EMAIL}`; });
     $$("[data-phone-display]").forEach((el) => { el.textContent = CONFIG.PHONE_DISPLAY; });
     $$("[data-email-display]").forEach((el) => { el.textContent = CONFIG.EMAIL; });
+
+    // Trabalhe conosco (RH)
+    $$("[data-vagas-email]").forEach((a) => {
+      a.href = `mailto:${CONFIG.VAGAS_EMAIL}?subject=${encodeURIComponent("Currículo — Trabalhe no Blue Senior Living")}`;
+    });
+    const vagasWa = (CONFIG.VAGAS_WHATSAPP || "").replace(/\D/g, "");
+    $$("[data-vagas-whatsapp]").forEach((a) => {
+      if (vagasWa) {
+        a.href = `https://wa.me/${vagasWa}?text=${encodeURIComponent(CONFIG.VAGAS_WHATSAPP_MSG)}`;
+        a.hidden = false;
+      } else {
+        a.hidden = true; // sem número de RH ainda: não publica link quebrado
+      }
+    });
     const yr = $("[data-year]");
     if (yr) yr.textContent = new Date().getFullYear();
   }
@@ -318,14 +340,18 @@ const CONFIG = {
       const name = (nameInput.value || "").trim();
       const wa = (waInput.value || "").trim();
       const email = ((emailInput && emailInput.value) || "").trim();
-      const digits = wa.replace(/\D/g, "");
+      const digits = wa.replace(/\D/g, "");          // celular BR: DDD(2) + 9 + 8 = 11 dígitos
+      const validWa = digits.length === 11 && Number(digits.slice(0, 2)) >= 11 && digits[2] === "9";
       let err = "";
       if (!selDate || !selTime) err = "Escolha uma data e um horário.";
       else if (name.split(/\s+/).filter(Boolean).length < 2) err = "Digite seu nome completo (nome e sobrenome).";
-      else if (digits.length < 10 || digits.length > 13) err = "Digite um WhatsApp válido, com DDD.";
+      else if (!validWa) err = "Informe um WhatsApp válido com DDD.";
       else if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) err = "Confira o e-mail digitado.";
       if (err) { setNote(err, "error"); return; }
       if (!db) { setNote("Sistema de agenda indisponível agora. Por favor, agende pelo WhatsApp logo abaixo. 💬", "error"); return; }
+
+      // Grava sempre limpo, com DDI, para o app abrir o wa.me sem erro: "5541999998888".
+      const waClean = "55" + digits;
 
       const dateStr = selDate, timeStr = selTime;
       confirmBtn.disabled = true;
@@ -333,16 +359,16 @@ const CONFIG = {
       confirmBtn.textContent = "Enviando…";
       try {
         // origem ("site") e status ("pendente") são definidos por padrão no banco.
-        const payload = { nome_completo: name, whatsapp: wa, data: dateStr, hora: timeStr + ":00" };
+        const payload = { nome_completo: name, whatsapp: waClean, data: dateStr, hora: timeStr + ":00" };
         if (email) payload.email = email;
         const { error } = await db.from("visita_agendamento").insert(payload);
         if (error) throw error;
         const firstName = name.split(/\s+/)[0];
         requested.add(`${dateStr} ${timeStr}`);
         setNote(
-          `<strong>Pronto, ${firstName}! Recebemos o seu pedido de visita.</strong><br>` +
-          `📅 ${fmtLong(dateStr)}, às ${timeStr}. Em instantes, nossa equipe confirma com você pelo WhatsApp — vai ser um prazer receber a sua família no Blue. 💙` +
-          `<span class="booker__note-sub">Sua visita fica pendente até a nossa confirmação.</span>`,
+          `<strong>Tudo certo, ${firstName}!</strong> Sua solicitação de visita para ${fmtLong(dateStr)} às ${timeStr} foi recebida. ` +
+          `Nossa equipe vai falar com você pelo WhatsApp para confirmar — fique de olho nas mensagens. Estamos ansiosos para receber vocês. 💙` +
+          `<span class="booker__note-sub">Pedido enviado — sua visita ainda <strong>não está confirmada</strong>.</span>`,
           "ok"
         );
         selTime = null;
@@ -361,6 +387,15 @@ const CONFIG = {
         confirmBtn.textContent = label;
       }
     });
+
+    // Máscara de WhatsApp brasileira enquanto digita: (DD) NNNNN-NNNN.
+    function maskWhatsApp(v) {
+      const d = (v || "").replace(/\D/g, "").slice(0, 11);
+      if (d.length <= 2) return d ? "(" + d : "";
+      if (d.length <= 7) return "(" + d.slice(0, 2) + ") " + d.slice(2);
+      return "(" + d.slice(0, 2) + ") " + d.slice(2, 7) + "-" + d.slice(7);
+    }
+    if (waInput) waInput.addEventListener("input", () => { waInput.value = maskWhatsApp(waInput.value); });
 
     [nameInput, waInput, emailInput].forEach((el) => el && el.addEventListener("input", () => {
       if (note && note.classList.contains("booker__note--error")) note.hidden = true;

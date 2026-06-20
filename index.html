@@ -247,12 +247,13 @@ l-90 0 0 50 0 50 80 0 c73 0 80 2 80 20 0 18 -7 20 -81 20 l-80 0 3 48 3 47
       </a>
 
       <nav class="nav__links" aria-label="Navegação principal">
-        <a href="#conceito">O conceito</a>
+        <a href="#conceito">Conceito</a>
         <a href="#pilares">Cuidado</a>
         <a href="#espacos">Espaços</a>
-        <a href="#familia">Para a família</a>
+        <a href="#familia">Família</a>
         <a href="#localizacao">Localização</a>
         <a href="blog/index.html">Conteúdos</a>
+        <a href="#trabalhe">Trabalhe conosco</a>
       </nav>
 
       <div class="nav__actions">
@@ -291,6 +292,7 @@ l-90 0 0 50 0 50 80 0 c73 0 80 2 80 20 0 18 -7 20 -81 20 l-80 0 3 48 3 47
       <a href="#familia" data-drawer-link>Para a família</a>
       <a href="#localizacao" data-drawer-link>Localização</a>
       <a href="blog/index.html" data-drawer-link>Conteúdos</a>
+      <a href="#trabalhe" data-drawer-link>Trabalhe conosco</a>
       <div class="drawer__cta">
         <a class="btn btn--primary btn--block" href="#agendar" data-drawer-link>Agendar visita</a>
         <a class="btn btn--ghost-ink btn--block" data-app-link href="#" target="_blank" rel="noopener noreferrer">
@@ -620,7 +622,7 @@ l-90 0 0 50 0 50 80 0 c73 0 80 2 80 20 0 18 -7 20 -81 20 l-80 0 3 48 3 47
           </p>
           <ul class="location__list">
             <li><svg aria-hidden="true"><use href="#i-pin"/></svg><span>R. Eduardo Sprada — Campo Comprido<br/>Curitiba · Paraná</span></li>
-            <li><svg aria-hidden="true"><use href="#i-clock"/></svg><span>Visitas agendadas, todos os dias<br/>Receba a equipe e conheça os espaços</span></li>
+            <li><svg aria-hidden="true"><use href="#i-clock"/></svg><span>Visitas de segunda a sexta<br/>Solicite pelo site e a equipe confirma com você</span></li>
           </ul>
           <p class="location__hint">O endereço completo é informado no agendamento da sua visita.</p>
         </div>
@@ -638,16 +640,39 @@ l-90 0 0 50 0 50 80 0 c73 0 80 2 80 20 0 18 -7 20 -81 20 l-80 0 3 48 3 47
       </div>
     </section>
 
+    <!-- ===================== 6.5 TRABALHE CONOSCO ===================== -->
+    <section class="section section--surface" id="trabalhe">
+      <div class="wrap careers">
+        <div class="careers__text">
+          <p class="eyebrow">Trabalhe conosco</p>
+          <h2 class="section__title">Faça parte da equipe Blue</h2>
+          <p class="section__lead">
+            Você é da área da saúde — cuidador, técnico de enfermagem, enfermeiro ou outro
+            profissional — e quer trabalhar com a gente? Envie seu currículo. Estamos sempre
+            atentos a bons profissionais que cuidam de verdade.
+          </p>
+        </div>
+        <div class="careers__actions">
+          <a class="btn btn--primary" data-vagas-email href="#">
+            <svg aria-hidden="true"><use href="#i-mail"/></svg> Enviar currículo por e-mail
+          </a>
+          <a class="btn btn--whatsapp" data-vagas-whatsapp href="#" target="_blank" rel="noopener noreferrer" hidden>
+            <svg aria-hidden="true"><use href="#i-whatsapp"/></svg> Enviar pelo WhatsApp
+          </a>
+        </div>
+      </div>
+    </section>
+
     <!-- ===================== 7. AGENDAR VISITA ===================== -->
     <section class="section section--navy section--cta" id="agendar">
       <div class="wrap schedule">
         <div class="schedule__intro">
           <p class="eyebrow eyebrow--light">Agende sua visita</p>
-          <h2 class="section__title">Veja de perto onde a sua família vai se sentir em casa.</h2>
+          <h2 class="section__title">Venha conhecer o Blue de perto</h2>
           <p class="section__lead section__lead--light">
-            Uma visita é a forma mais rápida de ter certeza. Conheça os espaços, a equipe e o
-            cuidado do dia a dia — e saia tranquilo, com todas as suas perguntas respondidas.
-            Escolha o melhor horário ao lado. Sem compromisso.
+            Escolha o melhor dia e horário e solicite sua visita. Nossa equipe entrará em contato
+            pelo WhatsApp para confirmar e preparar tudo com cuidado para a sua família.
+            Visitas de segunda a sexta — sem compromisso.
           </p>
           <div class="schedule__contacts">
             <a class="contact-row" data-phone href="#">
@@ -667,8 +692,8 @@ l-90 0 0 50 0 50 80 0 c73 0 80 2 80 20 0 18 -7 20 -81 20 l-80 0 3 48 3 47
 
         <div class="schedule__form-wrap">
           <div class="booker" data-booker>
-            <p class="form__title">Escolha o melhor dia para a sua visita</p>
-            <p class="form__intro">Selecione uma data e um horário disponíveis e garanta a sua visita — leva menos de um minuto, sem compromisso.</p>
+            <p class="form__title">Escolha o dia e o horário</p>
+            <p class="form__intro">Selecione abaixo e solicite a sua visita — a equipe confirma com você pelo WhatsApp. Leva menos de um minuto, sem compromisso.</p>
 
             <div class="booker__status" data-booker-status hidden role="status" aria-live="polite"></div>
 
@@ -696,13 +721,13 @@ l-90 0 0 50 0 50 80 0 c73 0 80 2 80 20 0 18 -7 20 -81 20 l-80 0 3 48 3 47
               </div>
               <div class="field">
                 <label for="b-wa">WhatsApp</label>
-                <input id="b-wa" type="tel" inputmode="tel" autocomplete="tel" placeholder="(41) 90000-0000" data-b-wa />
+                <input id="b-wa" type="tel" inputmode="numeric" autocomplete="tel" maxlength="16" placeholder="(41) 99999-8888" data-b-wa />
               </div>
               <div class="field">
                 <label for="b-email">E-mail <span class="field__opt">(opcional)</span></label>
                 <input id="b-email" type="email" autocomplete="email" placeholder="voce@email.com" data-b-email />
               </div>
-              <button type="button" class="btn btn--primary btn--block btn--lg" data-b-confirm>Quero agendar minha visita</button>
+              <button type="button" class="btn btn--primary btn--block btn--lg" data-b-confirm>Solicitar minha visita</button>
             </div>
 
             <p class="booker__note" data-booker-note hidden></p>
@@ -736,6 +761,7 @@ l-90 0 0 50 0 50 80 0 c73 0 80 2 80 20 0 18 -7 20 -81 20 l-80 0 3 48 3 47
         <a href="#familia">Para a família</a>
         <a href="#localizacao">Localização</a>
         <a href="blog/index.html">Conteúdos</a>
+        <a href="#trabalhe">Trabalhe conosco</a>
       </nav>
 
       <div class="footer__col">
