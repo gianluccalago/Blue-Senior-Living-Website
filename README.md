@@ -36,7 +36,7 @@ Tudo que é placeholder está centralizado no topo de **`assets/js/main.js`**, n
 | `PHONE_DISPLAY` / `PHONE_TEL` | Telefone exibido e o link de ligação (`tel:`) |
 | `EMAIL` | E-mail de contato (recebe o formulário de visita) |
 | `VAGAS_EMAIL` | E-mail do **RH** (seção *Trabalhe conosco*) — recebe currículos |
-| `VAGAS_WHATSAPP` | WhatsApp do **RH**, só dígitos com DDI (`55`+DDD+número). **Diferente do comercial.** Enquanto vazio (`""`), o botão de WhatsApp do RH fica **oculto** (não publica link quebrado) |
+| `VAGAS_WHATSAPP` | WhatsApp do **RH**, só dígitos com DDI (`55`+DDD+número). Ideal: número **diferente do comercial**. Se vazio (`""`), o botão usa o **WhatsApp comercial como fallback** (com a mensagem de currículo) — o canal nunca some |
 | `VAGAS_WHATSAPP_MSG` | Mensagem pronta do WhatsApp do RH |
 
 Esses valores são aplicados automaticamente a todos os links/botões da página

@@ -21,9 +21,10 @@ const CONFIG = {
   /* ---- TRABALHE CONOSCO (RH) — canal separado do comercial ----
      Troque pelos dados reais do RH quando existirem. */
   VAGAS_EMAIL: "vagas@blueseniorliving.com.br",            // <-- PLACEHOLDER RH (editar)
-  // WhatsApp do RH, só dígitos com DDI (55 + DDD + número). DIFERENTE do comercial.
-  // Enquanto estiver vazio (""), o botão de WhatsApp do RH fica oculto (sem link torto).
-  VAGAS_WHATSAPP: "",                                      // <-- PLACEHOLDER RH (ainda não definido)
+  // WhatsApp do RH, só dígitos com DDI (55 + DDD + número). Ideal: número DIFERENTE do comercial.
+  // Se ficar vazio (""), o botão usa o WhatsApp comercial como fallback (com a mensagem de
+  // currículo) — assim o canal nunca some. Muitos cuidadores/téc. de enfermagem só usam WhatsApp.
+  VAGAS_WHATSAPP: "",                                      // <-- PLACEHOLDER RH (defina quando tiver)
   VAGAS_WHATSAPP_MSG: "Olá! Sou da área da saúde e gostaria de enviar meu currículo para o Blue Senior Living.",
 };
 
@@ -53,13 +54,14 @@ const CONFIG = {
     $$("[data-vagas-email]").forEach((a) => {
       a.href = `mailto:${CONFIG.VAGAS_EMAIL}?subject=${encodeURIComponent("Currículo — Trabalhe no Blue Senior Living")}`;
     });
-    const vagasWa = (CONFIG.VAGAS_WHATSAPP || "").replace(/\D/g, "");
+    // RH dedicado se existir; senão usa o WhatsApp comercial (com a mensagem de currículo).
+    const vagasWa = (CONFIG.VAGAS_WHATSAPP || CONFIG.WHATSAPP || "").replace(/\D/g, "");
     $$("[data-vagas-whatsapp]").forEach((a) => {
       if (vagasWa) {
         a.href = `https://wa.me/${vagasWa}?text=${encodeURIComponent(CONFIG.VAGAS_WHATSAPP_MSG)}`;
         a.hidden = false;
       } else {
-        a.hidden = true; // sem número de RH ainda: não publica link quebrado
+        a.hidden = true; // nenhum número configurado: não publica link quebrado
       }
     });
     const yr = $("[data-year]");
