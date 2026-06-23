@@ -139,7 +139,9 @@ um residencial sênior: **sereno, sofisticado e acolhedor**, com a paleta puxada
 tons mais profundos de **navy** (`#1C4A6E`) combinados com o **celeste** da marca
 (`#5CBFE5`) e o vídeo de água do hero.
 
-- Tipografia: **Cinzel** (logotipo), **Fraunces** (títulos) e **Inter** (texto/UI).
+- Tipografia: **Plus Jakarta Sans** em todo o site (logotipo, títulos e texto/UI),
+  com a hierarquia criada por **variações de peso** (700 títulos · 600 subtítulos ·
+  500 destaques · 400 corpo) e estilo (itálico nos destaques).
 - Tokens fiéis ao Design.md: base 4px, *section gap* generoso, cards 14px, botões 8px,
   inputs 4px; superfícies *Cloud White* / *Haze Grey* sobre o *sky canvas*; *frosted glass*
   via `backdrop-filter`.

@@ -13,7 +13,7 @@
 /* ---------- Hero da listagem ---------- */
 .blog-hero { padding: clamp(40px, 7vw, 72px) 0 clamp(20px, 3vw, 28px); }
 .blog-hero__title {
-  font-family: var(--font-display); font-weight: 500; line-height: 1.05; letter-spacing: -0.01em;
+  font-family: var(--font-display); font-weight: 700; line-height: 1.05; letter-spacing: -0.02em;
   font-size: clamp(32px, 5.2vw, 56px); color: var(--ink); margin-top: var(--s-8); max-width: 18ch;
 }
 .blog-hero__lead { margin-top: var(--s-16); font-size: clamp(17px, 1.7vw, 20px); color: var(--ink-soft); max-width: 56ch; }
@@ -71,7 +71,7 @@
   color: var(--navy-600); background: rgba(92, 191, 229, .14); padding: 4px 12px; border-radius: var(--r-pill);
 }
 .post__title {
-  font-family: var(--font-display); font-weight: 600; line-height: 1.08; letter-spacing: -0.01em;
+  font-family: var(--font-display); font-weight: 700; line-height: 1.08; letter-spacing: -0.02em;
   font-size: clamp(30px, 5vw, 52px); color: var(--ink); margin: var(--s-16) 0 var(--s-12);
 }
 .post__meta { font-size: 14.5px; color: var(--ink-soft); }
