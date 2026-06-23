@@ -107,8 +107,8 @@ ul, ol { list-style: none; padding: 0; }
 
 .section__title {
   font-family: var(--font-display);
-  font-weight: 700; line-height: 1.04; letter-spacing: -0.02em;
-  font-size: clamp(30px, 4.6vw, 54px);
+  font-weight: 600; line-height: 1.07; letter-spacing: -0.015em;
+  font-size: clamp(27px, 3.5vw, 43px);
   color: var(--ink);
 }
 .section--navy .section__title,
@@ -282,8 +282,8 @@ ul, ol { list-style: none; padding: 0; }
   text-shadow: 0 1px 12px rgba(9, 26, 41, .5);
 }
 .hero__title {
-  font-family: var(--font-display); font-weight: 700;
-  font-size: clamp(44px, 8.4vw, 104px); line-height: .98; letter-spacing: -0.025em;
+  font-family: var(--font-display); font-weight: 600;
+  font-size: clamp(38px, 6vw, 72px); line-height: 1.03; letter-spacing: -0.02em;
   margin-bottom: var(--s-24); text-wrap: balance;
   text-shadow: 0 2px 30px rgba(9, 26, 41, .45);
 }
