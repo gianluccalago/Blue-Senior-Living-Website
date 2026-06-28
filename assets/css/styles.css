@@ -621,17 +621,17 @@ ul, ol { list-style: none; padding: 0; }
 .brand--footer { color: #fff; }
 .brand--drawer { color: var(--navy-600); }
 .footer__logo { display: inline-block; color: #fff; line-height: 0; }
-.footer__logo svg { width: 176px; height: auto; }
+.footer__logo svg { width: 210px; height: auto; }
 .footer__tagline { margin-top: var(--s-16); font-size: 15px; line-height: 1.6; color: rgba(231, 241, 249, .68); max-width: 36ch; }
 .footer__col h4 { font-size: 13px; letter-spacing: .12em; text-transform: uppercase; color: var(--celeste-300); margin-bottom: var(--s-16); font-weight: 600; }
-.footer__col a { display: flex; width: fit-content; align-items: center; gap: 8px; color: rgba(231, 241, 249, .8); font-size: 15px; padding: 5px 0; transition: color .2s; max-width: 100%; }
+.footer__col a:not(.btn) { display: flex; width: fit-content; align-items: center; gap: 8px; color: rgba(231, 241, 249, .8); font-size: 15px; padding: 5px 0; transition: color .2s; max-width: 100%; }
 .footer__col a span { overflow-wrap: anywhere; min-width: 0; }
 [data-email-display] { overflow-wrap: anywhere; }
-.footer__col a:hover { color: #fff; }
-.footer__col a svg { width: 16px; height: 16px; }
+.footer__col a:not(.btn):hover { color: #fff; }
+.footer__col a:not(.btn) svg { width: 16px; height: 16px; }
 .footer__address { margin-top: var(--s-12); font-size: 14px; color: rgba(231, 241, 249, .6); line-height: 1.6; }
 .footer__app { font-weight: 500; }
-.footer__cta { margin-top: var(--s-16); color: var(--navy-900); }
+.footer__cta { margin-top: var(--s-20); padding: 16px 32px; font-size: 17px; }
 .footer__bar {
   border-top: 1px solid rgba(255, 255, 255, .1);
   padding: 22px 0 calc(22px + env(safe-area-inset-bottom));
