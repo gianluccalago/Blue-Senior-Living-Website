@@ -1,16 +1,27 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" role="img" aria-label="Momentos em família — imagem ilustrativa">
   <defs>
-    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#244E6F"/>
-      <stop offset="1" stop-color="#0E2233"/>
+    <linearGradient id="w5" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#FBF9F5"/>
+      <stop offset="1" stop-color="#EFE8DB" stop-opacity="0"/>
     </linearGradient>
-    <radialGradient id="glow" cx="0.72" cy="0.26" r="0.9">
-      <stop offset="0" stop-color="#5CBFE5" stop-opacity="0.30"/>
-      <stop offset="0.55" stop-color="#5CBFE5" stop-opacity="0"/>
-    </radialGradient>
   </defs>
-  <rect width="800" height="600" fill="url(#g)"/>
-  <rect width="800" height="600" fill="url(#glow)"/>
-  <text x="400" y="318" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="46" letter-spacing="2" fill="#ffffff" fill-opacity="0.94">Momentos em família</text>
-  <text x="400" y="360" text-anchor="middle" font-family="Arial, sans-serif" font-size="17" letter-spacing="3.5" fill="#ffffff" fill-opacity="0.6">IMAGEM ILUSTRATIVA</text>
+  <rect width="800" height="600" fill="#EFE8DB"/>
+  <rect width="800" height="600" fill="url(#w5)" opacity=".55"/>
+  <!-- duas xícaras de café, uma conversa -->
+  <g stroke="#1C4A6E" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round" opacity=".6">
+    <path d="M232 330 h132 v34 a66 56 0 0 1 -132 0 z"/>
+    <path d="M364 340 h26 a20 20 0 0 1 0 40 h-30"/>
+    <path d="M436 330 h132 v34 a66 56 0 0 1 -132 0 z"/>
+    <path d="M568 340 h26 a20 20 0 0 1 0 40 h-30"/>
+    <path d="M196 452 h428"/>
+  </g>
+  <!-- vapor -->
+  <g stroke="#5CBFE5" stroke-width="2.5" fill="none" stroke-linecap="round" opacity=".55">
+    <path d="M282 296 q8 -14 0 -28 q-8 -14 0 -28"/>
+    <path d="M318 296 q8 -14 0 -28 q-8 -14 0 -28"/>
+    <path d="M486 296 q8 -14 0 -28 q-8 -14 0 -28"/>
+    <path d="M522 296 q8 -14 0 -28 q-8 -14 0 -28"/>
+  </g>
+  <circle cx="400" cy="180" r="44" fill="none" stroke="#5CBFE5" stroke-width="2.5" opacity=".45"/>
+  <text x="400" y="512" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-style="italic" font-size="20" letter-spacing="1" fill="#1C4A6E" fill-opacity=".55">imagem ilustrativa</text>
 </svg>

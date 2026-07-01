@@ -134,18 +134,22 @@ SET bloqueada = false, motivo_bloqueio = NULL WHERE id = '<id>';`
 
 ## Decisões de design
 
-Baseado no design system **"Air"** (sky canvas + frosted glass), com o tom adaptado para
-um residencial sênior: **sereno, sofisticado e acolhedor**, com a paleta puxada para
-tons mais profundos de **navy** (`#1C4A6E`) combinados com o **celeste** da marca
-(`#5CBFE5`) e o vídeo de água do hero.
+Redesign **editorial premium** (ver [`REDESIGN.md`](REDESIGN.md) para a auditoria
+completa e os porquês): revista de hospitalidade, não SaaS. Tom **sereno, sofisticado
+e acolhedor** — o azul da marca (**navy** `#1C4A6E` + **celeste** `#5CBFE5`) como
+protagonista sobre **neutros quentes** (papel `#FBF9F5`, areia `#EFE8DB`).
 
-- Tipografia: **Plus Jakarta Sans** em todo o site (logotipo, títulos e texto/UI),
-  com a hierarquia criada por **variações de peso** (700 títulos · 600 subtítulos ·
-  500 destaques · 400 corpo) e estilo (itálico nos destaques).
-- Tokens fiéis ao Design.md: base 4px, *section gap* generoso, cards 14px, botões 8px,
-  inputs 4px; superfícies *Cloud White* / *Haze Grey* sobre o *sky canvas*; *frosted glass*
-  via `backdrop-filter`.
-- Cor contida: azul como protagonista; celeste reservado para as ações principais.
+- Tipografia: **Fraunces** (display serifada, títulos com itálicos de acento) +
+  **Plus Jakarta Sans** (texto/UI). **Self-hosted** em `assets/fonts/` (4 woff2
+  variáveis, subset latin) — sem dependência de CDN para a tipografia.
+- Composição: hairlines no lugar de vidro/sombras; índices numerados no lugar de
+  grades de cards; galeria assimétrica nos espaços; ritmo de seção variado
+  (papel → navy → areia).
+- Botões com hierarquia: primário celeste sólido (pill), navy escuro, contorno e
+  link editorial com seta.
+- Microinterações: reveal sutil no scroll (IntersectionObserver, 1×), hovers
+  discretos — tudo desligado sob `prefers-reduced-motion` (conteúdo nunca fica
+  oculto sem JS).
 
 ## Acessibilidade & performance
 
@@ -166,5 +170,5 @@ python3 -m http.server 8000
 # acesse http://localhost:8000
 ```
 
-> As fontes vêm do Google Fonts; sem internet, o site usa fontes do sistema (serif/sans)
-> como *fallback*, mantendo o visual.
+> As fontes são **self-hosted** (`assets/fonts/`); sem elas, o site cai em fontes do
+> sistema (serif/sans) como *fallback*, mantendo a hierarquia.

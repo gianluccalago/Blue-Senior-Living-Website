@@ -1,16 +1,23 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" role="img" aria-label="Long Stay — imagem ilustrativa">
   <defs>
-    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#356E92"/>
-      <stop offset="1" stop-color="#1C4A6E"/>
+    <linearGradient id="w3" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#FBF9F5"/>
+      <stop offset="1" stop-color="#EFE8DB" stop-opacity="0"/>
     </linearGradient>
-    <radialGradient id="glow" cx="0.72" cy="0.26" r="0.9">
-      <stop offset="0" stop-color="#5CBFE5" stop-opacity="0.30"/>
-      <stop offset="0.55" stop-color="#5CBFE5" stop-opacity="0"/>
-    </radialGradient>
   </defs>
-  <rect width="800" height="600" fill="url(#g)"/>
-  <rect width="800" height="600" fill="url(#glow)"/>
-  <text x="400" y="318" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="46" letter-spacing="2" fill="#ffffff" fill-opacity="0.94">Long Stay</text>
-  <text x="400" y="360" text-anchor="middle" font-family="Arial, sans-serif" font-size="17" letter-spacing="3.5" fill="#ffffff" fill-opacity="0.6">IMAGEM ILUSTRATIVA</text>
+  <rect width="800" height="600" fill="#EFE8DB"/>
+  <rect width="800" height="600" fill="url(#w3)" opacity=".55"/>
+  <!-- poltrona de leitura -->
+  <g stroke="#1C4A6E" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round" opacity=".6">
+    <path d="M296 262 a52 52 0 0 1 104 0 v66"/>
+    <path d="M270 318 a26 26 0 0 1 26 26 v30 h104 v-30 a26 26 0 0 1 52 0 v64 h-208 v-64 a26 26 0 0 1 26 -26 z"/>
+    <path d="M296 408 v26 M400 408 v26"/>
+  </g>
+  <!-- planta -->
+  <g stroke="#1C4A6E" stroke-width="2.5" fill="none" stroke-linecap="round" opacity=".5">
+    <path d="M540 434 h56 l-8 -58 h-40 z"/>
+    <path d="M568 376 v-44 M568 350 q-30 -12 -34 -44 q34 2 34 44 M568 336 q30 -14 32 -46 q-32 4 -32 46"/>
+  </g>
+  <circle cx="252" cy="196" r="42" fill="none" stroke="#5CBFE5" stroke-width="2.5" opacity=".5"/>
+  <text x="400" y="512" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-style="italic" font-size="20" letter-spacing="1" fill="#1C4A6E" fill-opacity=".55">imagem ilustrativa</text>
 </svg>

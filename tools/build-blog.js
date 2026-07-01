@@ -34,9 +34,10 @@ const fmtDate = (iso) => {
   return new Intl.DateTimeFormat("pt-BR", { day: "numeric", month: "long", year: "numeric" }).format(d);
 };
 
+// Fontes self-hosted (declaradas via @font-face em styles.css); só o preload aqui.
 const fonts =
-  '<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>' +
-  '<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500;1,600&display=swap" rel="stylesheet">';
+  `<link rel="preload" href="${BASE}assets/fonts/fraunces.woff2" as="font" type="font/woff2" crossorigin>` +
+  `<link rel="preload" href="${BASE}assets/fonts/plus-jakarta-sans.woff2" as="font" type="font/woff2" crossorigin>`;
 
 function head({ title, desc, cover, canonical, article }) {
   const img = SITE_URL && cover ? `${SITE_URL}/${cover}` : (cover || "");
