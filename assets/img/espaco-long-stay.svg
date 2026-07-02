@@ -19,5 +19,5 @@
     <path d="M568 376 v-44 M568 350 q-30 -12 -34 -44 q34 2 34 44 M568 336 q30 -14 32 -46 q-32 4 -32 46"/>
   </g>
   <circle cx="252" cy="196" r="42" fill="none" stroke="#5CBFE5" stroke-width="2.5" opacity=".5"/>
-  <text x="400" y="512" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-style="italic" font-size="20" letter-spacing="1" fill="#1C4A6E" fill-opacity=".55">imagem ilustrativa</text>
+  <text x="400" y="512" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="13" letter-spacing="3.5" fill="#1C4A6E" fill-opacity=".5">IMAGEM ILUSTRATIVA</text>
 </svg>

@@ -23,5 +23,5 @@
     <path d="M148 414 v26 M472 414 v26"/>
     <path d="M184 292 h40 M184 309 h40" stroke-width="2.5" opacity=".8"/>
   </g>
-  <text x="400" y="512" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-style="italic" font-size="20" letter-spacing="1" fill="#1C4A6E" fill-opacity=".55">imagem ilustrativa</text>
+  <text x="400" y="512" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="13" letter-spacing="3.5" fill="#1C4A6E" fill-opacity=".5">IMAGEM ILUSTRATIVA</text>
 </svg>
