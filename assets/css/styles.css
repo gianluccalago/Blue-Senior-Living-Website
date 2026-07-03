@@ -336,16 +336,27 @@ ul, ol { list-style: none; padding: 0; }
   padding: 130px 0 110px; overflow: hidden;
   color: #fff;
 }
-.hero__media { position: absolute; inset: 0; z-index: 0; background: var(--navy-950); }
+/* O pôster é o fundo do container: se o vídeo não tocar (autoplay bloqueado,
+   Low Power Mode), vê-se a imagem parada — sem NENHUM botão de play, porque o
+   controle nativo mora dentro do <video>, que fica invisível até tocar de fato. */
+.hero__media {
+  position: absolute; inset: 0; z-index: 0;
+  background: var(--navy-950) url('../img/hero-poster.jpg') center / cover no-repeat;
+}
 .hero__video {
   width: 100%; height: 100%; object-fit: cover; object-position: center; pointer-events: none;
-  transform-origin: 50% 45%; animation: heroZoom 44s ease-in-out infinite alternate;
+  opacity: 0; transition: opacity .8s var(--ease);
+  transform-origin: 50% 45%; backface-visibility: hidden; will-change: transform, opacity;
+  animation: heroZoom 50s ease-in-out infinite alternate;
 }
-@keyframes heroZoom { from { transform: scale(1.02); } to { transform: scale(1.09); } }
-/* Suprime o overlay de "play" do iOS Safari no vídeo mudo de fundo */
+.hero__video.is-playing { opacity: 1; }   /* só aparece quando o vídeo realmente toca */
+@keyframes heroZoom { from { transform: scale(1.03) translateZ(0); } to { transform: scale(1.08) translateZ(0); } }
+/* Suprime qualquer chrome/overlay de "play" do WebKit no vídeo mudo de fundo */
 .hero__video::-webkit-media-controls,
 .hero__video::-webkit-media-controls-enclosure,
 .hero__video::-webkit-media-controls-panel,
+.hero__video::-webkit-media-controls-overlay-play-button,
+.hero__video::-webkit-media-controls-play-button,
 .hero__video::-webkit-media-controls-start-playback-button {
   display: none !important; -webkit-appearance: none; opacity: 0;
 }
@@ -843,6 +854,12 @@ ul, ol { list-style: none; padding: 0; }
   html { scroll-padding-top: 82px; }
 }
 
+/* Mobile/tablet: sem zoom no vídeo — só o loop, mais fluido (evita jank de
+   transform contínuo competindo com o decode no celular). */
+@media (max-width: 768px) {
+  .hero__video { animation: none; transform: none; will-change: opacity; }
+}
+
 @media (max-width: 560px) {
   .wrap { width: min(100% - 36px, var(--wrap)); }
   .nav__inner { width: min(100% - 36px, 1280px); }
@@ -862,9 +879,16 @@ ul, ol { list-style: none; padding: 0; }
   .assure li:last-child { border-bottom: 0; }
   .family__text > .btn { width: 100%; white-space: normal; }
   .careers__actions { width: 100%; min-width: 0; }
-  .footer__inner { grid-template-columns: 1fr; }
-  .footer__hero { padding-top: 56px; }
-  .footer__bar { flex-direction: column; align-items: flex-start; }
+  /* Rodapé centralizado e simétrico no mobile */
+  .footer__hero { padding-top: 56px; text-align: center; }
+  .footer__statement { margin-inline: auto; }
+  .footer__hero-cta { align-items: center; }
+  .footer__inner { grid-template-columns: 1fr; text-align: center; gap: 40px; }
+  .footer__logo { margin-inline: auto; }
+  .footer__tagline { margin-inline: auto; }
+  .footer__col a:not(.btn) { margin-inline: auto; justify-content: center; }
+  .footer__col a:not(.btn):hover { padding-left: 0; }
+  .footer__bar { flex-direction: column; align-items: center; text-align: center; gap: 10px; }
   .btn--lg { white-space: normal; }
   .fab__label { display: none; }
   .fab { padding: 15px; }

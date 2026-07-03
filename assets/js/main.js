@@ -133,10 +133,30 @@ const CONFIG = {
     video.setAttribute("playsinline", "");
     video.setAttribute("webkit-playsinline", "");
 
+    // O vídeo só fica visível quando REALMENTE está tocando. Enquanto não toca
+    // (autoplay bloqueado / Low Power), ele fica opacity:0 — junto com o botão de
+    // play nativo, que vive dentro do elemento — e o pôster (fundo do container) aparece.
+    // Só considera "tocando" quando o currentTime AVANÇA (playback real) — sinal
+    // definitivo e seguro: vídeo bloqueado fica em currentTime 0, então nunca aparece.
+    const markPlaying = () => {
+      if (video.classList.contains("is-playing")) return;
+      if (!video.paused && !video.ended && video.readyState >= 2 && video.currentTime > 0) {
+        video.classList.add("is-playing");
+        video.removeEventListener("timeupdate", markPlaying);
+        if (poll) { clearInterval(poll); poll = null; }
+      }
+    };
+    // "playing" pode ter passado antes do JS; "timeupdate" e o poll pegam o vídeo já em andamento.
+    video.addEventListener("playing", markPlaying);
+    video.addEventListener("timeupdate", markPlaying);
+    let poll = setInterval(markPlaying, 250);
+    setTimeout(() => { if (poll) { clearInterval(poll); poll = null; } }, 6000);
+
     const play = () => {
       if (reduce.matches) return;
       const p = video.play();
-      if (p && typeof p.catch === "function") p.catch(() => {/* will retry on gesture */});
+      if (p && typeof p.then === "function") p.then(markPlaying).catch(() => {/* retry on gesture */});
+      else markPlaying();
     };
     const stop = () => video.pause();
 

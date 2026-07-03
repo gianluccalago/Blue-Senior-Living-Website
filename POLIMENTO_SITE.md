@@ -65,6 +65,25 @@ Regras seguidas:
    toque (`pointer-events` gerenciado no FAB oculto); **fluxo de agendamento
    completo testado em 390px com touch** (§4).
 
+## 2b. Ajustes pós-feedback (vídeo do hero + rodapé mobile)
+
+- **Vídeo sem botão de play no mobile** — o pôster virou **fundo CSS** do
+  `.hero__media` e o `<video>` fica `opacity:0` até **realmente** tocar
+  (classe `is-playing`, adicionada só quando o `currentTime` avança — sinal
+  seguro que nunca dispara com autoplay bloqueado). Como o botão de play nativo
+  vive *dentro* do elemento `<video>`, mantê-lo invisível até tocar elimina o
+  botão em qualquer navegador (iOS Low Power, in-app, etc.); no lugar aparece o
+  pôster limpo. Seletores WebKit de controle reforçados
+  (`overlay-play-button`, `play-button`, `start-playback-button`).
+- **Mais fluido** — hints de GPU no vídeo (`backface-visibility`, `will-change`,
+  `translateZ`) e **zoom desligado em telas ≤768px** (o transform contínuo
+  competindo com o decode era a fonte do "engasgo"; o loop do vídeo já dá vida).
+  No desktop o zoom ficou mais lento e suave (50s).
+- **Rodapé centralizado no mobile** (≤560px) — declaração, botão "Agendar",
+  nota, logo, tagline, colunas (Navegue/Contato/Acesso) e a barra de copyright
+  ficam centralizados e simétricos; o deslize de hover dos links é desativado
+  quando centralizado para não "pular".
+
 ## 3. Performance
 
 - Nenhuma biblioteca nova; +~40 linhas de CSS e +~45 de JS (IntersectionObserver e
