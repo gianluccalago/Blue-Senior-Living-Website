@@ -172,8 +172,40 @@ const CONFIG = {
       entries.forEach((en) => {
         if (en.isIntersecting) { en.target.classList.add("is-visible"); io.unobserve(en.target); }
       });
-    }, { rootMargin: "0px 0px -8% 0px", threshold: 0.06 });
+    }, { rootMargin: "0px 0px -5% 0px", threshold: 0.04 });
     els.forEach((el) => io.observe(el));
+  }
+
+  /* ---------- 4c. FAB do WhatsApp — entra suave após um pequeno scroll ----------
+     Sem JS o botão fica sempre visível (o CSS só o esconde sob html.has-fab). */
+  function fab() {
+    const el = $(".fab");
+    if (!el) return;
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
+    document.documentElement.classList.add("has-fab");
+    const show = () => el.classList.add("is-in");
+    if (reduce.matches) { show(); return; }
+    if (window.scrollY > 200) { show(); return; }
+    const onScroll = () => {
+      if (window.scrollY > 200) { show(); window.removeEventListener("scroll", onScroll); }
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+  }
+
+  /* ---------- 4d. Imagens — fade-in ao carregar (evita "pop") ----------
+     Gate via html.has-imgfade: sem JS ou com reduced-motion, nada fica oculto. */
+  function mediaFade() {
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
+    if (reduce.matches) return;
+    const imgs = $$("img");
+    if (!imgs.length) return;
+    document.documentElement.classList.add("has-imgfade");
+    imgs.forEach((img) => {
+      const done = () => img.classList.add("is-loaded");
+      if (img.complete && img.naturalWidth > 0) { done(); return; }
+      img.addEventListener("load", done, { once: true });
+      img.addEventListener("error", done, { once: true });
+    });
   }
 
   /* ---------- 5. Visit scheduler (calendar backed by the app's Supabase) ----------
@@ -373,6 +405,7 @@ const CONFIG = {
 
       const dateStr = selDate, timeStr = selTime;
       confirmBtn.disabled = true;
+      confirmBtn.classList.add("is-loading");
       const label = confirmBtn.textContent;
       confirmBtn.textContent = "Enviando…";
       try {
@@ -402,6 +435,7 @@ const CONFIG = {
         loadAvailability({ preserve: true, silent: true });
       } finally {
         confirmBtn.disabled = false;
+        confirmBtn.classList.remove("is-loading");
         confirmBtn.textContent = label;
       }
     });
@@ -442,6 +476,8 @@ const CONFIG = {
     drawer();
     heroVideo();
     reveals();
+    fab();
+    mediaFade();
     scheduler();
   }
 
