@@ -882,7 +882,7 @@ ul, ol { list-style: none; padding: 0; }
   /* Rodapé centralizado e simétrico no mobile */
   .footer__hero { padding-top: 56px; text-align: center; }
   .footer__statement { margin-inline: auto; }
-  .footer__hero-cta { align-items: center; }
+  .footer__hero-cta { align-items: center; justify-self: center; }
   .footer__inner { grid-template-columns: 1fr; text-align: center; gap: 40px; }
   .footer__logo { margin-inline: auto; }
   .footer__tagline { margin-inline: auto; }
