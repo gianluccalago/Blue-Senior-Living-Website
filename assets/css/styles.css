@@ -310,11 +310,11 @@ ul, ol { list-style: none; padding: 0; }
 .drawer__panel {
   position: absolute; top: 0; right: 0; height: 100%; width: min(86vw, 380px);
   background: var(--paper); color: var(--ink);
-  padding: 22px 26px calc(24px + env(safe-area-inset-bottom));
+  padding: calc(22px + env(safe-area-inset-top)) 26px calc(24px + env(safe-area-inset-bottom));
   display: flex; flex-direction: column; gap: 2px;
   box-shadow: -24px 0 70px -40px rgba(8, 21, 31, .7);
   transform: translateX(100%); transition: transform 300ms var(--ease);
-  overflow-y: auto;
+  overflow-y: auto; overscroll-behavior: contain;
 }
 .drawer.is-open .drawer__panel { transform: translateX(0); }
 .drawer__head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; color: var(--navy-600); }
@@ -875,6 +875,12 @@ ul, ol { list-style: none; padding: 0; }
   .nav__cta--mini { display: inline; }
   .nav__inner { height: 66px; }
   html { scroll-padding-top: 82px; }
+  /* Mobile: barra rolada totalmente opaca — o vidro translúcido deixava o
+     conteúdo vazar por trás do menu compacto. */
+  .nav.is-scrolled {
+    background: var(--paper);
+    backdrop-filter: none; -webkit-backdrop-filter: none;
+  }
 }
 
 /* Mobile/tablet: sem zoom no vídeo — só o loop, mais fluido (evita jank de

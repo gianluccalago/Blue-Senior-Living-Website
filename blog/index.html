@@ -17,6 +17,7 @@
   <link rel="preload" href="../assets/fonts/fraunces.woff2" as="font" type="font/woff2" crossorigin><link rel="preload" href="../assets/fonts/plus-jakarta-sans.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="../assets/css/styles.css">
   <link rel="stylesheet" href="../assets/css/blog.css">
+  <script src="../assets/js/drawer.js" defer></script>
 </head>
 <body class="blog-page">
   <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
@@ -38,9 +39,42 @@
           <span>Área do cliente</span>
         </a>
         <a class="btn btn--primary nav__cta" href="../index.html#agendar"><span class="nav__cta--full">Agendar visita</span><span class="nav__cta--mini">Agendar</span></a>
+        <button class="nav__toggle" type="button" aria-label="Abrir menu" aria-expanded="false" aria-controls="mobile-menu" data-menu-toggle>
+          <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+        </button>
       </div>
     </div>
   </header>
+
+  <!-- Mobile drawer -->
+  <div class="drawer" id="mobile-menu" data-drawer hidden>
+    <div class="drawer__backdrop" data-drawer-close></div>
+    <nav class="drawer__panel" role="dialog" aria-modal="true" aria-label="Menu">
+      <div class="drawer__head">
+        <span class="brand brand--drawer">
+          <img class="brand__emblem-img" src="../assets/logo/emblem.svg" alt="" width="30" height="46">
+          <span class="brand__text"><span class="brand__name">BLUE</span><span class="brand__sub">SENIOR LIVING</span></span>
+        </span>
+        <button class="drawer__close" type="button" aria-label="Fechar menu" data-drawer-close>
+          <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+        </button>
+      </div>
+      <a href="../index.html" data-drawer-link>Início</a>
+      <a href="../index.html#conceito" data-drawer-link>O conceito</a>
+      <a href="../index.html#espacos" data-drawer-link>Os espaços</a>
+      <a href="../index.html#familia" data-drawer-link>Para a família</a>
+      <a href="../index.html#localizacao" data-drawer-link>Localização</a>
+      <a href="index.html" data-drawer-link aria-current="page">Conteúdos</a>
+      <a href="../index.html#trabalhe" data-drawer-link>Trabalhe conosco</a>
+      <div class="drawer__cta">
+        <a class="btn btn--primary btn--block" href="../index.html#agendar" data-drawer-link>Agendar visita</a>
+        <a class="btn btn--ghost-ink btn--block" href="https://blue-senior-living-app.onrender.com" target="_blank" rel="noopener noreferrer">
+          <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6M20 4l-9 9"/><path d="M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg> Área do cliente
+        </a>
+      </div>
+    </nav>
+  </div>
+
   <main id="conteudo" class="blog">
     <header class="blog-hero">
       <div class="wrap">

@@ -86,37 +86,10 @@ const CONFIG = {
     window.addEventListener("resize", update);
   }
 
-  /* ---------- 3. Mobile drawer ---------- */
-  function drawer() {
-    const drawerEl = $("[data-drawer]");
-    const toggle = $("[data-menu-toggle]");
-    if (!drawerEl || !toggle) return;
-    let lastFocus = null;
-
-    const open = () => {
-      lastFocus = document.activeElement;
-      drawerEl.hidden = false;
-      requestAnimationFrame(() => drawerEl.classList.add("is-open"));
-      toggle.setAttribute("aria-expanded", "true");
-      document.body.style.overflow = "hidden";
-      const first = $(".drawer__close", drawerEl);
-      if (first) first.focus();
-    };
-    const close = () => {
-      drawerEl.classList.remove("is-open");
-      toggle.setAttribute("aria-expanded", "false");
-      document.body.style.overflow = "";
-      setTimeout(() => { drawerEl.hidden = true; }, 320);
-      if (lastFocus) lastFocus.focus();
-    };
-
-    toggle.addEventListener("click", open);
-    $$("[data-drawer-close]", drawerEl).forEach((el) => el.addEventListener("click", close));
-    $$("[data-drawer-link]", drawerEl).forEach((el) => el.addEventListener("click", close));
-    document.addEventListener("keydown", (e) => {
-      if (e.key === "Escape" && !drawerEl.hidden) close();
-    });
-  }
+  /* ---------- 3. Mobile drawer ----------
+     Movido para assets/js/drawer.js (compartilhado com o blog): fecha no
+     botão voltar do celular, prende o foco no painel e trava o scroll
+     também no iOS. */
 
   /* ---------- 4. Hero video — robust mobile autoplay + reduced motion ---------- */
   function heroVideo() {
@@ -493,7 +466,6 @@ const CONFIG = {
   function init() {
     applyConfig();
     navOnScroll();
-    drawer();
     heroVideo();
     reveals();
     fab();
