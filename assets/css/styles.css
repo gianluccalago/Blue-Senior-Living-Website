@@ -332,7 +332,10 @@ ul, ol { list-style: none; padding: 0; }
 /* ===================== Hero — vídeo com composição editorial ===================== */
 .hero {
   position: relative; min-height: 100svh;
-  display: flex; flex-direction: column; justify-content: center;
+  display: flex; flex-direction: column;
+  /* Centralização via margin-block:auto no conteúdo (não justify-content:center):
+     no Safari/iOS, flex + min-height + justify center transborda o conteúdo por
+     baixo da navbar quando ele excede a altura; margens auto nunca ficam negativas. */
   padding: 130px 0 110px; overflow: hidden;
   color: #fff;
 }
@@ -371,6 +374,7 @@ ul, ol { list-style: none; padding: 0; }
   width: min(100% - 48px, var(--wrap)); margin-inline: auto;
   max-width: min(100% - 48px, 1040px);
   margin-left: max(24px, calc((100vw - var(--wrap)) / 2));
+  margin-block: auto; /* centra vertical sem transbordar (ver .hero acima) */
 }
 .hero__eyebrow {
   display: flex; align-items: center; gap: 14px;
