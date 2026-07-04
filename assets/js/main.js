@@ -68,12 +68,15 @@ const CONFIG = {
     if (yr) yr.textContent = new Date().getFullYear();
   }
 
-  /* ---------- 2. Scroll-aware navbar ---------- */
+  /* ---------- 2. Scroll-aware navbar ----------
+     A barra é transparente SÓ no topo absoluto. Qualquer rolagem já traz o
+     fundo opaco: antes o gatilho era o fim do hero (~1 tela inteira), e o
+     texto do hero deslizava por baixo da barra transparente, sobrepondo o
+     logo e os botões. */
   function navOnScroll() {
     const nav = $("[data-nav]");
-    const hero = $("#hero");
     if (!nav) return;
-    const threshold = () => (hero ? hero.offsetHeight - 90 : 120);
+    const threshold = () => 8;
     let ticking = false;
     const update = () => {
       nav.classList.toggle("is-scrolled", window.scrollY > threshold());
