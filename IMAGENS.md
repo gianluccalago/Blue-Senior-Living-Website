@@ -38,13 +38,18 @@ Senior Living" que aparece nas cenas faz parte do projeto.
 
 - Diretório único: `assets/img/renders/`. Cada imagem existe em **AVIF + WebP**
   (via `<picture>`) em 3–4 larguras (`480/768/1080/1440`; a aérea em `768/1280/1672`),
-  com `srcset`/`sizes` responsivos e `loading="lazy"` em tudo.
+  com `srcset`/`sizes` responsivos e `loading="lazy"` em tudo. Qualidade de encode
+  AVIF 66 / WebP 82 — calibrada para os variantes menores (480/768w) não mostrarem
+  artefato de compressão nos cards estreitos.
+- Os `sizes` dos cards refletem a largura real de exibição no desktop (688px para
+  Suíte/Apartamento, ~483px para Suíte Premium/Long Stay), para o browser escolher o
+  variante certo — em telas 1x, 768w; em 2x, 1080/1440w.
 - `originals/` guarda o arquivo-fonte de cada render usado (qualidade alta, não
   referenciado pelas páginas) para permitir novos crops/reprocessamentos.
-- Payload medido percorrendo a página inteira: **~317 KB no desktop (1440px @1x)** e
-  **~593 KB no mobile (390px @3x)** somando todos os renders — todos lazy, nada entra
-  no carregamento inicial (o hero continua sendo o vídeo). Nenhum arquivo passa de
-  ~190 KB.
+- Payload medido percorrendo a página inteira (todos os renders, todos lazy — nada
+  entra no carregamento inicial; o hero continua sendo o vídeo): **~482 KB no desktop
+  1x**, **~800 KB no desktop 2x** e **~844 KB no mobile 390px @3x**. Nenhum arquivo
+  passa de ~276 KB.
 - `og-fachada.jpg` (1200×630, JPEG) substitui o poster do vídeo como imagem de
   compartilhamento social.
 
