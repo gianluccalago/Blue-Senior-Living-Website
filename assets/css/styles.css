@@ -52,8 +52,10 @@
   /* ---- Neutros quentes (calor humano de apoio ao azul) ---- */
   --paper:   #fbf9f5;    /* fundo principal — off-white quente */
   --paper-2: #f4f0e8;    /* apoio */
-  --sand:    #efe8db;    /* areia — seções de acolhimento */
-  --sand-2:  #e7dfcf;
+  /* Antigos tons "areia" agora em azul claro (paleta só azul + branco):
+     usados nas seções de acolhimento, dias do calendário e placeholders. */
+  --sand:    #e7f1f9;
+  --sand-2:  #d9e9f4;
 
   /* ---- Tinta ---- */
   --ink:       #152532;
@@ -702,7 +704,7 @@ ul, ol { list-style: none; padding: 0; }
 }
 .cal__cell--empty { visibility: hidden; }
 .cal__cell.is-off { color: #c9d1d9; cursor: default; }
-.cal__cell.is-open { color: var(--ink); cursor: pointer; background: var(--sand); }
+.cal__cell.is-open { color: var(--navy-700); cursor: pointer; background: var(--sand); }
 .cal__cell.is-open:hover { background: rgba(92, 191, 229, .28); }
 .cal__cell.is-selected { background: var(--navy-600); color: #fff; }
 .slots { margin-top: var(--s-20); }
@@ -713,9 +715,9 @@ ul, ol { list-style: none; padding: 0; }
   background: transparent; color: var(--ink); font-family: var(--font-ui); font-weight: 600; font-size: 14px; cursor: pointer;
   transition: border-color var(--dur-fast) var(--ease), background var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease);
 }
-.slot:hover:not(.is-busy):not(.is-requested) { border-color: var(--navy-500); background: var(--paper-2); }
+.slot:hover:not(.is-busy):not(.is-requested):not(.is-selected) { border-color: var(--navy-500); background: rgba(92, 191, 229, .12); }
 .slot.is-selected { background: var(--navy-600); color: #fff; border-color: var(--navy-600); }
-.slot.is-busy { color: #b6bfc7; background: var(--paper-2); border-color: transparent; cursor: not-allowed; text-decoration: line-through; }
+.slot.is-busy { color: #b6bfc7; background: #eef3f7; border-color: transparent; cursor: not-allowed; text-decoration: line-through; }
 .slot.is-requested { color: var(--navy-600); background: rgba(92, 191, 229, .16); border-color: rgba(47, 155, 203, .4); cursor: default; }
 .slot.is-requested::after { content: " ✓"; font-weight: 700; }
 .booker__form { margin-top: var(--s-20); }
