@@ -5,7 +5,7 @@
    ===================================================================== */
 const CONFIG = {
   // Link do aplicativo / área do cliente (abre em nova aba).
-  APP_URL: "https://blue-senior-living-app.onrender.com",
+  APP_URL: "https://app.blueseniorliving.com.br",
 
   // WhatsApp em formato internacional, só dígitos (DDI 55 + DDD + número).
   WHATSAPP: "5541999999999",                               // <-- PLACEHOLDER (editar)
@@ -284,7 +284,8 @@ const CONFIG = {
         const s = `${view.getFullYear()}-${pad(view.getMonth() + 1)}-${pad(day)}`;
         const btn = document.createElement("button");
         btn.type = "button"; btn.className = "cal__cell"; btn.textContent = String(day);
-        if (availByDate.has(s) && s >= todayStr) {
+        // Bloqueia hoje (e o passado): não faz sentido agendar uma visita para o mesmo dia.
+        if (availByDate.has(s) && s > todayStr) {
           btn.classList.add("is-open");
           if (s === selDate) btn.classList.add("is-selected");
           btn.setAttribute("aria-label", fmtLong(s));
@@ -350,6 +351,7 @@ const CONFIG = {
         (data || []).forEach((r) => {
           const t = (r.hora || "").slice(0, 5);
           if (!t || !r.data) return;
+          if (r.data <= todayStr) return; // sem agendamento para hoje/passado
           if (!next.has(r.data)) next.set(r.data, []);
           if (next.get(r.data).indexOf(t) === -1) next.get(r.data).push(t);
         });

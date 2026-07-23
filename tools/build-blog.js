@@ -16,7 +16,7 @@ const posts = require("../blog/posts.js");
 /* ----- Configuração (edite aqui) ----- */
 const SITE = "Blue Senior Living";
 const SITE_URL = "https://blueseniorliving.com.br"; // <-- EDITE para o domínio final (SEO / preview social)
-const APP_URL = "https://blue-senior-living-app.onrender.com"; // Área do cliente
+const APP_URL = "https://app.blueseniorliving.com.br"; // Área do cliente
 const WHATSAPP = "5541999999999"; // só dígitos (DDI 55 + DDD + número)
 
 const ROOT = path.join(__dirname, "..");
