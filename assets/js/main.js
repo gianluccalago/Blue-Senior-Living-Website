@@ -248,6 +248,9 @@ const CONFIG = {
       fig.className = "lightbox__fig";
       const big = document.createElement("img");
       big.src = largest; big.alt = img.alt || "";
+      // O gate de fade (.has-imgfade img { opacity: 0 }) só marca is-loaded nas
+      // imagens presentes no init — sem isto, a imagem do lightbox fica invisível.
+      big.classList.add("is-loaded");
       const cap = document.createElement("figcaption");
       cap.className = "lightbox__cap";
       cap.textContent = (title ? title + " · " : "") + "Imagem ilustrativa — perspectiva artística do projeto";

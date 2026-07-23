@@ -264,11 +264,17 @@ ul, ol { list-style: none; padding: 0; }
   box-shadow: 0 14px 40px -32px rgba(12, 34, 51, .5);
 }
 .nav__inner {
+  position: relative;
   width: min(100% - 48px, 1280px); margin-inline: auto;
   display: flex; align-items: center; gap: var(--s-16);
   height: 78px;
 }
-.nav__links { display: flex; align-items: center; gap: 2px; margin-left: auto; }
+/* Poucos itens pedem equilíbrio clássico: marca à esquerda, links no centro
+   exato da barra, ações à direita. */
+.nav__links {
+  position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
+  display: flex; align-items: center; gap: 18px;
+}
 .nav__links a {
   position: relative;
   font-weight: 600; font-size: 11.5px; letter-spacing: .1em; text-transform: uppercase;
@@ -284,7 +290,7 @@ ul, ol { list-style: none; padding: 0; }
 .nav__links a:hover { opacity: 1; }
 .nav__links a:hover::after { transform: scaleX(1); }
 
-.nav__actions { display: flex; align-items: center; gap: var(--s-12); margin-left: var(--s-8); }
+.nav__actions { display: flex; align-items: center; gap: var(--s-12); margin-left: auto; }
 
 .link-app {
   display: inline-flex; align-items: center; gap: 7px;
@@ -876,6 +882,8 @@ ul, ol { list-style: none; padding: 0; }
   box-shadow: 0 40px 90px -40px rgba(0, 0, 0, .8);
   cursor: default;
 }
+/* Garantia dupla contra o gate de fade: a imagem do lightbox nunca fica oculta */
+.has-imgfade .lightbox img { opacity: 1; }
 .lightbox__cap { color: rgba(233, 241, 248, .72); font-size: 13px; text-align: center; }
 .lightbox__close {
   position: fixed; z-index: 1;
