@@ -853,10 +853,13 @@ ul, ol { list-style: none; padding: 0; }
 .section--concept > .wrap { position: relative; z-index: 1; }
 
 /* ===================== Lightbox das acomodações ===================== */
+/* O botão e o <picture> precisam preencher o figure (que tem aspect-ratio),
+   senão o height:100% da imagem resolve contra altura auto e o crop desmonta. */
 .space__zoom {
-  display: block; width: 100%; padding: 0; border: 0; background: none;
+  display: block; width: 100%; height: 100%; padding: 0; border: 0; background: none;
   cursor: zoom-in; color: inherit; border-radius: inherit;
 }
+.space__zoom picture { display: block; width: 100%; height: 100%; }
 .lightbox {
   position: fixed; inset: 0; z-index: 200;
   background: rgba(8, 21, 31, .9);
