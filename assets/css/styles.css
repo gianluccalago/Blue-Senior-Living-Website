@@ -550,23 +550,6 @@ ul, ol { list-style: none; padding: 0; }
   color: var(--navy-500); align-self: center;
 }
 
-.spaces__band {
-  margin-top: clamp(40px, 6vw, 72px);
-  border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);
-  padding: clamp(26px, 3.5vw, 40px) 2px;
-  display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--s-24);
-}
-.spaces__band-text { min-width: 0; max-width: 62ch; }
-.spaces__band-text > p:first-child {
-  font-family: var(--font-display); font-weight: 450; font-size: clamp(18px, 1.8vw, 22px);
-  line-height: 1.45; color: var(--ink);
-}
-.rooms__scarcity {
-  margin-top: 12px; display: flex; align-items: flex-start; gap: 9px;
-  font-size: 14px; font-weight: 600; color: var(--navy-500);
-}
-.rooms__scarcity svg { width: 17px; height: 17px; flex: none; margin-top: 2px; color: var(--celeste-600); }
-
 /* ---- Confiança (areia) — declaração editorial ---- */
 .trust__head { max-width: 900px; }
 .trust__body {
@@ -967,8 +950,6 @@ ul, ol { list-style: none; padding: 0; }
   .pcare__item { grid-template-columns: 46px 1fr; }
   .spaces { grid-template-columns: 1fr; }
   .space__cap { grid-template-columns: auto 1fr; }
-  .spaces__band { flex-direction: column; align-items: stretch; }
-  .spaces__band .btn { width: 100%; white-space: normal; }
   .assure { flex-direction: column; gap: 0; }
   .assure li { border-right: 0; margin-right: 0; padding: 13px 0; border-bottom: 1px solid var(--line-soft); }
   .assure li:last-child { border-bottom: 0; }

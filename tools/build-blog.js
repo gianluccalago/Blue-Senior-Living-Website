@@ -73,10 +73,9 @@ function navbar(current) {
         <span class="brand__text"><span class="brand__name">BLUE</span><span class="brand__sub">SENIOR LIVING</span></span>
       </a>
       <nav class="nav__links" aria-label="Navegação principal">
-        <a href="${BASE}index.html#conceito">O conceito</a>
-        <a href="${BASE}index.html#espacos">Espaços</a>
-        <a href="${BASE}index.html#familia">Para a família</a>
+        <a href="${BASE}index.html">Início</a>
         <a href="index.html"${current === "blog" ? ' aria-current="page"' : ""}>Conteúdos</a>
+        <a href="${BASE}index.html#trabalhe">Trabalhe conosco</a>
       </nav>
       <div class="nav__actions">
         <a class="link-app" href="${APP_URL}" target="_blank" rel="noopener noreferrer">
