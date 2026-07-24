@@ -895,6 +895,22 @@ ul, ol { list-style: none; padding: 0; }
 }
 .lightbox__close:hover { background: rgba(23, 62, 92, .8); }
 .lightbox__close svg { width: 20px; height: 20px; margin-inline: auto; }
+/* Navegação lateral da galeria */
+.lightbox__nav {
+  position: fixed; z-index: 1; top: 50%; transform: translateY(-50%);
+  width: 46px; height: 46px; border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, .35); background: rgba(8, 21, 31, .55);
+  color: #fff; cursor: pointer;
+  transition: background var(--dur-fast) var(--ease);
+}
+.lightbox__nav:hover { background: rgba(23, 62, 92, .8); }
+.lightbox__nav svg { width: 22px; height: 22px; margin-inline: auto; }
+.lightbox__nav--prev { left: max(14px, env(safe-area-inset-left)); }
+.lightbox__nav--next { right: max(14px, env(safe-area-inset-right)); }
+.lightbox__fig img { transition: opacity 160ms var(--ease); }
+@media (max-width: 560px) {
+  .lightbox__nav { width: 42px; height: 42px; top: auto; bottom: max(18px, env(safe-area-inset-bottom)); transform: none; }
+}
 
 /* ===================== Responsivo ===================== */
 @media (max-width: 1024px) {

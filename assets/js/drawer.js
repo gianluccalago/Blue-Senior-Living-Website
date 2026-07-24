@@ -18,6 +18,10 @@
   var toggle = document.querySelector("[data-menu-toggle]");
   if (!drawerEl || !toggle) return;
 
+  // A restauração automática de rolagem do navegador briga com o trava-scroll
+  // (grava posição 0 no histórico e "pula" ao fechar via back) — controle manual.
+  try { if ("scrollRestoration" in history) history.scrollRestoration = "manual"; } catch (e) {}
+
   var panel = drawerEl.querySelector(".drawer__panel") || drawerEl;
   var lastFocus = null;
   var scrollY = 0;
@@ -44,10 +48,19 @@
     s.left = "0"; s.right = "0"; s.width = "100%";
     s.overflow = "hidden";
   }
+  /* Restaura a posição SEM animação (o html tem scroll-behavior: smooth —
+     um scrollTo animado faria a página "rolar do topo de volta" ao fechar). */
+  function instantScroll(y) {
+    var de = document.documentElement;
+    var prev = de.style.scrollBehavior;
+    de.style.scrollBehavior = "auto";
+    window.scrollTo(0, y);
+    de.style.scrollBehavior = prev;
+  }
   function unlockScroll() {
     var s = document.body.style;
     s.position = ""; s.top = ""; s.left = ""; s.right = ""; s.width = ""; s.overflow = "";
-    window.scrollTo(0, scrollY);
+    instantScroll(scrollY);
   }
 
   function focusables() {
@@ -61,13 +74,14 @@
     if (isOpen()) return;
     lastFocus = document.activeElement;
     if (hideTimer) { clearTimeout(hideTimer); hideTimer = null; }
+    // O voltar do celular passa a fechar o menu em vez de sair da página.
+    // ANTES do trava-scroll, para o histórico gravar a posição de rolagem real.
+    try { history.pushState({ blueDrawer: true }, ""); } catch (e) { /* file:// etc. */ }
     drawerEl.hidden = false;
     requestAnimationFrame(function () { drawerEl.classList.add("is-open"); });
     toggle.setAttribute("aria-expanded", "true");
     lockScroll();
     setBackgroundInert(true);
-    // O voltar do celular passa a fechar o menu em vez de sair da página.
-    try { history.pushState({ blueDrawer: true }, ""); } catch (e) { /* file:// etc. */ }
     var first = drawerEl.querySelector(".drawer__close");
     if (first) first.focus();
   }
@@ -80,7 +94,9 @@
     setBackgroundInert(false);
     unlockScroll();
     hideTimer = setTimeout(function () { drawerEl.hidden = true; hideTimer = null; }, 320);
-    if (lastFocus && !pendingNav && document.contains(lastFocus)) lastFocus.focus();
+    var y = scrollY;
+    requestAnimationFrame(function () { if (!pendingNav) instantScroll(y); });
+    if (lastFocus && !pendingNav && document.contains(lastFocus)) lastFocus.focus({ preventScroll: true });
     if (!fromPop && history.state && history.state.blueDrawer) {
       history.back(); // consome o estado; o popstate executa a navegação pendente
     } else {

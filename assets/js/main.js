@@ -204,13 +204,30 @@ const CONFIG = {
     });
   }
 
-  /* ---------- 4e. Lightbox das acomodações ----------
-     Clique amplia a imagem num overlay acessível: ESC, clique e o botão
-     VOLTAR do celular fecham (mesmo padrão de histórico do drawer). */
+  /* ---------- 4e. Lightbox das acomodações — galeria ----------
+     Clique amplia num overlay acessível com navegação entre as fotos
+     (setas, teclado e swipe) e legenda por foto. ESC, clique fora e o
+     botão VOLTAR do celular fecham (mesmo padrão de histórico do drawer).
+     O fechamento NÃO pode mexer no scroll: pushState acontece ANTES do
+     trava-scroll (senão o histórico grava posição 0), a restauração de
+     rolagem do navegador fica em modo manual e o foco volta sem scroll. */
   function lightbox() {
     const triggers = $$("[data-lightbox]");
     if (!triggers.length) return;
-    let overlay = null, lastFocus = null, scrollY = 0;
+    try { if ("scrollRestoration" in history) history.scrollRestoration = "manual"; } catch (e) {}
+
+    const NOTE = "Imagem ilustrativa — perspectiva artística do projeto";
+    const items = triggers.map((t) => {
+      const img = $("img", t);
+      const parts = (img.getAttribute("srcset") || "").split(",").map((p) => p.trim()).filter(Boolean);
+      return {
+        src: parts.length ? parts[parts.length - 1].split(/\s+/)[0] : (img.currentSrc || img.src),
+        alt: img.alt || "",
+        title: (t.closest(".space")?.querySelector(".space__cap h3")?.textContent || "").trim(),
+      };
+    });
+
+    let overlay = null, big = null, cap = null, lastFocus = null, scrollY = 0, idx = 0;
     const isOpen = () => !!overlay;
 
     const lock = () => {
@@ -218,69 +235,113 @@ const CONFIG = {
       const s = document.body.style;
       s.position = "fixed"; s.top = -scrollY + "px"; s.left = "0"; s.right = "0"; s.width = "100%";
     };
+    // Restaura a posição SEM animação: o html tem scroll-behavior smooth, e um
+    // scrollTo animado aqui faria a página "rolar do topo de volta" ao fechar.
+    const instantScroll = (y) => {
+      const de = document.documentElement;
+      const prev = de.style.scrollBehavior;
+      de.style.scrollBehavior = "auto";
+      window.scrollTo(0, y);
+      de.style.scrollBehavior = prev;
+    };
     const unlock = () => {
       const s = document.body.style;
       s.position = ""; s.top = ""; s.left = ""; s.right = ""; s.width = "";
-      window.scrollTo(0, scrollY);
+      instantScroll(scrollY);
     };
 
-    function open(trigger) {
-      const img = $("img", trigger);
-      if (!img || isOpen()) return;
-      // Maior variante do srcset (última entrada = mais larga)
-      const parts = (img.getAttribute("srcset") || "").split(",").map((p) => p.trim()).filter(Boolean);
-      const largest = parts.length ? parts[parts.length - 1].split(/\s+/)[0] : (img.currentSrc || img.src);
-      const title = (trigger.closest(".space")?.querySelector(".space__cap h3")?.textContent || "").trim();
+    const mkBtn = (cls, label, path) => {
+      const b = document.createElement("button");
+      b.type = "button"; b.className = cls;
+      b.setAttribute("aria-label", label);
+      b.innerHTML = `<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="${path}"/></svg>`;
+      return b;
+    };
 
+    function show(i) {
+      idx = (i + items.length) % items.length;
+      const it = items[idx];
+      big.style.opacity = "0.25";
+      big.src = it.src; big.alt = it.alt;
+      cap.textContent = `${it.title} (${idx + 1}/${items.length}) · ${NOTE}`;
+      overlay.setAttribute("aria-label", `Imagem ampliada — ${it.title}`);
+      // pré-carrega as vizinhas para a troca ser instantânea
+      [idx + 1, idx - 1].forEach((j) => { const p = new Image(); p.src = items[(j + items.length) % items.length].src; });
+    }
+
+    function open(startIdx) {
+      if (isOpen()) return;
       lastFocus = document.activeElement;
+      // ANTES do lock: o histórico grava a posição de rolagem real
+      try { history.pushState({ blueLightbox: true }, ""); } catch (e) { /* file:// */ }
+
       overlay = document.createElement("div");
       overlay.className = "lightbox";
       overlay.setAttribute("role", "dialog");
       overlay.setAttribute("aria-modal", "true");
-      overlay.setAttribute("aria-label", title ? `Imagem ampliada — ${title}` : "Imagem ampliada");
 
-      const closeBtn = document.createElement("button");
-      closeBtn.type = "button"; closeBtn.className = "lightbox__close";
-      closeBtn.setAttribute("aria-label", "Fechar imagem ampliada");
-      closeBtn.innerHTML = '<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>';
+      const closeBtn = mkBtn("lightbox__close", "Fechar imagem ampliada", "M6 6l12 12M18 6L6 18");
+      const prevBtn = mkBtn("lightbox__nav lightbox__nav--prev", "Foto anterior", "M15 6l-6 6 6 6");
+      const nextBtn = mkBtn("lightbox__nav lightbox__nav--next", "Próxima foto", "M9 6l6 6-6 6");
 
       const fig = document.createElement("figure");
       fig.className = "lightbox__fig";
-      const big = document.createElement("img");
-      big.src = largest; big.alt = img.alt || "";
+      big = document.createElement("img");
       // O gate de fade (.has-imgfade img { opacity: 0 }) só marca is-loaded nas
       // imagens presentes no init — sem isto, a imagem do lightbox fica invisível.
       big.classList.add("is-loaded");
-      const cap = document.createElement("figcaption");
+      big.addEventListener("load", () => { big.style.opacity = "1"; });
+      cap = document.createElement("figcaption");
       cap.className = "lightbox__cap";
-      cap.textContent = (title ? title + " · " : "") + "Imagem ilustrativa — perspectiva artística do projeto";
       fig.appendChild(big); fig.appendChild(cap);
-      overlay.appendChild(closeBtn); overlay.appendChild(fig);
+      overlay.appendChild(closeBtn); overlay.appendChild(prevBtn); overlay.appendChild(nextBtn); overlay.appendChild(fig);
       document.body.appendChild(overlay);
 
       lock();
-      try { history.pushState({ blueLightbox: true }, ""); } catch (e) { /* file:// */ }
+      show(startIdx);
+
       closeBtn.addEventListener("click", () => close(false));
-      overlay.addEventListener("click", (e) => { if (e.target !== big) close(false); });
+      prevBtn.addEventListener("click", () => show(idx - 1));
+      nextBtn.addEventListener("click", () => show(idx + 1));
+      // fecha só no clique do fundo (não nos botões/figura)
+      overlay.addEventListener("click", (e) => { if (e.target === overlay) close(false); });
+      // swipe lateral (celular)
+      let tx = 0, ty = 0;
+      overlay.addEventListener("touchstart", (e) => { tx = e.touches[0].clientX; ty = e.touches[0].clientY; }, { passive: true });
+      overlay.addEventListener("touchend", (e) => {
+        const dx = e.changedTouches[0].clientX - tx, dy = e.changedTouches[0].clientY - ty;
+        if (Math.abs(dx) > 48 && Math.abs(dx) > Math.abs(dy) * 1.5) { dx > 0 ? show(idx - 1) : show(idx + 1); }
+      }, { passive: true });
       closeBtn.focus();
     }
 
     function close(fromPop) {
       if (!isOpen()) return;
-      overlay.remove(); overlay = null;
+      overlay.remove(); overlay = null; big = null; cap = null;
       unlock();
-      if (lastFocus && document.contains(lastFocus)) lastFocus.focus();
+      const y = scrollY;
+      // reafirma a posição após o popstate — nenhuma restauração do navegador
+      // pode ganhar dessa (scrollRestoration=manual + este rAF)
+      requestAnimationFrame(() => instantScroll(y));
+      if (lastFocus && document.contains(lastFocus)) lastFocus.focus({ preventScroll: true });
       if (!fromPop && history.state && history.state.blueLightbox) history.back();
     }
 
     document.addEventListener("keydown", (e) => {
       if (!isOpen()) return;
-      if (e.key === "Escape") { e.preventDefault(); close(false); }
-      else if (e.key === "Tab") { e.preventDefault(); $(".lightbox__close", overlay).focus(); }
+      if (e.key === "Escape") { e.preventDefault(); close(false); return; }
+      if (e.key === "ArrowRight") { e.preventDefault(); show(idx + 1); return; }
+      if (e.key === "ArrowLeft") { e.preventDefault(); show(idx - 1); return; }
+      if (e.key === "Tab") {
+        const f = $$("button", overlay);
+        const first = f[0], last = f[f.length - 1];
+        if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+        else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+      }
     });
     window.addEventListener("popstate", () => { if (isOpen()) close(true); });
 
-    triggers.forEach((t) => t.addEventListener("click", () => open(t)));
+    triggers.forEach((t, i) => t.addEventListener("click", () => open(i)));
   }
 
   /* ---------- 5. Visit scheduler (calendar backed by the app's Supabase) ----------
