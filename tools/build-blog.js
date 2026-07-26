@@ -155,7 +155,7 @@ function buildListing() {
     sorted.length === 0
       ? `<div class="blog-empty">
         <p class="blog-empty__title">Em breve, novos conteúdos.</p>
-        <p>Estamos preparando textos sobre cuidado, longevidade e família. Volte logo — ou venha conversar com a gente.</p>
+        <p>Estamos preparando textos sobre cuidado, longevidade e família. Volte logo ou venha conversar com a gente.</p>
         <a class="btn btn--primary" href="${BASE}index.html#agendar">Agende uma visita</a>
       </div>`
       : `<div class="blog-grid">\n      ${cards}\n    </div>`;
@@ -166,7 +166,7 @@ function buildListing() {
       <div class="wrap">
         <p class="eyebrow">Conteúdos</p>
         <h1 class="blog-hero__title">Conversas sobre cuidado, longevidade e família</h1>
-        <p class="blog-hero__lead">Textos calorosos e sem jargão para ajudar a sua família a decidir e a cuidar melhor.</p>
+        <p class="blog-hero__lead">Textos sem jargão para ajudar a sua família a decidir e a cuidar melhor.</p>
       </div>
     </header>
     <div class="wrap">
