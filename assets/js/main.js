@@ -471,7 +471,7 @@ const CONFIG = {
       const keepDate = selDate, keepTime = selTime, keepView = view;
 
       if (!db) {
-        if (!silent) setStatus('A agenda online está indisponível neste instante — mas não se preocupe: agende em segundos pelo WhatsApp aqui embaixo. <button type="button" class="booker__retry" data-retry>Tentar de novo</button>', "error");
+        if (!silent) setStatus('A agenda online está fora do ar agora. Dá para agendar pelo WhatsApp aqui embaixo. <button type="button" class="booker__retry" data-retry>Tentar de novo</button>', "error");
         return;
       }
       if (!preserve) { calWrap.hidden = true; slotsWrap.hidden = true; bookForm.hidden = true; availByDate.clear(); selDate = null; selTime = null; }
@@ -501,7 +501,7 @@ const CONFIG = {
         if (availByDate.size === 0) {
           calWrap.hidden = true; slotsWrap.hidden = true; bookForm.hidden = true;
           selDate = null; selTime = null;
-          setStatus("Os horários estão concorridos no momento! Fale com a gente pelo WhatsApp que encontramos o dia perfeito para a sua visita.", "info");
+          setStatus("Não há horários abertos no momento. Fale com a gente pelo WhatsApp que encontramos uma data para a sua visita.", "info");
           return;
         }
         setStatus("", null);
@@ -520,7 +520,7 @@ const CONFIG = {
         renderCal();
         renderSlots();
       } catch (e) {
-        if (!silent) setStatus('Tivemos um probleminha para abrir a agenda. Tente de novo ou fale com a gente no WhatsApp — respondemos rapidinho. <button type="button" class="booker__retry" data-retry>Tentar de novo</button>', "error");
+        if (!silent) setStatus('Não conseguimos abrir a agenda. Tente de novo ou fale com a gente no WhatsApp. <button type="button" class="booker__retry" data-retry>Tentar de novo</button>', "error");
       }
     }
 
@@ -536,7 +536,7 @@ const CONFIG = {
       else if (!validWa) err = "Informe um WhatsApp válido com DDD.";
       else if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) err = "Confira o e-mail digitado.";
       if (err) { setNote(err, "error"); return; }
-      if (!db) { setNote("Sistema de agenda indisponível agora. Por favor, agende pelo WhatsApp logo abaixo.", "error"); return; }
+      if (!db) { setNote("Agenda indisponível agora. Agende pelo WhatsApp logo abaixo.", "error"); return; }
 
       // Grava sempre limpo, com DDI, para o app abrir o wa.me sem erro: "5541999998888".
       const waClean = "55" + digits;
@@ -555,8 +555,8 @@ const CONFIG = {
         const firstName = name.split(/\s+/)[0];
         requested.add(`${dateStr} ${timeStr}`);
         setNote(
-          `<strong>Tudo certo, ${firstName}!</strong> Sua solicitação de visita para ${fmtLong(dateStr)} às ${timeStr} foi recebida. ` +
-          `Nossa equipe vai falar com você pelo WhatsApp para confirmar — fique de olho nas mensagens. Estamos ansiosos para receber vocês.` +
+          `<strong>Tudo certo, ${firstName}!</strong> Recebemos seu pedido de visita para ${fmtLong(dateStr)} às ${timeStr}. ` +
+          `Nossa equipe vai falar com você pelo WhatsApp para confirmar, fique de olho nas mensagens.` +
           `<span class="booker__note-sub">Pedido enviado — sua visita ainda <strong>não está confirmada</strong>.</span>`,
           "ok"
         );
@@ -567,7 +567,7 @@ const CONFIG = {
         setTimeout(() => loadAvailability({ preserve: true, silent: true }), 1200);
       } catch (e) {
         setNote(
-          "Esse horário acabou de ser reservado! Escolha outro logo abaixo — ainda dá tempo. Se preferir, fale com a gente no WhatsApp.",
+          "Esse horário acabou de ser reservado. Escolha outro logo abaixo ou fale com a gente no WhatsApp.",
           "error"
         );
         loadAvailability({ preserve: true, silent: true });
