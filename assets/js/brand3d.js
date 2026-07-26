@@ -1,34 +1,40 @@
 /* =====================================================================
-   Blue Senior Living — emblema 3D que gira com o scroll
+   Blue Senior Living — emblema 3D flutuante (companheiro de scroll)
    --------------------------------------------------------------------
-   Constrói o emblema em 3D real (extrusão do próprio SVG da marca) e
-   amarra a rotação ao progresso de rolagem da seção fixada (pin+scrub).
-   - Carregamento preguiçoso: Three.js (vendorizado em assets/vendor) só
-     entra quando a seção se aproxima do viewport.
-   - Sem WebGL / erro de carga: cai para o emblema plano (SVG).
-   - prefers-reduced-motion: emblema estático em ângulo de apresentação.
+   O emblema da marca, extrudado em 3D a partir do próprio SVG, flutua
+   fixo à direita do site e GIRA conforme a rolagem: entra depois do
+   hero, acompanha a página inteira e se despede antes do agendamento.
+   Decorativo puro: pointer-events none, aria-hidden, desktop (≥1280px).
+   - Three.js vendorizado (assets/vendor), carregado preguiçosamente na
+     primeira rolagem — zero custo no carregamento inicial.
+   - Sem WebGL / erro de carga / reduced-motion: o elemento simplesmente
+     não aparece (nada quebra).
    ===================================================================== */
 (function () {
   "use strict";
 
-  var section = document.querySelector("[data-brand3d]");
+  var host = document.querySelector("[data-brand3d]");
   var canvas = document.querySelector("[data-brand3d-canvas]");
-  if (!section || !canvas) return;
+  var hero = document.getElementById("hero");
+  var endAnchor = document.getElementById("agendar");
+  if (!host || !canvas || !hero || !endAnchor) return;
 
-  var reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) { host.remove(); return; }
+
   var started = false;
-
-  function flatFallback() { section.classList.add("brand3d--flat"); }
-
-  function boot() {
+  function maybeBoot() {
     if (started) return;
+    if (window.innerWidth < 1280) return;               // só desktop
+    if ((window.scrollY || 0) < hero.offsetHeight * 0.3) return; // ainda no hero
     started = true;
+    window.removeEventListener("scroll", maybeBoot);
     Promise.all([
       import("../vendor/three.module.min.js"),
       import("../vendor/SVGLoader.js"),
       fetch("assets/logo/emblem.svg").then(function (r) { return r.text(); }),
-    ]).then(init).catch(flatFallback);
+    ]).then(init).catch(function () { host.remove(); });
   }
+  window.addEventListener("scroll", maybeBoot, { passive: true });
 
   function init(deps) {
     var THREE = deps[0];
@@ -38,25 +44,20 @@
     var renderer;
     try {
       renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true });
-    } catch (e) { flatFallback(); return; }
+    } catch (e) { host.remove(); return; }
     renderer.setClearColor(0x000000, 0);
 
     var scene = new THREE.Scene();
     var camera = new THREE.PerspectiveCamera(30, 1, 0.1, 100);
     camera.position.set(0, 0, 10);
 
-    /* ---- Geometria: shapes do SVG (só os que estão na janela do emblema) ---- */
+    /* ---- Geometria: shapes do SVG (só a janela do emblema) ---- */
     var svg = new SVGLoader().parse(svgText);
-    // viewBox do emblem.svg: 548 184 308 400 — o arquivo carrega o logo inteiro,
-    // o recorte visual é o viewBox; filtramos os shapes fora dessa janela.
-    var WIN = { x0: 548, y0: 184, x1: 856, y1: 584 };
+    var WIN = { x0: 548, y0: 184, x1: 856, y1: 584 }; // viewBox do emblema
     var group = new THREE.Group();
     var material = new THREE.MeshStandardMaterial({
-      color: 0x1c4a6e,       // navy da marca
-      metalness: 0.3,
-      roughness: 0.36,
+      color: 0x1c4a6e, metalness: 0.3, roughness: 0.36,
     });
-    var depth = 34;
     svg.paths.forEach(function (path) {
       SVGLoader.createShapes(path).forEach(function (shape) {
         var probe = new THREE.ShapeGeometry(shape);
@@ -66,26 +67,24 @@
         var cx = (bb.min.x + bb.max.x) / 2, cy = (bb.min.y + bb.max.y) / 2;
         if (cx < WIN.x0 || cx > WIN.x1 || cy < WIN.y0 || cy > WIN.y1) return;
         var geo = new THREE.ExtrudeGeometry(shape, {
-          depth: depth, curveSegments: 20,
+          depth: 34, curveSegments: 20,
           bevelEnabled: true, bevelThickness: 4, bevelSize: 3, bevelSegments: 3,
         });
         group.add(new THREE.Mesh(geo, material));
       });
     });
-    if (!group.children.length) { flatFallback(); return; }
+    if (!group.children.length) { host.remove(); return; }
 
-    // Centraliza e normaliza a escala (o SVG vem em pt, com Y para baixo)
     var box = new THREE.Box3().setFromObject(group);
     var center = box.getCenter(new THREE.Vector3());
     var size = box.getSize(new THREE.Vector3());
     group.children.forEach(function (m) { m.geometry.translate(-center.x, -center.y, -center.z); });
     var scale = 4.6 / Math.max(size.x, size.y);
-    group.scale.set(scale, -scale, scale); // -Y: SVG cresce para baixo
+    group.scale.set(scale, -scale, scale);
     scene.add(group);
-    // Dimensões em cena (para a câmera enquadrar sem cortar em nenhum aspecto)
     var w3d = size.x * scale, h3d = size.y * scale;
 
-    /* ---- Luz: chave branca + contorno celeste (identidade) ---- */
+    /* ---- Luz: chave branca + contorno celeste ---- */
     scene.add(new THREE.AmbientLight(0xbfd9ea, 0.5));
     var key = new THREE.DirectionalLight(0xffffff, 1.6);
     key.position.set(2.5, 3, 4);
@@ -97,67 +96,48 @@
     fill.position.set(-3, 2, 5);
     scene.add(fill);
 
-    /* ---- Enquadramento / retina ---- */
     function resize() {
       var w = canvas.clientWidth, h = canvas.clientHeight;
       if (!w || !h) return;
       renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
       renderer.setSize(w, h, false);
       camera.aspect = w / h;
-      // Recuo dinâmico: o emblema cabe inteiro (com folga de 12%) em
-      // qualquer proporção de tela, mesmo de perfil durante o giro.
       var tan = Math.tan((camera.fov * Math.PI) / 360);
-      var zH = h3d / 2 / 0.88 / tan;
-      var zW = w3d / 2 / 0.88 / (tan * camera.aspect);
-      camera.position.z = Math.max(zH, zW, 6);
+      camera.position.z = Math.max(h3d / 2 / 0.88 / tan, w3d / 2 / 0.88 / (tan * camera.aspect), 6);
       camera.updateProjectionMatrix();
     }
     resize();
-    window.addEventListener("resize", function () { resize(); render(); });
+    window.addEventListener("resize", resize);
 
-    /* ---- Rotação amarrada ao scroll (pin + scrub) ---- */
-    var TILT = 0.16;                 // leve inclinação para leitura de volume
-    var currentY = -0.6, targetY = -0.6;
-    function progress() {
-      var r = section.getBoundingClientRect();
-      var total = r.height - window.innerHeight;
-      if (total <= 0) return 0;
-      return Math.min(1, Math.max(0, -r.top / total));
-    }
-    function render(t) {
-      group.rotation.x = TILT + Math.sin((t || 0) / 2600) * 0.05;
-      group.rotation.y = currentY;
-      group.position.y = Math.sin((t || 0) / 2100) * 0.07; // flutuação sutil
-      renderer.render(scene, camera);
-    }
+    /* ---- Rolagem → rotação + fade nas pontas do trajeto ---- */
+    var TILT = 0.16;
+    var currentY = -0.6;
+    var clamp01 = function (v) { return Math.min(1, Math.max(0, v)); };
 
-    if (reduce.matches) {
-      // Sem animação: ângulo de apresentação, render único (e em resize)
-      currentY = -0.55;
-      render(0);
-      return;
-    }
-
-    var inView = false, rafId = null;
     function loop(t) {
-      targetY = -0.6 + progress() * Math.PI * 2; // uma volta completa na seção
-      currentY += (targetY - currentY) * 0.09;   // amortecimento — giro sedoso
-      render(t);
-      rafId = inView ? requestAnimationFrame(loop) : null;
-    }
-    new IntersectionObserver(function (entries) {
-      inView = entries[0].isIntersecting;
-      if (inView && rafId === null) rafId = requestAnimationFrame(loop);
-    }, { rootMargin: "120px" }).observe(section);
-    render(0);
-  }
+      var sy = window.scrollY || 0;
+      var start = hero.offsetHeight * 0.55;                     // entra saindo do hero
+      var end = endAnchor.offsetTop - window.innerHeight * 0.9; // despede-se antes do agendamento
+      var span = Math.max(1, end - start);
+      var p = clamp01((sy - start) / span);
 
-  /* Carrega só quando a seção se aproxima (600px antes) */
-  if ("IntersectionObserver" in window) {
-    new IntersectionObserver(function (entries, io) {
-      if (entries[0].isIntersecting) { io.disconnect(); boot(); }
-    }, { rootMargin: "600px" }).observe(section);
-  } else {
-    boot();
+      // duas voltas completas ao longo do site, com amortecimento sedoso
+      var targetY = -0.6 + p * Math.PI * 4;
+      currentY += (targetY - currentY) * 0.08;
+
+      // fade de entrada e de saída (~360px cada)
+      var op = clamp01((sy - start) / 360) * clamp01((end + 360 - sy) / 360) * 0.92;
+      if (window.innerWidth < 1280) op = 0;
+      host.style.opacity = op.toFixed(3);
+
+      if (op > 0.005) {
+        group.rotation.x = TILT + Math.sin(t / 2600) * 0.05;
+        group.rotation.y = currentY;
+        group.position.y = Math.sin(t / 2100) * 0.07;
+        renderer.render(scene, camera);
+      }
+      requestAnimationFrame(loop);
+    }
+    requestAnimationFrame(loop);
   }
 })();
