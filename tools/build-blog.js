@@ -34,6 +34,10 @@ const fmtDate = (iso) => {
   return new Intl.DateTimeFormat("pt-BR", { day: "numeric", month: "long", year: "numeric" }).format(d);
 };
 
+// Menu mobile: o markup do drawer é compartilhado por todas as páginas do blog e
+// depende de assets/js/drawer.js (mesmo componente da landing).
+const drawerScript = `  <script src="${BASE}assets/js/drawer.js" defer></script>`;
+
 // Fontes self-hosted (declaradas via @font-face em styles.css); só o preload aqui.
 const fonts =
   `<link rel="preload" href="${BASE}assets/fonts/fraunces.woff2" as="font" type="font/woff2" crossorigin>` +
@@ -60,10 +64,11 @@ function head({ title, desc, cover, canonical, article }) {
   ${fonts}
   <link rel="stylesheet" href="${BASE}assets/css/styles.css">
   <link rel="stylesheet" href="${BASE}assets/css/blog.css">
+${drawerScript}
 </head>`;
 }
 
-function navbar(current) {
+function navbar(current, isListing) {
   return `<body class="blog-page">
   <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
   <header class="nav is-scrolled blog-nav">
@@ -83,9 +88,42 @@ function navbar(current) {
           <span>Área do cliente</span>
         </a>
         <a class="btn btn--primary nav__cta" href="${BASE}index.html#agendar"><span class="nav__cta--full">Agendar visita</span><span class="nav__cta--mini">Agendar</span></a>
+        <button class="nav__toggle" type="button" aria-label="Abrir menu" aria-expanded="false" aria-controls="mobile-menu" data-menu-toggle>
+          <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+        </button>
       </div>
     </div>
-  </header>`;
+  </header>
+
+  <!-- Mobile drawer -->
+  <div class="drawer" id="mobile-menu" data-drawer hidden>
+    <div class="drawer__backdrop" data-drawer-close></div>
+    <nav class="drawer__panel" role="dialog" aria-modal="true" aria-label="Menu">
+      <div class="drawer__head">
+        <span class="brand brand--drawer">
+          <img class="brand__emblem-img" src="${BASE}assets/logo/emblem.svg" alt="" width="30" height="46">
+          <span class="brand__text"><span class="brand__name">BLUE</span><span class="brand__sub">SENIOR LIVING</span></span>
+        </span>
+        <button class="drawer__close" type="button" aria-label="Fechar menu" data-drawer-close>
+          <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+        </button>
+      </div>
+      <a href="${BASE}index.html" data-drawer-link>Início</a>
+      <a href="${BASE}index.html#conceito" data-drawer-link>O conceito</a>
+      <a href="${BASE}index.html#espacos" data-drawer-link>Os espaços</a>
+      <a href="${BASE}index.html#familia" data-drawer-link>Para a família</a>
+      <a href="${BASE}index.html#localizacao" data-drawer-link>Localização</a>
+      <a href="index.html" data-drawer-link${isListing ? ' aria-current="page"' : ""}>Conteúdos</a>
+      <a href="${BASE}index.html#trabalhe" data-drawer-link>Trabalhe conosco</a>
+      <div class="drawer__cta">
+        <a class="btn btn--primary btn--block" href="${BASE}index.html#agendar" data-drawer-link>Agendar visita</a>
+        <a class="btn btn--ghost-ink btn--block" href="${APP_URL}" target="_blank" rel="noopener noreferrer">
+          <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6M20 4l-9 9"/><path d="M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg> Área do cliente
+        </a>
+      </div>
+    </nav>
+  </div>
+`;
 }
 
 function footer() {
@@ -160,7 +198,7 @@ function buildListing() {
       </div>`
       : `<div class="blog-grid">\n      ${cards}\n    </div>`;
 
-  const body = `${navbar("blog")}
+  const body = `${navbar("blog", true)}
   <main id="conteudo" class="blog">
     <header class="blog-hero">
       <div class="wrap">
@@ -225,7 +263,7 @@ function buildPost(post, sorted) {
   if (url) jsonld.mainEntityOfPage = url;
   if (SITE_URL) jsonld.image = `${SITE_URL}/${post.cover}`;
 
-  const body = `${navbar("blog")}
+  const body = `${navbar("blog", false)}
   <main id="conteudo" class="blog">
     <article class="post">
       <div class="wrap post__wrap">
@@ -272,8 +310,8 @@ function buildPost(post, sorted) {
       canonical: url,
       article: true,
     }).replace(
-      "</head>",
-      `  <script type="application/ld+json">${JSON.stringify(jsonld)}</script>\n</head>`
+      drawerScript,
+      `  <script type="application/ld+json">${JSON.stringify(jsonld)}</script>\n${drawerScript}`
     ) +
     "\n" +
     body +
