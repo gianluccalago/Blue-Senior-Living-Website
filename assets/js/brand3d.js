@@ -43,7 +43,10 @@
 
     var renderer;
     try {
-      renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true });
+      renderer = new THREE.WebGLRenderer({
+        canvas: canvas, alpha: true, antialias: true,
+        powerPreference: "high-performance",
+      });
     } catch (e) { host.remove(); return; }
     renderer.setClearColor(0x000000, 0);
 
@@ -67,8 +70,8 @@
         var cx = (bb.min.x + bb.max.x) / 2, cy = (bb.min.y + bb.max.y) / 2;
         if (cx < WIN.x0 || cx > WIN.x1 || cy < WIN.y0 || cy > WIN.y1) return;
         var geo = new THREE.ExtrudeGeometry(shape, {
-          depth: 34, curveSegments: 20,
-          bevelEnabled: true, bevelThickness: 4, bevelSize: 3, bevelSegments: 3,
+          depth: 34, curveSegments: 40,
+          bevelEnabled: true, bevelThickness: 4, bevelSize: 3, bevelSegments: 5,
         });
         group.add(new THREE.Mesh(geo, material));
       });
@@ -99,25 +102,40 @@
     function resize() {
       var w = canvas.clientWidth, h = canvas.clientHeight;
       if (!w || !h) return;
-      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+      // Nitidez máxima: resolução nativa do monitor (até 3x) — o canvas é
+      // pequeno, então o custo de GPU segue baixo mesmo em 3x.
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 3));
       renderer.setSize(w, h, false);
       camera.aspect = w / h;
       var tan = Math.tan((camera.fov * Math.PI) / 360);
       camera.position.z = Math.max(h3d / 2 / 0.88 / tan, w3d / 2 / 0.88 / (tan * camera.aspect), 6);
       camera.updateProjectionMatrix();
     }
-    resize();
-    window.addEventListener("resize", resize);
 
-    /* ---- Rolagem → rotação + fade nas pontas do trajeto ---- */
+    /* ---- Métricas do trajeto: cacheadas (nada de reflow por frame) ---- */
+    var heroH = 0, endTop = 0, vh = 0, frame = 0;
+    function measure() {
+      heroH = hero.offsetHeight;
+      endTop = endAnchor.offsetTop;
+      vh = window.innerHeight;
+    }
+    measure();
+    resize();
+    window.addEventListener("resize", function () { measure(); resize(); });
+
+    /* ---- Rolagem → rotação; fade cinematográfico nas pontas ---- */
     var TILT = 0.16;
     var currentY = -0.6;
+    var op = 0, hidden = true;
     var clamp01 = function (v) { return Math.min(1, Math.max(0, v)); };
+    var smooth = function (v) { v = clamp01(v); return v * v * (3 - 2 * v); }; // smoothstep
 
     function loop(t) {
+      // acompanha mudanças de layout (imagens carregando etc.) sem custo por frame
+      if ((frame++ & 63) === 0) measure();
       var sy = window.scrollY || 0;
-      var start = hero.offsetHeight * 0.55;                     // entra saindo do hero
-      var end = endAnchor.offsetTop - window.innerHeight * 0.9; // despede-se antes do agendamento
+      var start = heroH * 0.55;                 // entra saindo do hero
+      var end = endTop - vh * 0.9;              // despede-se antes do agendamento
       var span = Math.max(1, end - start);
       var p = clamp01((sy - start) / span);
 
@@ -125,16 +143,26 @@
       var targetY = -0.6 + p * Math.PI * 4;
       currentY += (targetY - currentY) * 0.08;
 
-      // fade de entrada e de saída (~360px cada)
-      var op = clamp01((sy - start) / 360) * clamp01((end + 360 - sy) / 360) * 0.92;
-      if (window.innerWidth < 1280) op = 0;
-      host.style.opacity = op.toFixed(3);
+      // fade suave (smoothstep, ~520px) + amortecimento temporal:
+      // rolagens bruscas ainda entram e saem com elegância
+      var target = smooth((sy - start) / 520) * smooth((end + 520 - sy) / 520) * 0.95;
+      if (window.innerWidth < 1280) target = 0;
+      op += (target - op) * 0.13;
 
-      if (op > 0.005) {
+      if (op > 0.004) {
+        hidden = false;
+        var k = clamp01(op / 0.95);
+        host.style.opacity = op.toFixed(3);
+        // entrada exuberante: cresce de 90%→100% e o desfoque resolve para nítido
+        host.style.transform = "translate(-50%, -50%) scale(" + (0.9 + 0.105 * k).toFixed(4) + ")";
+        host.style.filter = "blur(" + (10 * (1 - k) * (1 - k)).toFixed(2) + "px)";
         group.rotation.x = TILT + Math.sin(t / 2600) * 0.05;
         group.rotation.y = currentY;
         group.position.y = Math.sin(t / 2100) * 0.07;
         renderer.render(scene, camera);
+      } else if (!hidden) {
+        hidden = true;
+        host.style.opacity = "0";
       }
       requestAnimationFrame(loop);
     }

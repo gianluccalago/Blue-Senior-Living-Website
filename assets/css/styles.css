@@ -867,20 +867,43 @@ ul, ol { list-style: none; padding: 0; }
 .section--concept > .wrap { position: relative; z-index: 1; }
 
 /* ===================== Emblema 3D flutuante (companheiro de scroll) =====================
-   Detalhe premium: fixo à direita, gira com a rolagem (assets/js/brand3d.js).
-   Nunca intercepta clique (pointer-events none) e só existe no desktop. */
+   Detalhe premium: fixo no CENTRO da tela, gira com a rolagem
+   (assets/js/brand3d.js); as seções do trajeto abrem um corredor central
+   para ele. Nunca intercepta clique e só existe no desktop (≥1280px). */
 .brand-float {
   position: fixed; z-index: 40;
-  top: 50%; right: clamp(18px, 2.2vw, 56px);
-  transform: translateY(-50%);
-  /* cresce com a margem livre além do wrap de 1200px; discreto em telas justas */
-  width: clamp(150px, calc((100vw - 1200px) / 2 + 64px), 330px);
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: clamp(220px, 20vw, 300px);
   aspect-ratio: 3 / 4;
   pointer-events: none;
-  opacity: 0; /* o JS conduz o fade conforme o trajeto do scroll */
+  opacity: 0; /* fade/escala/desfoque conduzidos pelo JS */
+  will-change: opacity, transform, filter;
 }
 .brand-float canvas { width: 100%; height: 100%; display: block; }
 @media (max-width: 1279px) { .brand-float { display: none; } }
+
+/* ---- Corredor central: as seções do trajeto abrem espaço para o emblema ---- */
+@media (min-width: 1280px) {
+  :root { --spine: clamp(300px, 26vw, 400px); }
+  .concept { grid-template-columns: 1fr 1fr; column-gap: var(--spine); }
+  .pcare { grid-template-columns: 1fr 1fr; column-gap: var(--spine); }
+  .method { grid-template-columns: 1fr 1fr; column-gap: var(--spine); }
+  .family { grid-template-columns: 1fr 1fr; column-gap: var(--spine); }
+  .location { column-gap: var(--spine); }
+  .careers { gap: var(--spine); flex-wrap: nowrap; }
+  /* galeria de espaços vira 2 colunas simétricas em volta do corredor */
+  .spaces { grid-template-columns: 1fr 1fr; column-gap: var(--spine); }
+  .space--featured, .space--tall, .space--half-a, .space--half-b { grid-column: auto; }
+  .space--featured .space__media, .space--tall .space__media,
+  .space--half-a .space__media, .space--half-b .space__media { aspect-ratio: 4 / 3; }
+  /* confiança: título à esquerda, garantias empilhadas à direita */
+  #confianca .wrap { display: grid; grid-template-columns: 1fr 1fr; column-gap: var(--spine); align-items: start; }
+  #confianca .fineprint { grid-column: 1; }
+  #confianca .assure { flex-direction: column; gap: 0; border-top: 0; padding-top: 8px; }
+  #confianca .assure li { border-right: 0; margin-right: 0; padding: 13px 0; border-bottom: 1px solid var(--line); }
+  #confianca .assure li:last-child { border-bottom: 0; }
+}
 
 /* ===================== Lightbox das acomodações ===================== */
 /* O botão e o <picture> precisam preencher o figure (que tem aspect-ratio),
