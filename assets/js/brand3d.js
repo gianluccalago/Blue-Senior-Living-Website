@@ -20,13 +20,13 @@
   var canvas = document.querySelector("[data-brand3d-canvas]");
   var hero = document.getElementById("hero");
   var heroVideo = document.querySelector("[data-hero-video]");
-  var endAnchor = document.getElementById("agendar");
+  var endAnchor = document.getElementById("espacos"); // a jornada termina na quebra navy→claro
   if (!host || !canvas || !hero || !endAnchor) return;
 
   if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) { host.remove(); return; }
 
   /* Momento e ponto do nascimento no vídeo do hero (medidos no arquivo) */
-  var BIRTH_T = 1.55;          // auge da coroa d'água (s)
+  var BIRTH_T = 1.38;          // logo abaixo da gota, coroa subindo (s)
   var BIRTH_LATE = 2.3;        // depois disso, não vale a pena nascer
   var SPLASH_U = 0.49, SPLASH_V = 0.56; // ponto do impacto no frame (0..1)
 
@@ -242,13 +242,14 @@
       } else { /* companion — comportamento consolidado do corredor */
         var start = heroH * 0.55;
         var end = endTop - vh * 1.2;
-        var span = Math.max(1, end - start);
-        var pr = clamp01((sy - start) / span);
-        var targetY = -0.6 + pr * Math.PI * 7;
+        // sensibilidade constante: uma volta a cada ~2300px rolados
+        var targetY = -0.6 + Math.max(0, sy - start) / 2300 * Math.PI * 2;
         currentY += (targetY - currentY) * 0.08;
         var target = smooth((sy - start) / 520) * smooth((end + 520 - sy) / 520) * 0.95;
         if (window.innerWidth < 1280) target = 0;
-        op += (target - op) * 0.13;
+        // saída mais decidida que a entrada: rolagens rápidas não deixam
+        // resíduo do emblema sobre as seções claras
+        op += (target - op) * (target < op ? 0.24 : 0.13);
         if (op > 0.004) {
           hidden = false;
           var k = clamp01(op / 0.95);
