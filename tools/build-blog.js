@@ -217,7 +217,7 @@ function buildListing() {
   const html =
     head({
       title: `Conteúdos · ${SITE}`,
-      desc: "Textos sobre cuidado sênior, longevidade e família — para ajudar a decidir e a cuidar melhor, com afeto e sem jargão.",
+      desc: "Textos sobre cuidado sênior, longevidade e família, para ajudar a sua família a decidir e a cuidar melhor.",
       cover: "assets/img/hero-poster.jpg",
       canonical: SITE_URL ? `${SITE_URL}/blog/` : "",
       article: false,
@@ -293,8 +293,8 @@ function buildPost(post, sorted) {
         </div>
 
         <aside class="post__cta">
-          <h2>Gostou? O melhor é conhecer de perto.</h2>
-          <p>Uma visita vale mais do que mil palavras. Venha tomar um café, conhecer os espaços e a equipe — sem compromisso.</p>
+          <h2>O melhor é conhecer de perto.</h2>
+          <p>Venha tomar um café, conhecer os espaços e a equipe. Sem compromisso.</p>
           <a class="btn btn--primary btn--lg" href="${BASE}index.html#agendar">Agende uma visita ao Blue</a>
         </aside>
       </div>

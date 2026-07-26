@@ -42,7 +42,7 @@ const posts = [
     slug: "como-saber-se-e-hora-residencial-idosos",
     title: "Como saber se é hora de considerar um residencial para idosos",
     excerpt:
-      "Sinais sutis no dia a dia, a conversa em família e como decidir com amor — e sem culpa — o melhor momento para buscar apoio.",
+      "Sinais no dia a dia, a conversa em família e como decidir sem culpa o melhor momento para buscar apoio.",
     date: "2026-06-12",
     category: "Família",
     cover: "assets/img/blog/como-saber-se-e-hora.svg",
@@ -65,7 +65,7 @@ const posts = [
     slug: "visitar-residencial-o-que-observar",
     title: "Visitar um residencial: o que observar para escolher com segurança",
     excerpt:
-      "Um guia prático e honesto do que reparar na hora da visita — das pessoas e dos cuidados aos detalhes que um bom lar não esconde.",
+      "Um guia prático do que reparar na hora da visita: as pessoas, o ambiente e o que um bom lar não esconde.",
     date: "2026-05-28",
     category: "Cuidado",
     cover: "assets/img/blog/visitar-residencial.svg",
@@ -87,7 +87,7 @@ const posts = [
     slug: "o-que-sao-as-blue-zones",
     title: "O que são as Blue Zones e o que elas ensinam sobre envelhecer bem",
     excerpt:
-      "Nas regiões onde mais se vive — e melhor — a longevidade não é sorte. Entenda os hábitos simples que inspiram o nosso jeito de cuidar.",
+      "Nas regiões onde mais se vive, a longevidade não é sorte. Os hábitos simples que inspiram o nosso jeito de cuidar.",
     date: "2026-05-15",
     category: "Longevidade",
     cover: "assets/img/blog/o-que-sao-as-blue-zones.svg",
