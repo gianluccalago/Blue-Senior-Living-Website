@@ -135,12 +135,12 @@
       if ((frame++ & 63) === 0) measure();
       var sy = window.scrollY || 0;
       var start = heroH * 0.55;                 // entra saindo do hero
-      var end = endTop - vh * 0.9;              // despede-se antes do agendamento
+      var end = endTop - vh * 1.2;              // já partiu quando o agendamento entra em cena
       var span = Math.max(1, end - start);
       var p = clamp01((sy - start) / span);
 
-      // duas voltas completas ao longo do site, com amortecimento sedoso
-      var targetY = -0.6 + p * Math.PI * 4;
+      // três voltas e meia ao longo do site, com amortecimento sedoso
+      var targetY = -0.6 + p * Math.PI * 7;
       currentY += (targetY - currentY) * 0.08;
 
       // fade suave (smoothstep, ~520px) + amortecimento temporal:
