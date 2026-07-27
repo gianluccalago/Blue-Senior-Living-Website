@@ -195,7 +195,8 @@
       }
 
       if (state === "waiting") {
-        if (heroVideo && !born) {
+        /* aguarda o modal de cookies ser respondido antes do nascimento */
+        if (heroVideo && !born && !document.querySelector(".consent")) {
           var vt = heroVideo.currentTime || 0;
           if (vt >= BIRTH_T && vt <= BIRTH_LATE && !heroVideo.paused) {
             state = "birth";

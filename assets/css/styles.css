@@ -893,25 +893,50 @@ ul, ol { list-style: none; padding: 0; }
   .method { grid-template-columns: 1fr 1fr; column-gap: var(--spine); }
 }
 
-/* ===================== Consentimento de cookies (LGPD) ===================== */
+/* ===================== Consentimento de cookies (LGPD) =====================
+   Modal central com escolha antes de navegar: "Aceitar" dominante,
+   "só essenciais" presente e a um clique (exigência da LGPD). */
 .consent {
-  position: fixed; z-index: 120;
-  left: max(16px, env(safe-area-inset-left)); bottom: max(16px, env(safe-area-inset-bottom));
-  width: min(420px, calc(100vw - 32px));
+  position: fixed; inset: 0; z-index: 170;
+  display: flex; align-items: center; justify-content: center;
+  padding: clamp(16px, 4vw, 40px);
+  background: rgba(8, 21, 31, .62);
+  backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+  opacity: 0; transition: opacity var(--dur-slow) var(--ease);
+}
+.consent.is-in { opacity: 1; }
+.consent__card {
+  width: min(480px, 100%);
   background: var(--navy-900); color: rgba(233, 241, 248, .9);
   border: 1px solid var(--line-light-soft); border-radius: var(--r-card);
-  padding: 20px 22px;
-  box-shadow: 0 30px 70px -40px rgba(8, 21, 31, .8);
-  opacity: 0; transform: translateY(14px);
-  transition: opacity var(--dur-slow) var(--ease), transform var(--dur-slow) var(--ease);
+  padding: clamp(26px, 4vw, 38px);
+  box-shadow: 0 40px 90px -40px rgba(0, 0, 0, .8);
+  text-align: center;
+  transform: translateY(16px) scale(.98);
+  transition: transform var(--dur-slow) var(--ease);
 }
-.consent.is-in { opacity: 1; transform: none; }
-.consent__text { font-size: 13.5px; line-height: 1.6; }
+.consent.is-in .consent__card { transform: none; }
+.consent__emblem { width: 34px; height: 44px; margin: 0 auto 14px; display: block; filter: brightness(0) saturate(100%) invert(78%) sepia(23%) saturate(624%) hue-rotate(164deg) brightness(97%) contrast(93%); }
+.consent__title {
+  font-family: var(--font-display); font-weight: 500; font-size: clamp(21px, 2.4vw, 26px);
+  color: #fff; line-height: 1.2; margin-bottom: 10px;
+}
+.consent__text { font-size: 14.5px; line-height: 1.65; color: rgba(233, 241, 248, .78); max-width: 40ch; margin-inline: auto; }
 .consent__text a { color: var(--celeste-300); text-decoration: underline; text-underline-offset: 3px; }
-.consent__actions { display: flex; gap: 10px; margin-top: 14px; flex-wrap: wrap; }
-.consent__actions .btn { padding: 12px 20px; font-size: 13.5px; }
-.consent__essentials { background: transparent; color: rgba(233, 241, 248, .85); border-color: var(--line-light); }
-.consent__essentials:hover { background: rgba(255, 255, 255, .08); }
+.consent__actions { display: grid; gap: 12px; margin-top: 22px; justify-items: center; }
+.consent__actions .btn { width: 100%; }
+.consent__essentials {
+  background: none; border: 0; cursor: pointer;
+  font-family: var(--font-ui); font-size: 12.5px; font-weight: 500;
+  color: rgba(233, 241, 248, .55); padding: 6px 10px;
+  text-decoration: underline; text-underline-offset: 3px;
+  transition: color var(--dur-fast) var(--ease);
+}
+.consent__essentials:hover { color: rgba(233, 241, 248, .85); }
+@media (max-width: 560px) {
+  .consent { align-items: flex-end; padding: 0; }
+  .consent__card { width: 100%; border-radius: var(--r-card) var(--r-card) 0 0; padding-bottom: calc(26px + env(safe-area-inset-bottom)); }
+}
 
 /* ===================== Lightbox das acomodações ===================== */
 /* O botão e o <picture> precisam preencher o figure (que tem aspect-ratio),

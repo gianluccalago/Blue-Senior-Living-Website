@@ -26,7 +26,8 @@
   /* ================================================ */
 
   var KEY = "blue-consent-v1";
-  var MAX_AGE_DAYS = 180;
+  var TTL_ACCEPT_DAYS = 180;  // quem aceita não é incomodado de novo
+  var TTL_REJECT_DAYS = 30;   // quem recusa é convidado de novo mais adiante
   window.dataLayer = window.dataLayer || [];
   function gtag() { window.dataLayer.push(arguments); }
   window.gtag = window.gtag || gtag;
@@ -97,7 +98,9 @@
   function load() {
     try {
       var v = JSON.parse(localStorage.getItem(KEY) || "null");
-      if (!v || (Date.now() - v.t) > MAX_AGE_DAYS * 864e5) return null;
+      if (!v) return null;
+      var ttl = (v.m ? TTL_ACCEPT_DAYS : TTL_REJECT_DAYS) * 864e5;
+      if ((Date.now() - v.t) > ttl) return null;
       return v;
     } catch (e) { return null; }
   }
@@ -108,29 +111,60 @@
     return;
   }
 
-  /* ---- Banner LGPD ---- */
+  /* ---- Modal LGPD: central, com escolha antes de navegar ----
+     "Aceitar" é o caminho dominante; "só essenciais" permanece a um
+     clique (obrigatório para o consentimento valer na LGPD). */
   function showBanner() {
     var base = location.pathname.indexOf("/blog/") !== -1 ? "../" : "";
     var el = document.createElement("div");
     el.className = "consent";
     el.setAttribute("role", "dialog");
+    el.setAttribute("aria-modal", "true");
     el.setAttribute("aria-label", "Preferências de cookies");
     el.innerHTML =
-      '<p class="consent__text">Usamos cookies para entender como o site é usado e melhorar sua experiência. ' +
-      'Você decide: <a href="' + base + 'privacidade.html">saiba como cuidamos dos seus dados</a>.</p>' +
+      '<div class="consent__card">' +
+      '<img class="consent__emblem" src="' + base + 'assets/logo/emblem.svg" alt="" width="34" height="44">' +
+      '<h2 class="consent__title">Que bom ter você por aqui</h2>' +
+      '<p class="consent__text">Usamos cookies para entender sua visita e tornar sua experiência ' +
+      'cada vez melhor — do jeito cuidadoso que fazemos tudo por aqui. ' +
+      '<a href="' + base + 'privacidade.html">Saiba como cuidamos dos seus dados</a>.</p>' +
       '<div class="consent__actions">' +
-      '<button type="button" class="btn btn--primary consent__accept">Aceitar cookies</button>' +
-      '<button type="button" class="btn consent__essentials">Só os essenciais</button>' +
-      "</div>";
+      '<button type="button" class="btn btn--primary btn--lg btn--block consent__accept">Aceitar e continuar</button>' +
+      '<button type="button" class="consent__essentials">Continuar só com os essenciais</button>' +
+      "</div></div>";
     document.body.appendChild(el);
+
+    // trava a rolagem até a escolha (padrão iOS-safe do site)
+    var sy = window.scrollY || 0;
+    var bs = document.body.style;
+    bs.position = "fixed"; bs.top = -sy + "px"; bs.left = "0"; bs.right = "0"; bs.width = "100%";
+
     requestAnimationFrame(function () { el.classList.add("is-in"); });
+    var acceptBtn = el.querySelector(".consent__accept");
+    acceptBtn.focus();
+
+    // foco circula dentro do modal
+    el.addEventListener("keydown", function (e) {
+      if (e.key !== "Tab") return;
+      var f = el.querySelectorAll("a[href], button");
+      var first = f[0], last = f[f.length - 1];
+      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+    });
+
     function closeWith(marketing) {
       save(marketing);
       if (marketing) grantAll();
+      bs.position = ""; bs.top = ""; bs.left = ""; bs.right = ""; bs.width = "";
+      var de = document.documentElement;
+      var prev = de.style.scrollBehavior;
+      de.style.scrollBehavior = "auto";
+      window.scrollTo(0, sy);
+      de.style.scrollBehavior = prev;
       el.classList.remove("is-in");
       setTimeout(function () { el.remove(); }, 350);
     }
-    el.querySelector(".consent__accept").addEventListener("click", function () { closeWith(true); });
+    acceptBtn.addEventListener("click", function () { closeWith(true); });
     el.querySelector(".consent__essentials").addEventListener("click", function () { closeWith(false); });
   }
   if (document.readyState === "loading") {
