@@ -1,177 +1,187 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <!-- Site em pré-lançamento: fora de buscadores até a abertura -->
-  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
-  <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
-  <title>Conteúdos · Blue Senior Living</title>
-  <meta name="description" content="Textos sobre cuidado sênior, longevidade e família, para ajudar a sua família a decidir e a cuidar melhor.">
-  <meta name="theme-color" content="#0E2233">
-  <link rel="canonical" href="https://blueseniorliving.com.br/blog/">
-  <meta property="og:type" content="website">
-  <meta property="og:locale" content="pt_BR">
-  <meta property="og:title" content="Conteúdos · Blue Senior Living">
-  <meta property="og:description" content="Textos sobre cuidado sênior, longevidade e família, para ajudar a sua família a decidir e a cuidar melhor.">
-  <meta property="og:image" content="https://blueseniorliving.com.br/assets/img/hero-poster.jpg">
-  <meta name="twitter:card" content="summary_large_image">
-  <link rel="icon" href="../assets/img/favicon.svg" type="image/svg+xml">
-  <link rel="preload" href="../assets/fonts/fraunces.woff2" as="font" type="font/woff2" crossorigin><link rel="preload" href="../assets/fonts/plus-jakarta-sans.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="../assets/css/styles.css">
-  <link rel="stylesheet" href="../assets/css/blog.css">
-  <script src="../assets/js/consent.js" defer></script>
-  <script src="../assets/js/drawer.js" defer></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex">
+<meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noimageindex">
+<meta name="theme-color" content="#0E2233">
+<title>Blue Senior Living</title>
+<link rel="icon" href="../assets/img/favicon.svg" type="image/svg+xml">
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body { height: 100%; }
+  body {
+    margin: 0; background: #0b1c2a; color: #e9f1f8;
+    font-family: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    display: flex; align-items: center; justify-content: center; padding: 24px;
+    background-image: radial-gradient(120% 90% at 50% 0%, #143349 0%, #0b1c2a 62%);
+  }
+  .g-card {
+    width: min(400px, 100%); text-align: center;
+    animation: g-in .6s cubic-bezier(.22,1,.36,1) both;
+  }
+  @keyframes g-in { from { opacity: 0; transform: translateY(10px); } }
+  .g-mark { width: 38px; height: 48px; margin: 0 auto 22px; display: block; opacity: .92;
+    filter: brightness(0) saturate(100%) invert(78%) sepia(23%) saturate(624%) hue-rotate(164deg) brightness(97%) contrast(93%); }
+  .g-title { font-family: Fraunces, Georgia, "Times New Roman", serif; font-weight: 450;
+    font-size: 25px; letter-spacing: .01em; margin: 0 0 10px; }
+  .g-sub { font-size: 14.5px; line-height: 1.6; color: rgba(233,241,248,.62); margin: 0 0 26px; }
+  .g-body { transition: opacity .3s ease; }
+  .is-checking .g-body { opacity: 0; pointer-events: none; }
+  .g-field { display: flex; flex-direction: column; gap: 10px; }
+  .g-input {
+    width: 100%; padding: 14px 16px; font: inherit; font-size: 15px; text-align: center;
+    letter-spacing: .06em; color: #e9f1f8; background: rgba(255,255,255,.06);
+    border: 1px solid rgba(233,241,248,.18); border-radius: 12px; outline: none;
+    transition: border-color .2s ease, background .2s ease;
+  }
+  .g-input::placeholder { color: rgba(233,241,248,.32); letter-spacing: normal; }
+  .g-input:focus { border-color: #6cc4e8; background: rgba(255,255,255,.09); }
+  .g-btn {
+    width: 100%; padding: 14px 18px; font: inherit; font-size: 15px; font-weight: 600;
+    color: #08151f; background: #6cc4e8; border: 0; border-radius: 12px; cursor: pointer;
+    transition: filter .2s ease, transform .12s ease;
+  }
+  .g-btn:hover:not(:disabled) { filter: brightness(1.07); }
+  .g-btn:active:not(:disabled) { transform: translateY(1px); }
+  .g-btn:disabled { opacity: .6; cursor: default; }
+  .g-err { margin: 14px 0 0; font-size: 13.5px; color: #ff9d9d; }
+  .g-foot { margin: 26px 0 0; font-size: 12px; color: rgba(233,241,248,.34); line-height: 1.5; }
+</style>
 </head>
-<body class="blog-page">
-  <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
-  <header class="nav is-scrolled blog-nav">
-    <div class="nav__inner">
-      <a class="brand" href="../index.html" aria-label="Blue Senior Living — início">
-        <img class="brand__emblem-img" src="../assets/logo/emblem.svg" alt="" width="30" height="46">
-        <span class="brand__text"><span class="brand__name">BLUE</span><span class="brand__sub">SENIOR LIVING</span></span>
-      </a>
-      <nav class="nav__links" aria-label="Navegação principal">
-        <a href="../index.html">Início</a>
-        <a href="index.html" aria-current="page">Conteúdos</a>
-        <a href="../index.html#trabalhe">Trabalhe conosco</a>
-      </nav>
-      <div class="nav__actions">
-        <a class="btn-app" href="https://app.blueseniorliving.com.br" target="_blank" rel="noopener noreferrer">
-          <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-          <span>Área do cliente</span>
-        </a>
-        <a class="btn btn--primary nav__cta" href="../index.html#agendar"><span class="nav__cta--full">Agendar visita</span><span class="nav__cta--mini">Agendar</span></a>
-        <button class="nav__toggle" type="button" aria-label="Abrir menu" aria-expanded="false" aria-controls="mobile-menu" data-menu-toggle>
-          <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
-        </button>
-      </div>
-    </div>
-  </header>
-
-  <!-- Mobile drawer -->
-  <div class="drawer" id="mobile-menu" data-drawer hidden>
-    <div class="drawer__backdrop" data-drawer-close></div>
-    <nav class="drawer__panel" role="dialog" aria-modal="true" aria-label="Menu">
-      <div class="drawer__head">
-        <span class="brand brand--drawer">
-          <img class="brand__emblem-img" src="../assets/logo/emblem.svg" alt="" width="30" height="46">
-          <span class="brand__text"><span class="brand__name">BLUE</span><span class="brand__sub">SENIOR LIVING</span></span>
-        </span>
-        <button class="drawer__close" type="button" aria-label="Fechar menu" data-drawer-close>
-          <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
-        </button>
-      </div>
-      <a href="../index.html" data-drawer-link>Início</a>
-      <a href="../index.html#conceito" data-drawer-link>O conceito</a>
-      <a href="../index.html#espacos" data-drawer-link>Os espaços</a>
-      <a href="../index.html#familia" data-drawer-link>Para a família</a>
-      <a href="../index.html#localizacao" data-drawer-link>Localização</a>
-      <a href="index.html" data-drawer-link aria-current="page">Conteúdos</a>
-      <a href="../index.html#trabalhe" data-drawer-link>Trabalhe conosco</a>
-      <div class="drawer__cta">
-        <a class="btn btn--primary btn--block" href="../index.html#agendar" data-drawer-link>Agendar visita</a>
-        <a class="btn btn--ghost-ink btn--block" href="https://app.blueseniorliving.com.br" target="_blank" rel="noopener noreferrer">
-          <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6M20 4l-9 9"/><path d="M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg> Área do cliente
-        </a>
-      </div>
-    </nav>
+<body>
+<main class="g-card is-checking" id="g-gate">
+  <img class="g-mark" src="../assets/logo/emblem.svg" alt="" width="38" height="48">
+  <div class="g-body">
+    <h1 class="g-title">Acesso restrito</h1>
+    <p class="g-sub">Este material é confidencial e ainda não foi divulgado. Informe a senha para continuar.</p>
+    <form class="g-field" id="g-form" autocomplete="off">
+      <input class="g-input" id="g-pw" type="password" placeholder="Senha" aria-label="Senha de acesso"
+             autocomplete="current-password" spellcheck="false" autocapitalize="off">
+      <button class="g-btn" id="g-btn" type="submit">Entrar</button>
+    </form>
+    <p class="g-err" id="g-err" role="alert" hidden></p>
+    <p class="g-foot">Se você recebeu um link de acesso, ele abre esta página automaticamente.</p>
   </div>
+  <noscript><p class="g-sub">É necessário ativar o JavaScript para abrir esta página.</p></noscript>
+</main>
+<script id="bsl-payload" type="application/json">{"s":"/Fmgp2ha9/ODjnhdUXy9BA==","i":"DRQlas2vycU35Owo","c":"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","it":600000}</script>
+<script>
+(function () {
+  "use strict";
+  var P = JSON.parse(document.getElementById("bsl-payload").textContent);
+  var STORE = "bsl-gate";
+  var gate = document.getElementById("g-gate");
+  var form = document.getElementById("g-form");
+  var input = document.getElementById("g-pw");
+  var err = document.getElementById("g-err");
+  var btn = document.getElementById("g-btn");
 
-  <main id="conteudo" class="blog">
-    <header class="blog-hero">
-      <div class="wrap">
-        <p class="eyebrow">Conteúdos</p>
-        <h1 class="blog-hero__title">Conversas sobre cuidado, longevidade e família</h1>
-        <p class="blog-hero__lead">Textos sem jargão para ajudar a sua família a decidir e a cuidar melhor.</p>
-      </div>
-    </header>
-    <div class="wrap">
-      <div class="blog-filter" role="group" aria-label="Filtrar por categoria">
-        <button class="blog-filter__btn is-active" data-cat="all" aria-pressed="true">Todos</button>
-        <button class="blog-filter__btn" data-cat="Família" aria-pressed="false">Família</button>
-        <button class="blog-filter__btn" data-cat="Cuidado" aria-pressed="false">Cuidado</button>
-        <button class="blog-filter__btn" data-cat="Longevidade" aria-pressed="false">Longevidade</button>
-      </div>
-      <div class="blog-grid">
-      <article class="post-card" data-category="Família">
-        <a class="post-card__link" href="como-saber-se-e-hora-residencial-idosos.html">
-          <span class="post-card__media"><img src="../assets/img/blog/como-saber-se-e-hora.svg" alt="Mãos de uma pessoa idosa e de um familiar unidas, em gesto de cuidado." loading="lazy" width="1200" height="675"></span>
-          <span class="post-card__body">
-            <span class="post-card__meta"><span class="post-card__cat">Família</span><time datetime="2026-06-12">12 de junho de 2026</time></span>
-            <h2 class="post-card__title">Como saber se é hora de considerar um residencial para idosos</h2>
-            <p class="post-card__excerpt">Sinais no dia a dia, a conversa em família e como decidir sem culpa o melhor momento para buscar apoio.</p>
-            <span class="post-card__more">Ler conteúdo →</span>
-          </span>
-        </a>
-      </article>
-      <article class="post-card" data-category="Cuidado">
-        <a class="post-card__link" href="visitar-residencial-o-que-observar.html">
-          <span class="post-card__media"><img src="../assets/img/blog/visitar-residencial.svg" alt="Ambiente luminoso e acolhedor de um residencial sênior." loading="lazy" width="1200" height="675"></span>
-          <span class="post-card__body">
-            <span class="post-card__meta"><span class="post-card__cat">Cuidado</span><time datetime="2026-05-28">28 de maio de 2026</time></span>
-            <h2 class="post-card__title">Visitar um residencial: o que observar para escolher com segurança</h2>
-            <p class="post-card__excerpt">Um guia prático do que reparar na hora da visita: as pessoas, o ambiente e o que um bom lar não esconde.</p>
-            <span class="post-card__more">Ler conteúdo →</span>
-          </span>
-        </a>
-      </article>
-      <article class="post-card" data-category="Longevidade">
-        <a class="post-card__link" href="o-que-sao-as-blue-zones.html">
-          <span class="post-card__media"><img src="../assets/img/blog/o-que-sao-as-blue-zones.svg" alt="Paisagem serena que remete às regiões de grande longevidade." loading="lazy" width="1200" height="675"></span>
-          <span class="post-card__body">
-            <span class="post-card__meta"><span class="post-card__cat">Longevidade</span><time datetime="2026-05-15">15 de maio de 2026</time></span>
-            <h2 class="post-card__title">O que são as Blue Zones e o que elas ensinam sobre envelhecer bem</h2>
-            <p class="post-card__excerpt">Nas regiões onde mais se vive, a longevidade não é sorte. Os hábitos simples que inspiram o nosso jeito de cuidar.</p>
-            <span class="post-card__more">Ler conteúdo →</span>
-          </span>
-        </a>
-      </article>
-    </div>
-    </div>
-  </main>
-  <footer class="footer blog-footer">
-    <div class="wrap footer__inner">
-      <div class="footer__brand">
-        <a class="footer__logo" href="../index.html" aria-label="Blue Senior Living — início">
-          <img src="../assets/logo/blue-senior-living-white.svg" alt="Blue Senior Living" width="176">
-        </a>
-        <p class="footer__tagline">Inspirado nas Blue Zones.<br>Cuidado sênior com afeto e propósito, em Curitiba.</p>
-      </div>
-      <nav class="footer__col" aria-label="Navegue">
-        <h4>Navegue</h4>
-        <a href="../index.html#conceito">O conceito</a>
-        <a href="../index.html#espacos">Os espaços</a>
-        <a href="../index.html#familia">Para a família</a>
-        <a href="index.html">Conteúdos</a>
-      </nav>
-      <div class="footer__col">
-        <h4>Acesso</h4>
-        <a class="footer__app" href="https://app.blueseniorliving.com.br" target="_blank" rel="noopener noreferrer">Área do cliente</a>
-        <a class="btn btn--primary footer__cta" href="../index.html#agendar">Agendar visita</a>
-      </div>
-    </div>
-    <div class="footer__bar">
-      <p>© <span>2026</span> Blue Senior Living · Residencial para idosos · ILPI</p>
-    </div>
-  </footer>
-  <a class="fab" href="https://wa.me/5541999999999?text=Ol%C3%A1!%20Gostaria%20de%20conhecer%20o%20Blue%20Senior%20Living%20e%20agendar%20uma%20visita." target="_blank" rel="noopener noreferrer" aria-label="Fale com a gente pelo WhatsApp">
-    <svg aria-hidden="true" viewBox="0 0 24 24"><path fill="currentColor" d="M19.05 4.91A9.82 9.82 0 0 0 12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.9 9.9 0 0 0 4.79 1.22h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.91-7.02ZM12.04 20.15h-.01a8.23 8.23 0 0 1-4.19-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.2 8.2 0 0 1-1.26-4.38c0-4.54 3.7-8.24 8.25-8.24a8.2 8.2 0 0 1 5.83 2.42 8.18 8.18 0 0 1 2.41 5.83c0 4.54-3.7 8.23-8.24 8.23Zm4.52-6.16c-.25-.12-1.47-.72-1.69-.81-.23-.08-.39-.12-.56.13-.17.25-.64.81-.79.97-.14.17-.29.19-.54.06-.25-.12-1.05-.39-1.99-1.23-.74-.66-1.23-1.47-1.38-1.72-.14-.25-.02-.38.11-.51.11-.11.25-.29.37-.43.13-.14.17-.25.25-.41.08-.17.04-.31-.02-.43-.06-.12-.56-1.34-.76-1.84-.2-.48-.4-.42-.56-.43-.14-.01-.31-.01-.48-.01-.17 0-.43.06-.66.31-.23.25-.86.85-.86 2.07 0 1.22.89 2.4 1.01 2.56.12.17 1.75 2.67 4.24 3.74.59.26 1.05.41 1.41.52.59.19 1.13.16 1.56.1.48-.07 1.47-.6 1.68-1.18.21-.58.21-1.07.14-1.18-.06-.1-.22-.16-.47-.28Z"/></svg>
-    <span class="fab__label">Fale com a gente</span>
-  </a>
+  if (!window.crypto || !crypto.subtle) {
+    gate.classList.remove("is-checking");
+    err.textContent = "Este navegador nao suporta a abertura segura desta pagina.";
+    err.hidden = false;
+    return;
+  }
+
+  function bytes(b64) {
+    var bin = atob(b64), out = new Uint8Array(bin.length);
+    for (var i = 0; i < bin.length; i++) out[i] = bin.charCodeAt(i);
+    return out;
+  }
+
+  function attempt(pw) {
+    return crypto.subtle
+      .importKey("raw", new TextEncoder().encode(pw), { name: "PBKDF2" }, false, ["deriveKey"])
+      .then(function (km) {
+        return crypto.subtle.deriveKey(
+          { name: "PBKDF2", salt: bytes(P.s), iterations: P.it, hash: "SHA-256" },
+          km, { name: "AES-GCM", length: 256 }, false, ["decrypt"]
+        );
+      })
+      .then(function (key) {
+        return crypto.subtle.decrypt({ name: "AES-GCM", iv: bytes(P.i) }, key, bytes(P.c));
+      })
+      .then(function (buf) { return new TextDecoder().decode(buf); })
+      .catch(function () { return null; });
+  }
+
+  /* Scripts trazidos por DOMParser nascem inertes: e preciso recriar cada
+     tag para o navegador executar. Rodamos em ordem, aguardando os
+     externos, para preservar a semantica de "defer". */
+  function runScripts(done) {
+    var list = [].slice.call(document.querySelectorAll("script"));
+    var i = 0;
+    (function next() {
+      if (i >= list.length) return done();
+      var old = list[i++];
+      var fresh = document.createElement("script");
+      for (var a = 0; a < old.attributes.length; a++) {
+        fresh.setAttribute(old.attributes[a].name, old.attributes[a].value);
+      }
+      fresh.removeAttribute("defer");
+      fresh.removeAttribute("async");
+      if (old.src) {
+        fresh.onload = fresh.onerror = next;
+        old.parentNode.replaceChild(fresh, old);
+      } else {
+        fresh.textContent = old.textContent;
+        old.parentNode.replaceChild(fresh, old);
+        next();
+      }
+    })();
+  }
+
+  function reveal(html, pw) {
+    try { sessionStorage.setItem(STORE, pw); } catch (e) {}
+    if (location.hash) history.replaceState(null, "", location.pathname + location.search);
+    var parsed = new DOMParser().parseFromString(html, "text/html");
+    document.replaceChild(document.importNode(parsed.documentElement, true), document.documentElement);
+    runScripts(function () {
+      document.dispatchEvent(new Event("DOMContentLoaded", { bubbles: true }));
+      window.dispatchEvent(new Event("load"));
+    });
+  }
+
+  function showForm() {
+    gate.classList.remove("is-checking");
+    if (input) input.focus();
+  }
+
+  /* 1) senha no link (#k=...)  2) senha ja usada nesta sessao */
+  var fromHash = /^#k=/.test(location.hash) ? decodeURIComponent(location.hash.slice(3)) : null;
+  var remembered = null;
+  try { remembered = sessionStorage.getItem(STORE); } catch (e) {}
+  var auto = fromHash || remembered;
+
+  if (auto) {
+    attempt(auto).then(function (html) {
+      if (html) return reveal(html, auto);
+      try { sessionStorage.removeItem(STORE); } catch (e) {}
+      showForm();
+    });
+  } else {
+    showForm();
+  }
+
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+    var pw = input.value.trim();
+    if (!pw) return;
+    err.hidden = true;
+    btn.disabled = true;
+    btn.textContent = "Abrindo\u2026";
+    attempt(pw).then(function (html) {
+      if (html) return reveal(html, pw);
+      btn.disabled = false;
+      btn.textContent = "Entrar";
+      err.textContent = "Senha incorreta.";
+      err.hidden = false;
+      input.select();
+    });
+  });
+})();
+</script>
 </body>
 </html>
-<script>
-  // Filtro de categorias (progressivo, acessível)
-  (function () {
-    var btns = document.querySelectorAll('.blog-filter__btn');
-    var cards = document.querySelectorAll('.post-card');
-    btns.forEach(function (b) {
-      b.addEventListener('click', function () {
-        var cat = b.getAttribute('data-cat');
-        btns.forEach(function (x) { x.classList.toggle('is-active', x === b); x.setAttribute('aria-pressed', x === b ? 'true' : 'false'); });
-        cards.forEach(function (c) { c.style.display = (cat === 'all' || c.getAttribute('data-category') === cat) ? '' : 'none'; });
-      });
-    });
-  })();
-</script>

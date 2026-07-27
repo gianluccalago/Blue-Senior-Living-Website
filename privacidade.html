@@ -1,95 +1,187 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Privacidade e Cookies — Blue Senior Living</title>
-  <meta name="description" content="Como o Blue Senior Living trata seus dados pessoais e usa cookies, em conformidade com a LGPD.">
-  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex">
-  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="assets/css/styles.css">
-  <link rel="stylesheet" href="assets/css/blog.css">
-  <script src="assets/js/consent.js" defer></script>
-  <style>
-    .legal { max-width: 760px; margin-inline: auto; padding: 140px 24px 80px; }
-    .legal h1 { font-family: var(--font-display); font-weight: 450; font-size: clamp(30px, 4vw, 44px); line-height: 1.12; margin-bottom: 10px; }
-    .legal .legal__updated { font-size: 13px; color: var(--ink-faint); margin-bottom: 36px; }
-    .legal h2 { font-family: var(--font-display); font-weight: 500; font-size: clamp(20px, 2vw, 25px); margin: 36px 0 12px; }
-    .legal p, .legal li { font-size: 15.5px; line-height: 1.7; color: var(--ink-soft); }
-    .legal ul { list-style: disc; padding-left: 22px; display: grid; gap: 8px; margin-top: 10px; }
-    .legal a { color: var(--navy-600); text-decoration: underline; text-underline-offset: 3px; }
-    .legal .legal__note { margin-top: 44px; padding: 16px 18px; border: 1px solid var(--line); border-radius: 12px; font-size: 13px; color: var(--ink-faint); }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex">
+<meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noimageindex">
+<meta name="theme-color" content="#0E2233">
+<title>Blue Senior Living</title>
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body { height: 100%; }
+  body {
+    margin: 0; background: #0b1c2a; color: #e9f1f8;
+    font-family: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    display: flex; align-items: center; justify-content: center; padding: 24px;
+    background-image: radial-gradient(120% 90% at 50% 0%, #143349 0%, #0b1c2a 62%);
+  }
+  .g-card {
+    width: min(400px, 100%); text-align: center;
+    animation: g-in .6s cubic-bezier(.22,1,.36,1) both;
+  }
+  @keyframes g-in { from { opacity: 0; transform: translateY(10px); } }
+  .g-mark { width: 38px; height: 48px; margin: 0 auto 22px; display: block; opacity: .92;
+    filter: brightness(0) saturate(100%) invert(78%) sepia(23%) saturate(624%) hue-rotate(164deg) brightness(97%) contrast(93%); }
+  .g-title { font-family: Fraunces, Georgia, "Times New Roman", serif; font-weight: 450;
+    font-size: 25px; letter-spacing: .01em; margin: 0 0 10px; }
+  .g-sub { font-size: 14.5px; line-height: 1.6; color: rgba(233,241,248,.62); margin: 0 0 26px; }
+  .g-body { transition: opacity .3s ease; }
+  .is-checking .g-body { opacity: 0; pointer-events: none; }
+  .g-field { display: flex; flex-direction: column; gap: 10px; }
+  .g-input {
+    width: 100%; padding: 14px 16px; font: inherit; font-size: 15px; text-align: center;
+    letter-spacing: .06em; color: #e9f1f8; background: rgba(255,255,255,.06);
+    border: 1px solid rgba(233,241,248,.18); border-radius: 12px; outline: none;
+    transition: border-color .2s ease, background .2s ease;
+  }
+  .g-input::placeholder { color: rgba(233,241,248,.32); letter-spacing: normal; }
+  .g-input:focus { border-color: #6cc4e8; background: rgba(255,255,255,.09); }
+  .g-btn {
+    width: 100%; padding: 14px 18px; font: inherit; font-size: 15px; font-weight: 600;
+    color: #08151f; background: #6cc4e8; border: 0; border-radius: 12px; cursor: pointer;
+    transition: filter .2s ease, transform .12s ease;
+  }
+  .g-btn:hover:not(:disabled) { filter: brightness(1.07); }
+  .g-btn:active:not(:disabled) { transform: translateY(1px); }
+  .g-btn:disabled { opacity: .6; cursor: default; }
+  .g-err { margin: 14px 0 0; font-size: 13.5px; color: #ff9d9d; }
+  .g-foot { margin: 26px 0 0; font-size: 12px; color: rgba(233,241,248,.34); line-height: 1.5; }
+</style>
 </head>
-<body class="blog-page">
-  <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
-  <header class="nav is-scrolled blog-nav">
-    <div class="nav__inner">
-      <a class="brand" href="index.html" aria-label="Blue Senior Living — início">
-        <img class="brand__emblem-img" src="assets/logo/emblem.svg" alt="" width="30" height="46">
-        <span class="brand__text"><span class="brand__name">BLUE</span><span class="brand__sub">SENIOR LIVING</span></span>
-      </a>
-      <nav class="nav__links" aria-label="Navegação principal">
-        <a href="index.html">Início</a>
-        <a href="blog/index.html">Conteúdos</a>
-        <a href="index.html#trabalhe">Trabalhe conosco</a>
-      </nav>
-      <div class="nav__actions">
-        <a class="btn btn--primary nav__cta" href="index.html#agendar"><span class="nav__cta--full">Agendar visita</span><span class="nav__cta--mini">Agendar</span></a>
-      </div>
-    </div>
-  </header>
+<body>
+<main class="g-card is-checking" id="g-gate">
+  <img class="g-mark" src="assets/logo/emblem.svg" alt="" width="38" height="48">
+  <div class="g-body">
+    <h1 class="g-title">Acesso restrito</h1>
+    <p class="g-sub">Este material é confidencial e ainda não foi divulgado. Informe a senha para continuar.</p>
+    <form class="g-field" id="g-form" autocomplete="off">
+      <input class="g-input" id="g-pw" type="password" placeholder="Senha" aria-label="Senha de acesso"
+             autocomplete="current-password" spellcheck="false" autocapitalize="off">
+      <button class="g-btn" id="g-btn" type="submit">Entrar</button>
+    </form>
+    <p class="g-err" id="g-err" role="alert" hidden></p>
+    <p class="g-foot">Se você recebeu um link de acesso, ele abre esta página automaticamente.</p>
+  </div>
+  <noscript><p class="g-sub">É necessário ativar o JavaScript para abrir esta página.</p></noscript>
+</main>
+<script id="bsl-payload" type="application/json">{"s":"/J39rkeMu+5tHD9xqtHk8g==","i":"UwLZTEgB3VoTjTed","c":"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","it":600000}</script>
+<script>
+(function () {
+  "use strict";
+  var P = JSON.parse(document.getElementById("bsl-payload").textContent);
+  var STORE = "bsl-gate";
+  var gate = document.getElementById("g-gate");
+  var form = document.getElementById("g-form");
+  var input = document.getElementById("g-pw");
+  var err = document.getElementById("g-err");
+  var btn = document.getElementById("g-btn");
 
-  <main id="conteudo">
-    <article class="legal">
-      <h1>Privacidade e Cookies</h1>
-      <p class="legal__updated">Última atualização: julho de 2026</p>
+  if (!window.crypto || !crypto.subtle) {
+    gate.classList.remove("is-checking");
+    err.textContent = "Este navegador nao suporta a abertura segura desta pagina.";
+    err.hidden = false;
+    return;
+  }
 
-      <p>O <strong>Blue Senior Living</strong> respeita a sua privacidade. Esta página explica, em
-      linguagem simples, quais dados coletamos neste site, para que os usamos e quais são os seus
-      direitos, em conformidade com a Lei Geral de Proteção de Dados (LGPD — Lei nº 13.709/2018).</p>
+  function bytes(b64) {
+    var bin = atob(b64), out = new Uint8Array(bin.length);
+    for (var i = 0; i < bin.length; i++) out[i] = bin.charCodeAt(i);
+    return out;
+  }
 
-      <h2>Dados que você nos envia</h2>
-      <p>Ao solicitar uma visita pelo site, coletamos <strong>nome, WhatsApp e e-mail (opcional)</strong>,
-      além da data e horário escolhidos. Usamos esses dados exclusivamente para organizar e confirmar a
-      sua visita e para o contato relacionado a ela. Eles não são vendidos nem compartilhados para fins
-      de publicidade.</p>
+  function attempt(pw) {
+    return crypto.subtle
+      .importKey("raw", new TextEncoder().encode(pw), { name: "PBKDF2" }, false, ["deriveKey"])
+      .then(function (km) {
+        return crypto.subtle.deriveKey(
+          { name: "PBKDF2", salt: bytes(P.s), iterations: P.it, hash: "SHA-256" },
+          km, { name: "AES-GCM", length: 256 }, false, ["decrypt"]
+        );
+      })
+      .then(function (key) {
+        return crypto.subtle.decrypt({ name: "AES-GCM", iv: bytes(P.i) }, key, bytes(P.c));
+      })
+      .then(function (buf) { return new TextDecoder().decode(buf); })
+      .catch(function () { return null; });
+  }
 
-      <h2>Cookies e medição</h2>
-      <p>Com o seu consentimento, usamos cookies e tecnologias semelhantes (via Google Tag Manager)
-      para entender como o site é utilizado e para medir campanhas de divulgação. Você escolhe no
-      banner de cookies:</p>
-      <ul>
-        <li><strong>Aceitar cookies</strong> — habilita cookies de análise e de publicidade;</li>
-        <li><strong>Só os essenciais</strong> — mantém apenas o necessário para o funcionamento do site
-        (nenhum cookie de análise ou publicidade é gravado).</li>
-      </ul>
-      <p>Sua escolha fica registrada por 180 dias e pode ser refeita limpando os dados de navegação do
-      seu navegador para este site.</p>
+  /* Scripts trazidos por DOMParser nascem inertes: e preciso recriar cada
+     tag para o navegador executar. Rodamos em ordem, aguardando os
+     externos, para preservar a semantica de "defer". */
+  function runScripts(done) {
+    var list = [].slice.call(document.querySelectorAll("script"));
+    var i = 0;
+    (function next() {
+      if (i >= list.length) return done();
+      var old = list[i++];
+      var fresh = document.createElement("script");
+      for (var a = 0; a < old.attributes.length; a++) {
+        fresh.setAttribute(old.attributes[a].name, old.attributes[a].value);
+      }
+      fresh.removeAttribute("defer");
+      fresh.removeAttribute("async");
+      if (old.src) {
+        fresh.onload = fresh.onerror = next;
+        old.parentNode.replaceChild(fresh, old);
+      } else {
+        fresh.textContent = old.textContent;
+        old.parentNode.replaceChild(fresh, old);
+        next();
+      }
+    })();
+  }
 
-      <h2>Seus direitos (LGPD)</h2>
-      <p>Você pode, a qualquer momento, solicitar acesso, correção ou exclusão dos seus dados, bem como
-      revogar consentimentos. É só falar com a gente:</p>
-      <ul>
-        <li>E-mail: <a href="mailto:contato@blueseniorliving.com.br">contato@blueseniorliving.com.br</a></li>
-      </ul>
+  function reveal(html, pw) {
+    try { sessionStorage.setItem(STORE, pw); } catch (e) {}
+    if (location.hash) history.replaceState(null, "", location.pathname + location.search);
+    var parsed = new DOMParser().parseFromString(html, "text/html");
+    document.replaceChild(document.importNode(parsed.documentElement, true), document.documentElement);
+    runScripts(function () {
+      document.dispatchEvent(new Event("DOMContentLoaded", { bubbles: true }));
+      window.dispatchEvent(new Event("load"));
+    });
+  }
 
-      <h2>Compartilhamento e segurança</h2>
-      <p>Os dados de agendamento são armazenados em infraestrutura segura com acesso restrito à equipe
-      do Blue. Serviços de medição (como Google) recebem apenas dados de navegação mediante o seu
-      consentimento — nunca o conteúdo do seu agendamento.</p>
+  function showForm() {
+    gate.classList.remove("is-checking");
+    if (input) input.focus();
+  }
 
-      <p class="legal__note">Este documento é uma base de referência elaborada de boa-fé e deve ser
-      validado pelo responsável jurídico do Blue Senior Living antes de campanhas de mídia em larga
-      escala.</p>
-    </article>
-  </main>
+  /* 1) senha no link (#k=...)  2) senha ja usada nesta sessao */
+  var fromHash = /^#k=/.test(location.hash) ? decodeURIComponent(location.hash.slice(3)) : null;
+  var remembered = null;
+  try { remembered = sessionStorage.getItem(STORE); } catch (e) {}
+  var auto = fromHash || remembered;
 
-  <footer class="footer">
-    <div class="footer__bar">
-      <p>© <span>2026</span> Blue Senior Living · Residencial para idosos · ILPI</p>
-      <p><a href="index.html" style="text-decoration:underline;text-underline-offset:3px;">Voltar ao início</a></p>
-    </div>
-  </footer>
+  if (auto) {
+    attempt(auto).then(function (html) {
+      if (html) return reveal(html, auto);
+      try { sessionStorage.removeItem(STORE); } catch (e) {}
+      showForm();
+    });
+  } else {
+    showForm();
+  }
+
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+    var pw = input.value.trim();
+    if (!pw) return;
+    err.hidden = true;
+    btn.disabled = true;
+    btn.textContent = "Abrindo\u2026";
+    attempt(pw).then(function (html) {
+      if (html) return reveal(html, pw);
+      btn.disabled = false;
+      btn.textContent = "Entrar";
+      err.textContent = "Senha incorreta.";
+      err.hidden = false;
+      input.select();
+    });
+  });
+})();
+</script>
 </body>
 </html>
