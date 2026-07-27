@@ -57,6 +57,24 @@ function encrypt(plaintext, password) {
   };
 }
 
+/* Os documentos internos vivem dentro da pasta publicada (o Render serve a
+   raiz do repositório), então também precisam virar texto cifrado. */
+function lockNotes(password) {
+  const dir = path.join(root, "notes-src");
+  if (!fs.existsSync(dir)) return 0;
+  let n = 0;
+  for (const f of fs.readdirSync(dir)) {
+    if (f.endsWith(".enc")) continue;
+    const file = path.join(dir, f);
+    const enc = encrypt(fs.readFileSync(file, "utf8"), password);
+    fs.writeFileSync(file + ".enc", JSON.stringify(enc), "utf8");
+    fs.unlinkSync(file);
+    console.log("  documento cifrado:", "notes-src/" + f);
+    n++;
+  }
+  return n;
+}
+
 function main() {
   const password = arg("--senha") || process.env.SITE_PASSWORD || generatePassword();
   const generated = !arg("--senha") && !process.env.SITE_PASSWORD;
@@ -83,7 +101,10 @@ function main() {
     locked++;
   }
 
-  console.log("\n" + locked + " página(s) trancada(s)" + (skipped ? ", " + skipped + " já estavam" : "") + ".");
+  const notes = lockNotes(password);
+
+  console.log("\n" + locked + " página(s) trancada(s)" + (skipped ? ", " + skipped + " já estavam" : "") +
+    (notes ? " e " + notes + " documento(s) interno(s) cifrado(s)" : "") + ".");
   if (generated) {
     console.log("\n  SENHA GERADA: " + password);
     console.log("  Guarde-a agora — ela não fica salva em lugar nenhum.");

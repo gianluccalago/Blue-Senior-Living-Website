@@ -35,6 +35,28 @@ function decrypt(payload, password) {
   return Buffer.concat([decipher.update(body), decipher.final()]).toString("utf8");
 }
 
+function unlockNotes(password) {
+  const dir = path.join(root, "notes-src");
+  if (!fs.existsSync(dir)) return 0;
+  let n = 0;
+  for (const f of fs.readdirSync(dir)) {
+    if (!f.endsWith(".enc")) continue;
+    const file = path.join(dir, f);
+    let plain;
+    try {
+      plain = decrypt(JSON.parse(fs.readFileSync(file, "utf8")), password);
+    } catch (e) {
+      console.error("  !! senha incorreta para notes-src/" + f);
+      process.exit(1);
+    }
+    fs.writeFileSync(file.replace(/\.enc$/, ""), plain, "utf8");
+    fs.unlinkSync(file);
+    console.log("  documento aberto:", "notes-src/" + f.replace(/\.enc$/, ""));
+    n++;
+  }
+  return n;
+}
+
 function main() {
   const password = arg("--senha") || process.env.SITE_PASSWORD;
   if (!password) {
@@ -67,7 +89,10 @@ function main() {
     console.log("  destrancado:", page);
     done++;
   }
-  console.log("\n" + done + " página(s) destrancada(s). Lembre de rodar lock-site.js antes de publicar.");
+  const notes = unlockNotes(password);
+  console.log("\n" + done + " página(s) destrancada(s)" +
+    (notes ? " e " + notes + " documento(s) interno(s) aberto(s)" : "") +
+    ". Lembre de rodar lock-site.js antes de publicar.");
 }
 
 main();
