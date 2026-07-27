@@ -18,7 +18,7 @@
   "use strict";
 
   /* ========== EDIT AQUI ========== */
-  var GTM_ID = "";                 /* ex.: "GTM-ABC1234" */
+  var GTM_ID = "GTM-K5FVSS2P";     /* contêiner do Blue Senior Living */
   /* =============================== */
 
   var KEY = "blue-consent-v1";
