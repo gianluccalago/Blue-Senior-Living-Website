@@ -1,5 +1,4 @@
+# Blue Senior Living — site em pré-lançamento.
+# Nada deve ser rastreado ou indexado até a abertura.
 User-agent: *
-Allow: /
-Disallow: /privacidade.html
-
-Sitemap: https://blueseniorliving.com.br/sitemap.xml
+Disallow: /

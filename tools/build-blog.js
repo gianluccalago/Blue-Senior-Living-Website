@@ -50,6 +50,9 @@ function head({ title, desc, cover, canonical, article }) {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Site em pré-lançamento: fora de buscadores até a abertura -->
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex">
+  <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noimageindex">
   <title>${esc(title)}</title>
   <meta name="description" content="${esc(desc)}">
   <meta name="theme-color" content="#0E2233">
