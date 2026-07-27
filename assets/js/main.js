@@ -554,6 +554,9 @@ const CONFIG = {
         if (error) throw error;
         const firstName = name.split(/\s+/)[0];
         requested.add(`${dateStr} ${timeStr}`);
+        // Conversão principal para mídia paga (sem dados pessoais — LGPD)
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({ event: "solicitacao_visita", visita_data: dateStr, visita_hora: timeStr });
         setNote(
           `<strong>Tudo certo, ${firstName}!</strong> Recebemos seu pedido de visita para ${fmtLong(dateStr)} às ${timeStr}. ` +
           `Nossa equipe vai falar com você pelo WhatsApp para confirmar, fique de olho nas mensagens.` +
